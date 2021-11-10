@@ -1,3 +1,5 @@
+// useful for visualizations let dateFormatter = d3.timeFormat("%Y-%m-%d %H:%M:%S");
+
 // Has two very useful properties but should not be exposed: _rides and _stations
 class DataHandler {
     files = [
@@ -60,19 +62,47 @@ class DataHandler {
         console.log("begin loading")
         Promise.all(this.files.map(f => d3.csv(f, d3.autoType)))
             .then(function ([stations, old_stations, ...data]) {
-                console.log(data.length)
-                console.log("done", stations, old_stations, data)
+                //console.log(data.length)
+                //console.log("done", stations, old_stations, data)
                 dataHandler._stations = [...stations, ...old_stations].map(item => {
                     if ("Public" in item) {
                         item.Public = (item.Public === "Yes");
                     }
                     return item;
+                }).filter((item, index, array) => {
+                    // filter out duplicate stations
+                   return index === array.findIndex(other => item.Number === other.Number);
                 });
+
                 dataHandler._rides = data.flat(1);
-                console.log("data merge", dataHandler._stations, dataHandler._rides)
+
+                // convert times to date objects
+                let dateParser = d3.timeParse("%Y-%m-%d %H:%M:%S");
+                dataHandler._rides.forEach(d => {
+                    if(d.starttime){
+                        d.starttime = dateParser(d.starttime);
+                    }
+                    if(d.stoptime){
+                        d.stoptime = dateParser(d.stoptime);
+                    }
+                });
+
+                console.log("data merge", dataHandler._stations, dataHandler._rides);
             })
             .catch(function (err) {
                 console.log(err)
             });
+    }
+    age(){
+        let dataHandler = this;
+        dataHandler._rides.forEach((d, index) => {
+            if(index == 0){
+                console.log(d.starttime.getFullYear() - d["birth year"]);
+            }
+
+        });
+
+        // all the variable names changed in the later files
+        // Also -- lots of null date objects????
     }
 }
