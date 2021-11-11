@@ -1,0 +1,18 @@
+.container-fluid {
+    padding-right: 5vw;
+    padding-left: 5vw;
+}
+.leftContainer{
+    height: 60vh;
+    margin-top: 15vh;
+    margin-right: 5vh;
+}
+.linkedContainer{
+    height: 30vh;
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+}
+#main-line-chart, #member-line-chart, #age-line-chart, #gender-line-chart, #hour-bar-chart {
+    height: 100%;
+    width: 100%;
+}

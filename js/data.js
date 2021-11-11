@@ -29,41 +29,20 @@ class DataHandler {
         // "data/2019/201909-bluebikes-tripdata.csv",
         // "data/2019/201910-bluebikes-tripdata.csv",
         // "data/2019/201911-bluebikes-tripdata.csv",
-        // "data/2019/201912-bluebikes-tripdata.csv",
-        // "data/2020/202001-bluebikes-tripdata.csv",
-        // "data/2020/202002-bluebikes-tripdata.csv",
-        // "data/2020/202003-bluebikes-tripdata.csv",
-        // "data/2020/202004-bluebikes-tripdata.csv",
-        // "data/2020/202005-bluebikes-tripdata.csv",
-        // "data/2020/202006-bluebikes-tripdata.csv",
-        // "data/2020/202007-bluebikes-tripdata.csv",
-        // "data/2020/202008-bluebikes-tripdata.csv",
-        // "data/2020/202009-bluebikes-tripdata.csv",
-        // "data/2020/202010-bluebikes-tripdata.csv",
-        // "data/2020/202011-bluebikes-tripdata.csv",
-        // "data/2020/202012-bluebikes-tripdata.csv",
-        // "data/2021/202101-bluebikes-tripdata.csv",
-        // "data/2021/202102-bluebikes-tripdata.csv",
-        // "data/2021/202103-bluebikes-tripdata.csv",
-        // "data/2021/202104-bluebikes-tripdata.csv",
-        // "data/2021/202105-bluebikes-tripdata.csv",
-        // "data/2021/202106-bluebikes-tripdata.csv",
-        // "data/2021/202107-bluebikes-tripdata.csv",
-        // "data/2021/202108-bluebikes-tripdata.csv",
-        // "data/2021/202109-bluebikes-tripdata.csv",
-        "data/2021/202110-blueblikes-tripdata.csv"
+         "data/2019/201912-bluebikes-tripdata.csv"
     ];
     constructor() {
         console.log("Data constructor");
-        this.load();
     }
     load() {
         let dataHandler = this;
         console.log("begin loading")
-        Promise.all(this.files.map(f => d3.csv(f, d3.autoType)))
+        return Promise.all(this.files.map(f => d3.csv(f, d3.autoType)))
             .then(function ([stations, old_stations, ...data]) {
                 //console.log(data.length)
                 console.log("done", stations, old_stations, data)
+
+                // process stations data
                 dataHandler._stations = [...stations, ...old_stations].map(item => {
                     if ("Public" in item) {
                         item.Public = (item.Public === "Yes");
@@ -74,6 +53,7 @@ class DataHandler {
                    return index === array.findIndex(other => item.Number === other.Number);
                 });
 
+                // process ride data
                 dataHandler._rides = data.flat(1);
 
                 // convert times to date objects
@@ -85,23 +65,39 @@ class DataHandler {
                     if(d.starttime){
                         d.starttime = dateParser(d.starttime);
                     }
-                    if(d.started_at){ // different csv, dif variable name. either starttime or started_at
-                        d.started_at = dateParser(d.started_at);
-                    }
                     if(d.stoptime){
                         d.stoptime = dateParser(d.stoptime);
-                    }
-                    if(d.ended_at){
-                        d.ended_at = dateParser(d.ended_at);
                     }
                 });
 
                 console.log("data merge", dataHandler._stations, dataHandler._rides);
+
             })
             .catch(function (err) {
-                console.log(err)
+                console.log(err);
             });
+
     }
+    // group data by date
+    groupDate(){
+        let dataHandler = this;
+        let groupedDate = {};
+
+        dataHandler._rides.forEach(d => {
+            let timeFormat = d3.timeFormat("%Y-%m-%d");
+            let date = timeFormat(d.starttime);
+
+            if(groupedDate[date]){
+                groupedDate[date].push(d);
+            }
+            else {
+                groupedDate[date] = [d];
+            }
+        })
+        console.log(groupedDate)
+    }
+
+
     age(){
         let dataHandler = this;
         dataHandler._rides.forEach((d, index) => {
