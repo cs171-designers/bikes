@@ -63,7 +63,7 @@ class DataHandler {
         Promise.all(this.files.map(f => d3.csv(f, d3.autoType)))
             .then(function ([stations, old_stations, ...data]) {
                 //console.log(data.length)
-                //console.log("done", stations, old_stations, data)
+                console.log("done", stations, old_stations, data)
                 dataHandler._stations = [...stations, ...old_stations].map(item => {
                     if ("Public" in item) {
                         item.Public = (item.Public === "Yes");
@@ -78,12 +78,21 @@ class DataHandler {
 
                 // convert times to date objects
                 let dateParser = d3.timeParse("%Y-%m-%d %H:%M:%S");
+
+                let dateParser2 = d3.timeParse("%Y-%m-%d %H:%M:%S"); // later csv have starttime with seconds with decimals. eg 42 sec vs. 42.48 seconds.
+
                 dataHandler._rides.forEach(d => {
                     if(d.starttime){
                         d.starttime = dateParser(d.starttime);
                     }
+                    if(d.started_at){ // different csv, dif variable name. either starttime or started_at
+                        d.started_at = dateParser(d.started_at);
+                    }
                     if(d.stoptime){
                         d.stoptime = dateParser(d.stoptime);
+                    }
+                    if(d.ended_at){
+                        d.ended_at = dateParser(d.ended_at);
                     }
                 });
 
