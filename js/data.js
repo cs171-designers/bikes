@@ -63,11 +63,15 @@ class DataHandler {
 
                 dataHandler._rides.forEach(d => {
                     if(d.starttime){
+                        // add age attribute to data
+                        d.age = Number(d.starttime.slice(0,4)) - d["birth year"];
                         d.starttime = dateParser(d.starttime);
                     }
                     if(d.stoptime){
                         d.stoptime = dateParser(d.stoptime);
                     }
+                    let getYear = d3.timeParse("%Y");
+                   // d.age = getYear(d.starttime) //- d["birth year"];
                 });
 
                 console.log("data merge", dataHandler._stations, dataHandler._rides);

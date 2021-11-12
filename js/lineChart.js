@@ -59,14 +59,25 @@ class LineChart {
         let vis = this;
 
         // get number of rides
-        let dataArray = Array.from(Object.values(vis.data))
-        let timeFormat = d3.timeFormat("%Y-%m-%d");
-        dataArray.forEach(d => {
-            vis.displayData.push({
-                date: timeFormat(d.starttime),
-                num_rides: d.length
-            })
+        console.log("vis data",vis.data);
+
+        vis.displayData = Object.entries(vis.data).map(d => {
+            return {
+                day: d[0],
+                num_rides: d[1].length,
+                num_rides_user_subscriber: d[1].filter(ride => ride.usertype === "Subscriber").length,
+                num_rides_user_customer: d[1].filter(ride => ride.usertype === "Customer").length,
+                num_rides_gen_unknown: d[1].filter(ride => ride.gender === 0).length,
+                num_rides_gen_male: d[1].filter(ride => ride.gender === 1).length,
+                num_rides_gen_female: d[1].filter(ride => ride.gender === 2).length,
+                num_rides_age_youth: d[1].filter(ride => ride.age < 18).length,
+                num_rides_age_young_adult: d[1].filter(ride => ride.age >= 18 && ride.age < 25).length,
+                num_rides_age_adult: d[1].filter(ride => ride.age >= 25).length
+                // ages aren't adding up to total num_rides???
+            }
         });
+        // each age or member category per day
+
 
         console.log("displayData", vis.displayData);
 
