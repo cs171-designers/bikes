@@ -10,6 +10,9 @@ function init() {
         console.log(lineData);
 
         let generalLine = new LineChart("main-line-chart", lineData);
+        
+        
+        let pieChart = new PieChart("pie-chart", dataHandler);
 
     });
 

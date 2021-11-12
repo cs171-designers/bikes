@@ -128,6 +128,47 @@ class DataHandler {
         })
         //console.log(groupedDate);
         return groupedDate;
-
     }
+
+    getRideCounts() {
+        const filters = {
+            user: {
+                user_all: filtered_array => filtered_array,
+                user_subscriber: filtered_array => filtered_array.filter(ride => ride.usertype === "Subscriber"),
+                user_customer: filtered_array => filtered_array.filter(ride => ride.usertype === "Customer"),
+                user_unspecified: filtered_array => filtered_array.filter(ride => ride.usertype === "Subscriber" && ride.usertype !== "Customer"),
+            },
+            age: {
+                age_all: filtered_array => filtered_array,
+                age_youth: filtered_array => filtered_array.filter(ride => ride.age < 18),
+                age_young_adult: filtered_array => filtered_array.filter(ride => ride.age >= 18 && ride.age < 25),
+                age_adult: filtered_array => filtered_array.filter(ride => ride.age >= 25),
+                age_missing: filtered_array => filtered_array.filter(ride => ride.age != 0 && !ride.age),
+            },
+            gen: {
+                gen_all: filtered_array => filtered_array,
+                gen_male: filtered_array => filtered_array.filter(ride => ride.gender === 1),
+                gen_female: filtered_array => filtered_array.filter(ride => ride.gender === 2),
+                gen_unspecified: filtered_array => filtered_array.filter(ride => ride.gender !== 2 && ride.gender !== 1),
+            },
+        }
+        let counts = {};
+        let data = this._rides;
+        Object.entries(filters.user).forEach(([u_key, u_val]) => {
+            let users = u_val(data);
+            Object.entries(filters.age).forEach(([a_key, a_val]) => {
+                let age = a_val(users);
+                Object.entries(filters.gen).forEach(([s_key, s_val]) => {
+                    let sex = s_val(age);
+                    counts[`${u_key}_${a_key}_${s_key}`] = sex.length;
+                })
+            })
+        });
+        console.log("counts", counts)
+        return counts;
+    }
+    queryCounts(counts, user, age, sex) {
+        return counts[`${user}_${age}_${sex}`]
+    }
+
 }
