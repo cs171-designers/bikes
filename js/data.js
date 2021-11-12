@@ -59,7 +59,7 @@ class DataHandler {
                 // convert times to date objects
                 let dateParser = d3.timeParse("%Y-%m-%d %H:%M:%S");
 
-                let dateParser2 = d3.timeParse("%Y-%m-%d %H:%M:%S"); // later csv have starttime with seconds with decimals. eg 42 sec vs. 42.48 seconds.
+                let dateParser2 = d3.timeParse("%Y-%m-%d %H:%M:%S.%L"); // later csv have starttime with seconds with decimals. eg 42 sec vs. 42.48 seconds.
 
                 dataHandler._rides.forEach(d => {
                     if(d.starttime){
@@ -70,8 +70,6 @@ class DataHandler {
                     if(d.stoptime){
                         d.stoptime = dateParser(d.stoptime);
                     }
-                    let getYear = d3.timeParse("%Y");
-                   // d.age = getYear(d.starttime) //- d["birth year"];
                 });
 
                 console.log("data merge", dataHandler._stations, dataHandler._rides);
@@ -103,17 +101,4 @@ class DataHandler {
 
     }
 
-
-    age(){
-        let dataHandler = this;
-        dataHandler._rides.forEach((d, index) => {
-            if(index == 0){
-                console.log(d.starttime.getFullYear() - d["birth year"]);
-            }
-
-        });
-
-        // all the variable names changed in the later files
-        // Also -- lots of null date objects????
-    }
 }

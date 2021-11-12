@@ -18,4 +18,3 @@ init();
 
 // initialize variables to save linked charts
 let linkedCharts = [];
-let leftChart;

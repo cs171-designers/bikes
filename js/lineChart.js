@@ -24,7 +24,7 @@ class LineChart {
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-        // Append a path for the area function, so that it is later behind the brush overlay
+        // Append a path for the line function, so that it is later behind the brush overlay
         vis.timePath = vis.svg.append("path")
             .attr("class", "line");
 
@@ -61,33 +61,66 @@ class LineChart {
         // get number of rides
         console.log("vis data",vis.data);
 
+        //console.log(vis.data.filter(ride => ride.age != 0 && !ride.age));
+
+        //console.log("missing", Object.values(vis.data).map(d => d.filter(ride => ride.age != 0 && !ride.age)))
+        // birth year only for subscribers, not known for customers
+
         vis.displayData = Object.entries(vis.data).map(d => {
             return {
-                day: d[0],
+                date: d[0],
                 num_rides: d[1].length,
                 num_rides_user_subscriber: d[1].filter(ride => ride.usertype === "Subscriber").length,
                 num_rides_user_customer: d[1].filter(ride => ride.usertype === "Customer").length,
+
                 num_rides_gen_unknown: d[1].filter(ride => ride.gender === 0).length,
                 num_rides_gen_male: d[1].filter(ride => ride.gender === 1).length,
                 num_rides_gen_female: d[1].filter(ride => ride.gender === 2).length,
+
                 num_rides_age_youth: d[1].filter(ride => ride.age < 18).length,
                 num_rides_age_young_adult: d[1].filter(ride => ride.age >= 18 && ride.age < 25).length,
-                num_rides_age_adult: d[1].filter(ride => ride.age >= 25).length
-                // ages aren't adding up to total num_rides???
+                num_rides_age_adult: d[1].filter(ride => ride.age >= 25).length,
+                num_rides_age_missing: d[1].filter(ride => ride.age != 0 && !ride.age).length
+
+
+                // clarify that age visual is only for subscribers
             }
         });
-        // each age or member category per day
 
-
-        console.log("displayData", vis.displayData);
-
+        // ensure sorted by day
+        vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
+        //console.log("displayData", vis.displayData);
 
     }
 
     updateVis() {
+        let vis = this;
 
+        // Update domain
+        vis.x.domain(d3.extent(vis.displayData, function (d) {
+            return d.date;
+        }));
+        vis.y.domain([0, d3.max(vis.displayData, function (d) {
+            return d.value;
+        })]);
+
+        // D3 path generator
+        vis.line = d3.line()
+            .x(function (d) {
+                return vis.x(d.date);
+            })
+            .y0(vis.height)
+            .y1(function (d) {
+                return vis.y(d.num_rides);
+            });
+
+        // Call the line path function and update the path
+        vis.timePath
+           // .datum(vis.displayData)
+            .attr("d", vis.line(vis.displayData));
+
+        // Update axes
+        vis.svg.select(".y-axis").call(vis.yAxis);
+        vis.svg.select(".x-axis").call(vis.xAxis);
     }
-
-
-
 }
