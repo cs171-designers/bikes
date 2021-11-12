@@ -16,3 +16,9 @@
     height: 100%;
     width: 100%;
 }
+.success {
+    color: green;
+}
+.error {
+    color: red
+}

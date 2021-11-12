@@ -32,13 +32,19 @@ class DataHandler {
         "2019/201911-bluebikes-tripdata.csv",
         "2019/201912-bluebikes-tripdata.csv",
     ];
-    constructor() {
+    constructor(status_label_id = null) {
         console.log("Data constructor");
+        this.status_label_id = status_label_id;
     }
     load() {
         return this.loadStations().then(() => {
             return this.loadRides();
-        })
+        }).finally(() => {
+            if (this.status_label_id) {
+                document.getElementById(this.status_label_id).innerText = (this._stations && this._rides) ? "Loaded" : "Error Loading";
+                document.getElementById(this.status_label_id).classList.add((this._stations && this._rides) ? "success" : "error");
+            }
+        });
     }
     loadStations() {
         let USE_MIN = true; // must be true

@@ -1,6 +1,6 @@
 function init() {
     console.log("instantiating Data");
-    let dataHandler = new DataHandler();
+    let dataHandler = new DataHandler("load-status");
     // let vis1 = Vis1(dataHandler)
 
     // Dashboard view
