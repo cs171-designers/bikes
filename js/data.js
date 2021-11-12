@@ -31,7 +31,6 @@ class DataHandler {
     ];
     constructor() {
         console.log("Data constructor");
-        this.load();
     }
     load() {
         let dataHandler = this;
@@ -41,6 +40,8 @@ class DataHandler {
             .then(function ([stations, old_stations, ...data]) {
                 //console.log(data.length)
                 //console.log("done", stations, old_stations, data)
+
+                // process stations data
                 dataHandler._stations = [...stations, ...old_stations].map(item => {
                     if ("Public" in item) {
                         item.Public = (item.Public === "Yes");
@@ -51,17 +52,25 @@ class DataHandler {
                     return index === array.findIndex(other => item.Number === other.Number);
                 });
 
+                // process ride data
                 dataHandler._rides = data.flat(1);
 
                 // convert times to date objects
                 let dateParser = d3.timeParse("%Y-%m-%d %H:%M:%S");
+
+                let dateParser2 = d3.timeParse("%Y-%m-%d %H:%M:%S"); // later csv have starttime with seconds with decimals. eg 42 sec vs. 42.48 seconds.
+
                 dataHandler._rides.forEach(d => {
-                    if (d.starttime) {
+                    if(d.starttime){
+                        // add age attribute to data
+                        d.age = Number(d.starttime.slice(0,4)) - d["birth year"];
                         d.starttime = dateParser(d.starttime);
                     }
                     if (d.stoptime) {
                         d.stoptime = dateParser(d.stoptime);
                     }
+                    let getYear = d3.timeParse("%Y");
+                   // d.age = getYear(d.starttime) //- d["birth year"];
                 });
 
                 console.log("data merge", dataHandler._stations, dataHandler._rides);
@@ -71,8 +80,29 @@ class DataHandler {
                 console.table(dataHandler._rides[0])
             })
             .catch(function (err) {
-                console.log(err)
+                console.log(err);
             });
+
+    }
+    // group data by date
+    groupDate(){
+        let dataHandler = this;
+        let groupedDate = {};
+
+        dataHandler._rides.forEach(d => {
+            let timeFormat = d3.timeFormat("%Y-%m-%d");
+            let date = timeFormat(d.starttime);
+
+            if(groupedDate[date]){
+                groupedDate[date].push(d);
+            }
+            else {
+                groupedDate[date] = [d];
+            }
+        })
+        //console.log(groupedDate);
+        return groupedDate;
+
     }
     age() {
         let dataHandler = this;
