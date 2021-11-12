@@ -9,26 +9,26 @@ class DataHandler {
         // // modified to get rid of extra header row
         "2018/201801_hubway_tripdata.csv",
         "2018/201802_hubway_tripdata.csv",
-        "2018/201803_hubway_tripdata.csv",
-        "2018/201804-hubway-tripdata.csv",
+        // "2018/201803_hubway_tripdata.csv",
+        // "2018/201804-hubway-tripdata.csv",
         "2018/201805-bluebikes-tripdata.csv",
         "2018/201806-bluebikes-tripdata.csv",
         "2018/201807-bluebikes-tripdata.csv",
-        "2018/201808-bluebikes-tripdata.csv",
-        "2018/201809-bluebikes-tripdata.csv",
-        "2018/201810-bluebikes-tripdata.csv",
-        "2018/201811-bluebikes-tripdata.csv",
-        "2018/201812-bluebikes-tripdata.csv",
-        "2019/201901-bluebikes-tripdata.csv",
-        "2019/201902-bluebikes-tripdata.csv",
-        "2019/201903-bluebikes-tripdata.csv",
-        "2019/201904-bluebikes-tripdata.csv",
-        "2019/201905-bluebikes-tripdata.csv",
-        "2019/201906-bluebikes-tripdata.csv",
-        "2019/201907-bluebikes-tripdata.csv",
-        "2019/201908-bluebikes-tripdata.csv",
-        "2019/201909-bluebikes-tripdata.csv",
-        "2019/201910-bluebikes-tripdata.csv",
+        // "2018/201808-bluebikes-tripdata.csv",
+        // "2018/201809-bluebikes-tripdata.csv",
+        // "2018/201810-bluebikes-tripdata.csv",
+        // "2018/201811-bluebikes-tripdata.csv",
+        // "2018/201812-bluebikes-tripdata.csv",
+        // "2019/201901-bluebikes-tripdata.csv",
+        // "2019/201902-bluebikes-tripdata.csv",
+        // "2019/201903-bluebikes-tripdata.csv",
+        // "2019/201904-bluebikes-tripdata.csv",
+        // "2019/201905-bluebikes-tripdata.csv",
+        // "2019/201906-bluebikes-tripdata.csv",
+        // "2019/201907-bluebikes-tripdata.csv",
+        // "2019/201908-bluebikes-tripdata.csv",
+        // "2019/201909-bluebikes-tripdata.csv",
+        // "2019/201910-bluebikes-tripdata.csv",
         "2019/201911-bluebikes-tripdata.csv",
         "2019/201912-bluebikes-tripdata.csv",
     ];
@@ -123,17 +123,5 @@ class DataHandler {
         //console.log(groupedDate);
         return groupedDate;
 
-    }
-    age() {
-        let dataHandler = this;
-        dataHandler._rides.forEach((d, index) => {
-            if (index == 0) {
-                console.log(d.starttime.getFullYear() - d["birth year"]);
-            }
-
-        });
-
-        // all the variable names changed in the later files
-        // Also -- lots of null date objects????
     }
 }
