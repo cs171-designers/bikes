@@ -58,7 +58,18 @@ class LineChart {
     wrangleData() {
         let vis = this;
 
-        // instantiate data class??
+        // get number of rides
+        let dataArray = Array.from(Object.values(vis.data))
+        let timeFormat = d3.timeFormat("%Y-%m-%d");
+        dataArray.forEach(d => {
+            vis.displayData.push({
+                date: timeFormat(d.starttime),
+                num_rides: d.length
+            })
+        });
+
+        console.log("displayData", vis.displayData);
+
 
     }
 

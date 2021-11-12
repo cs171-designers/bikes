@@ -40,7 +40,7 @@ class DataHandler {
         return Promise.all(this.files.map(f => d3.csv(f, d3.autoType)))
             .then(function ([stations, old_stations, ...data]) {
                 //console.log(data.length)
-                console.log("done", stations, old_stations, data)
+                //console.log("done", stations, old_stations, data)
 
                 // process stations data
                 dataHandler._stations = [...stations, ...old_stations].map(item => {
@@ -94,7 +94,9 @@ class DataHandler {
                 groupedDate[date] = [d];
             }
         })
-        console.log(groupedDate)
+        //console.log(groupedDate);
+        return groupedDate;
+
     }
 
 
