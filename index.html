@@ -20,11 +20,6 @@
 <body>
 	<div class="container-fluid">
 
-
-
-
-		<!-- Erica's Dashboard view -->
-
 		<div class="row">
 			<div class="col">
 				<h1>Blue Bike Visualization</h1>
@@ -32,44 +27,59 @@
 			</div>
 		</div>
 
+		<!-- Follow a bike -->
+
+		<!-- Map -->
+
+		<!-- Pie chart, membership -->
+		<div class="row">
+			<div class="col-md-6">
+				<div id="pie-chart"></div>
+			</div>
+		</div>
+		<!-- Animated "race"? -->
+
+		<!-- Circle size changing over time -->
+
+		<!-- Dashboard view -- 1 row, 2 columns-->
+		<h2> Explore Breakdown by User Demographics </h2>
+		<div id="formContainer">
+			<!-- Select box to choose the ranking type -->
+			<form class="form-inline">
+				<div class="form-group">
+					<label for="categorySelector">Chart data:</label>
+					<select id='categorySelector' class="custom-select align-self-center" style="width: 60%" onchange="categoryChange()">
+						<option value="num_rides">Number of Rides</option>
+						<option value="avg_trip_dur">Average Trip Duration (in min)</option>
+					</select>
+				</div>
+			</form>
+		</div>
 		<div class="row">
 			<div class="col-md-6">
 				<!-- main line chart -->
 				<div class="row justify-content-center leftContainer">
+					<div id="time"></div>
 					<div class="align-self-center" id="main-line-chart"> </div>
 				</div>
-
+			</div>
 				<!-- linked views on right side -->
-				<div class="col-md-6">
-					<div class="row justify-content-center linkedContainer">
-						<div class="align-self-center" id="member-line-chart"></div>
-					</div>
-
-					<div class="row justify-content-center linkedContainer ">
-						<div class="align-self-center border-top" id="age-line-chart"></div>
-					</div>
-
-					<div class="row justify-content-center linkedContainer">
-						<div class="align-self-center border-top" id="gender-line-chart"></div>
-					</div>
-
-					<div class="row justify-content-center linkedContainer">
-						<div class="align-self-center border-top" id="hour-bar-chart"></div>
-					</div>
+			<div class="col-md-6">
+				<div class="row justify-content-center linkedContainer">
+					<div class="align-self-center" id="member-line-chart"></div>
 				</div>
 
-			</div>
-		</div>
+				<div class="row justify-content-center linkedContainer">
+					<div class="align-self-center border-top" id="gender-line-chart"></div>
+				</div>
 
-		<div class="row">
-			<div class="col-md-4">
-				<div id="gender-age-pie-chart"></div>
-			</div>
-			<div class="col-md-4">
-				<div id="user-age-pie-chart"></div>
-			</div>
-			<div class="col-md-4">
-				<div id="age-user-pie-chart"></div>
+				<div class="row justify-content-center linkedContainer ">
+					<div class="align-self-center border-top" id="age-line-chart"></div>
+				</div>
+
+				<div class="row justify-content-center linkedContainer">
+					<div class="align-self-center border-top" id="hour-bar-chart"></div>
+				</div>
 			</div>
 		</div>
 

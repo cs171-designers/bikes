@@ -9,11 +9,11 @@ class DataHandler {
         // // modified to get rid of extra header row
         "2018/201801_hubway_tripdata.csv",
         "2018/201802_hubway_tripdata.csv",
-        // "2018/201803_hubway_tripdata.csv",
+        "2018/201803_hubway_tripdata.csv",
         // "2018/201804-hubway-tripdata.csv",
-        "2018/201805-bluebikes-tripdata.csv",
-        "2018/201806-bluebikes-tripdata.csv",
-        "2018/201807-bluebikes-tripdata.csv",
+        // "2018/201805-bluebikes-tripdata.csv",
+        // "2018/201806-bluebikes-tripdata.csv",
+        // "2018/201807-bluebikes-tripdata.csv",
         // "2018/201808-bluebikes-tripdata.csv",
         // "2018/201809-bluebikes-tripdata.csv",
         // "2018/201810-bluebikes-tripdata.csv",
@@ -85,19 +85,21 @@ class DataHandler {
                 // convert times to date objects
                 let dateParser = d3.timeParse("%Y-%m-%d %H:%M:%S");
 
-                let dateParser2 = d3.timeParse("%Y-%m-%d %H:%M:%S"); // later csv have starttime with seconds with decimals. eg 42 sec vs. 42.48 seconds.
-
                 dataHandler._rides.forEach(d => {
                     if (d.starttime) {
                         // add age attribute to data
                         d.age = Number(d.starttime.slice(0, 4)) - d["birth year"];
-                        d.starttime = dateParser(d.starttime);
+                        if(d.starttime.length > 20){
+                            d.starttime = dateParser(d.starttime.slice(0,19)); //slice off the milliseconds... ?
+                        }
+                        else{
+                            d.starttime = dateParser(d.starttime);
+                        }
+
                     }
                     if (d.stoptime) {
                         d.stoptime = dateParser(d.stoptime);
                     }
-                    let getYear = d3.timeParse("%Y");
-                    // d.age = getYear(d.starttime) //- d["birth year"];
                 });
 
                 console.log("rides", dataHandler._rides);
