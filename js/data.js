@@ -137,42 +137,76 @@ class DataHandler {
         return groupedDate;
     }
 
+    count_filters = {
+        user: {
+            "All": filtered_array => filtered_array,
+            "Subscriber": filtered_array => filtered_array.filter(ride => ride.usertype === "Subscriber"),
+            "Customer": filtered_array => filtered_array.filter(ride => ride.usertype === "Customer"),
+            "Unspecified": filtered_array => filtered_array.filter(ride => ride.usertype === "Subscriber" && ride.usertype !== "Customer"),
+        },
+        age: {
+            "All": filtered_array => filtered_array,
+            "Youth (<18)": filtered_array => filtered_array.filter(ride => ride.age < 18),
+            "Young Adult (18-25)": filtered_array => filtered_array.filter(ride => ride.age >= 18 && ride.age < 25),
+            "Adult (25+)": filtered_array => filtered_array.filter(ride => ride.age >= 25),
+            "Missing": filtered_array => filtered_array.filter(ride => ride.age != 0 && !ride.age),
+        },
+        gen: {
+            "All": filtered_array => filtered_array,
+            "Male": filtered_array => filtered_array.filter(ride => ride.gender === 1),
+            "Female": filtered_array => filtered_array.filter(ride => ride.gender === 2),
+            "Unspecified": filtered_array => filtered_array.filter(ride => ride.gender !== 2 && ride.gender !== 1),
+        },
+    }
     getRideCounts() {
-        const filters = {
-            user: {
-                user_all: filtered_array => filtered_array,
-                user_subscriber: filtered_array => filtered_array.filter(ride => ride.usertype === "Subscriber"),
-                user_customer: filtered_array => filtered_array.filter(ride => ride.usertype === "Customer"),
-                user_unspecified: filtered_array => filtered_array.filter(ride => ride.usertype === "Subscriber" && ride.usertype !== "Customer"),
-            },
-            age: {
-                age_all: filtered_array => filtered_array,
-                age_youth: filtered_array => filtered_array.filter(ride => ride.age < 18),
-                age_young_adult: filtered_array => filtered_array.filter(ride => ride.age >= 18 && ride.age < 25),
-                age_adult: filtered_array => filtered_array.filter(ride => ride.age >= 25),
-                age_missing: filtered_array => filtered_array.filter(ride => ride.age != 0 && !ride.age),
-            },
-            gen: {
-                gen_all: filtered_array => filtered_array,
-                gen_male: filtered_array => filtered_array.filter(ride => ride.gender === 1),
-                gen_female: filtered_array => filtered_array.filter(ride => ride.gender === 2),
-                gen_unspecified: filtered_array => filtered_array.filter(ride => ride.gender !== 2 && ride.gender !== 1),
-            },
-        }
         let counts = {};
         let data = this._rides;
-        Object.entries(filters.user).forEach(([u_key, u_val]) => {
+        Object.entries(count_filters.user).forEach(([u_key, u_val]) => {
             let users = u_val(data);
-            Object.entries(filters.age).forEach(([a_key, a_val]) => {
+            Object.entries(count_filters.age).forEach(([a_key, a_val]) => {
                 let age = a_val(users);
-                Object.entries(filters.gen).forEach(([s_key, s_val]) => {
+                Object.entries(count_filters.gen).forEach(([s_key, s_val]) => {
                     let sex = s_val(age);
-                    counts[`${u_key}_${a_key}_${s_key}`] = sex.length;
+                    counts[`user_${u_key}_age_${a_key}_gen_${s_key}`] = sex.length;
                 })
             })
         });
         console.log("counts", counts)
         return counts;
+    }
+    getMultiLevelCounts() {
+        return {
+            "gender-age": Object.entries(this.count_filters.gen).filter(([key]) => key !== "All").map(([g_key, g_val]) => {
+                return {
+                    label: g_key,
+                    value: g_val(this._rides).length,
+                    components: Object.entries(this.count_filters.age).filter(([key]) => key !== "All").map(([key, filter]) => ({
+                        label: g_key + ": " + key,
+                        value: filter(g_val(this._rides)).length
+                    }))
+                }
+            }),
+            "user-age": Object.entries(this.count_filters.user).filter(([key]) => key !== "All").map(([g_key, g_val]) => {
+                return {
+                    label: g_key,
+                    value: g_val(this._rides).length,
+                    components: Object.entries(this.count_filters.age).filter(([key]) => key !== "All").map(([key, filter]) => ({
+                        label: g_key + ": " + key,
+                        value: filter(g_val(this._rides)).length
+                    }))
+                }
+            }),
+            "age-user": Object.entries(this.count_filters.age).filter(([key]) => key !== "All").map(([g_key, g_val]) => {
+                return {
+                    label: g_key,
+                    value: g_val(this._rides).length,
+                    components: Object.entries(this.count_filters.user).filter(([key]) => key !== "All").map(([key, filter]) => ({
+                        label: g_key + ": " + key,
+                        value: filter(g_val(this._rides)).length
+                    }))
+                }
+            }),
+        }
     }
     queryCounts(counts, user, age, sex) {
         return counts[`${user}_${age}_${sex}`]
