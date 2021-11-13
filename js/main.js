@@ -10,10 +10,16 @@ function init() {
         console.log(lineData);
 
         let generalLine = new LineChart("main-line-chart", lineData);
-        
-        
-        let pieChart = new PieChart("pie-chart", dataHandler);
 
+        let counts = dataHandler.getMultiLevelCounts();
+        const pie_charts = {
+            "gender-age": "Gender Pie Chart (Hover for Age)",
+            "user-age": "User Pie Chart (Hover for Age)",
+            "age-user": "Age Pie Chart (Hover for User)",
+        };
+        Object.entries(pie_charts).forEach(([chart, title]) => {
+            let pieChart = new PieChart(chart + "-pie-chart", title, counts[chart]);
+        })
     });
 
 }

@@ -6,10 +6,13 @@
 class PieChart {
 
     // constructor method to initialize Timeline object
-    constructor(parentElement, dataHandler) {
+    constructor(parentElement, title, data) {
         this.parentElement = parentElement;
-        this.circleColors = ['#b2182b', '#d6604d', '#f4a582', '#fddbc7'];
-        this.dataHandler = dataHandler;
+        this.circleColors = d3.schemeSet3;
+        this.secondaryColors = d3.schemeSet1;
+        console.log("coloirs", this.circleColors, this.secondaryColors)
+        this.title = title;
+        this.data = data;
 
         // call initVis method
         this.initVis()
@@ -19,7 +22,7 @@ class PieChart {
         let vis = this;
 
         // margin conventions
-        vis.margin = {top: 10, right: 50, bottom: 10, left: 50};
+        vis.margin = { top: 10, right: 50, bottom: 10, left: 50 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.top - vis.margin.bottom;
 
@@ -34,7 +37,7 @@ class PieChart {
         vis.svg.append('g')
             .attr('class', 'title pie-title')
             .append('text')
-            .text('Title for Pie Chart')
+            .text(vis.title)
             .attr('transform', `translate(${vis.width / 2}, 20)`)
             .attr('text-anchor', 'middle');
 
@@ -45,7 +48,7 @@ class PieChart {
             .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")");
 
         // Define a default pie layout
-        vis.pie = d3.pie().value(d => d.value);
+        vis.pie = d3.pie().value(d => d.value).sort(null);;
 
         // Ordinal color scale (10 default colors)
         // vis.color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -72,18 +75,33 @@ class PieChart {
     wrangleData() {
         let vis = this
 
-        vis.counts = vis.dataHandler.getRideCounts();
-
-        vis.displayData = []
-
-        // generate random data
-        for (let i = 0; i < 4; i++) {
-            let random = Math.floor(Math.random() * 100)
-            vis.displayData.push({
-                value: random,
-                color: vis.circleColors[i]
+        vis.displayData = vis.data.map((item, i) => {
+            item.color = vis.circleColors[i % vis.circleColors.length];
+            item.components = item.components.map((item, i) => {
+                item.color = vis.secondaryColors[i % vis.circleColors.length]
+                return item;
             })
-        }
+            return item;
+        });
+        vis.displayData = [];
+        vis.data.forEach((parent, parent_i) => {
+            parent.components.forEach((item, i) => {
+                item.parent = parent;
+                item.color = vis.circleColors[parent_i % vis.circleColors.length];
+                item.secondaryColor = vis.secondaryColors[i % vis.secondaryColors.length];
+                this.displayData.push(item);
+            })
+        });
+        console.log("data", this.data, this.displayData)
+
+        // // generate random data
+        // for (let i = 0; i < 4; i++) {
+        //     let random = Math.floor(Math.random() * 100)
+        //     vis.displayData.push({
+        //         value: random,
+        //         color: vis.circleColors[i]
+        //     })
+        // }
 
         vis.updateVis()
 
@@ -95,7 +113,7 @@ class PieChart {
 
         // Bind data
         let arcs = vis.pieChartGroup.selectAll(".arc")
-            .data(vis.pie(vis.displayData))
+            .data(vis.pie(vis.displayData).sort(() => 0))
 
         // Append paths
         arcs.enter()
@@ -103,11 +121,21 @@ class PieChart {
             .merge(arcs)
             .attr("class", "arc") // important
             .attr("d", vis.arc)
-            .style("fill", function(d, index) {
+            .attr("data-parent", d => d.data.parent.label.replaceAll(" ", "_"))
+            .style("fill", function (d, index) {
                 // console.log("item", d)
                 return d.data.color;
             })
-            .on('mouseover', function(event, d){
+            .on('mouseover', function (event, d) {
+                console.log("mouseover", d);
+                console.log("mouseover", d.data, d.data.parent);
+                vis.svg.selectAll("path.arc")
+                    .style("opacity", 0.2)
+                vis.svg.selectAll(`path[data-parent=${d.data.parent.label.replaceAll(" ", "_")}]`)
+                    .style("fill", function (d, index) {
+                        // console.log("item", d)
+                        return d.data.secondaryColor;
+                    }).style("opacity", 1)
                 d3.select(this)
                     .attr('stroke-width', '2px')
                     .attr('stroke', 'black')
@@ -119,17 +147,19 @@ class PieChart {
                     .style("top", event.pageY + "px")
                     .html(`
                          <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
-                             <h3>Arc with index #${d.index}<h3>
-                             <h4> value: ${d.value}</h4>      
-                             <h4> startAngle: ${d.startAngle}</h4> 
-                             <h4> endAngle: ${d.endAngle}</h4>   
-                             <h4> data: ${JSON.stringify(d.data)}</h4>                         
+                             <h3>${d.data.label}<h3>
+                             <h4>${d.data.value} Rides</h4>      
                          </div>`);
             })
-            .on('mouseout', function(event, d){
+            .on('mouseout', function (event, d) {
                 d3.select(this)
                     .attr('stroke-width', '0px')
                     .attr("fill", d => d.data.color)
+                vis.svg.selectAll("path.arc")
+                    .style("fill", function (d, index) {
+                        // console.log("item", d)
+                        return d.data.color;
+                    }).style("opacity", 1)
 
                 vis.tooltip
                     .style("opacity", 0)
