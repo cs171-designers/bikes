@@ -67,10 +67,9 @@ class LineChart {
             .attr("transform", "rotate(-90)")
             .attr("x", -vis.height/2)
             .attr("y", -vis.margin.left + 10)
-            .style("text-anchor", "middle")
-            .text("# rides"); //FOR NOW!
+            .style("text-anchor", "middle");
 
-        // ONLY Brush and Zoom on the Overview chart
+        // ONLY Brush on the Overview chart
         if(vis.variable === "overview"){
             // Append a path for the line function, so that it is later behind the brush overlay
             vis.linePath = vis.svg.append("path")
@@ -87,36 +86,52 @@ class LineChart {
 
                     // Trigger the event 'selectionChanged' of our event handler
                     vis.eventHandler.trigger("selectionChanged", vis.currentBrushRegion);
+
+                    // trigger event to update date labels
+                    vis.eventHandler.trigger("updateLabels", vis.currentBrushRegion);
                 });
 
             vis.brushGroup = vis.svg.append("g")
                 .attr("class", "brush");
 
-            // Add zoom component
-            vis.xOrig = vis.x; // save original scale
+            // Add SVG ABOVE main brush-able chart to show time period dates labels
+            vis.timeSvg = d3.select("#time").append("svg")
+                .attr("width", vis.width + vis.margin.left + vis.margin.right)
+                .attr("height", 20)
+                .append("g")
+                .attr("transform", "translate(" + vis.margin.left + ",0)");
 
-            // function that is being called when user zooms
-            vis.zoomFunction = function(event) {
-                vis.x = event.transform.rescaleX(vis.xOrig); // apply zoom to x-axis scale
+            vis.timeSvg.append("rect")
+                .attr("id", "time-period-min-box")
+                .attr("x", -55)
+                .attr("y", 0)
+                .attr("width", 80)
+                .attr("height", 20);
 
-                if(vis.currentBrushRegion){
-                    vis.brushGroup.call(vis.brush.move, vis.currentBrushRegion.map(vis.x));
-                }
+            vis.timeSvg.append("text")
+                .attr("id", "time-period-min")
+                .text("2018-01-01")
+                .attr("x", -50)
+                .attr("y", 15);
 
-                vis.updateVis();
+            vis.timeSvg.append("text")
+                .attr("id", "time-dash")
+                .text("-")
+                .attr("x", 30)
+                .attr("y", 15);
 
-            };
+            vis.timeSvg.append("rect")
+                .attr("id", "time-period-max-box")
+                .attr("x", 45)
+                .attr("y", 0)
+                .attr("width", 80)
+                .attr("height", 20);
 
-            // initialize zoom component
-            vis.zoom = d3.zoom()
-                .scaleExtent([1,20])
-                .on("zoom", vis.zoomFunction);
-
-            // disable mousedown and drag in zoom, when you activate zoom (by .call)
-            vis.brushGroup.call(vis.zoom)
-                .on("mousedown.zoom", null)
-                .on("touchstart.zoom", null);
-
+            vis.timeSvg.append("text")
+                .attr("id", "time-period-max")
+                .text("2019-12-31")
+                .attr("x", 50)
+                .attr("y", 15);
         }
 
         if (vis.variable != "overview"){
@@ -293,23 +308,99 @@ class LineChart {
         vis.displayData = Object.entries(vis.filteredData).map(d => {
             return {
                 date: dateParser(d[0]),
+                // num_rides: d[1].length,
+                // num_rides_user_subscriber: d[1].filter(ride => ride.usertype === "Subscriber").length,
+                // num_rides_user_customer: d[1].filter(ride => ride.usertype === "Customer").length,
+                //
+                // num_rides_gen_unknown: d[1].filter(ride => ride.gender === 0).length,
+                // num_rides_gen_male: d[1].filter(ride => ride.gender === 1).length,
+                // num_rides_gen_female: d[1].filter(ride => ride.gender === 2).length,
+                //
+                // num_rides_age_youth: d[1].filter(ride => ride.age < 18).length,
+                // num_rides_age_young_adult: d[1].filter(ride => ride.age >= 18 && ride.age < 25).length,
+                // num_rides_age_adult: d[1].filter(ride => ride.age >= 25).length,
+                // num_rides_age_missing: d[1].filter(ride => ride.age != 0 && !ride.age).length, // missing because birth year unknown for non-subscribers
+
                 num_rides: d[1].length,
-                num_rides_user_subscriber: d[1].filter(ride => ride.usertype === "Subscriber").length,
-                num_rides_user_customer: d[1].filter(ride => ride.usertype === "Customer").length,
+                num_rides_user_subscriber: user(d[1])[0][0],
+                num_rides_user_customer: user(d[1])[1][0],
 
-                num_rides_gen_unknown: d[1].filter(ride => ride.gender === 0).length,
-                num_rides_gen_male: d[1].filter(ride => ride.gender === 1).length,
-                num_rides_gen_female: d[1].filter(ride => ride.gender === 2).length,
+                num_rides_gen_unknown: gender(d[1])[0][0],
+                num_rides_gen_male: gender(d[1])[1][0],
+                num_rides_gen_female: gender(d[1])[2][0],
 
-                num_rides_age_youth: d[1].filter(ride => ride.age < 18).length,
-                num_rides_age_young_adult: d[1].filter(ride => ride.age >= 18 && ride.age < 25).length,
-                num_rides_age_adult: d[1].filter(ride => ride.age >= 25).length,
-                num_rides_age_missing: d[1].filter(ride => ride.age != 0 && !ride.age).length // missing because birth year unknown for non-subscribers
+                // num_rides_age_youth: ,
+                // num_rides_age_young_adult: ,
+                // num_rides_age_adult: ,
+                // num_rides_age_missing: , // missing because birth year unknown for non-subscribers
 
-                // group by starttime would be d[0] get only the time part, not the date...
-                // clarify that age visual is only for subscribers
+                avg_trip_dur: average_trip(d[1]),
+                avg_trip_dur_user_subscriber: user(d[1])[0][1],
+                avg_trip_dur_user_customer: user(d[1])[1][1],
+
+                avg_trip_dur_gen_unknown: gender(d[1])[0][1],
+                avg_trip_dur_gen_male: gender(d[1])[1][1],
+                avg_trip_dur_gen_female: gender(d[1])[2][1]
+
+                // avg_trip_dur_age_youth: ,
+                // avg_trip_dur_age_young_adult: ,
+                // avg_trip_dur_age_adult: ,
+                // avg_trip_dur_age_missing:
             }
-        });
+        })
+            function average_trip(d){
+                let total_dur = 0;
+                d.forEach(ride => total_dur += ride.tripduration);
+                return total_dur/d.length/60;  // divide by 60 to get average trip duration in MINUTES
+            }
+            function user(d) {
+                let data = ["Subscriber", "Customer"]
+                let subscriber = [];
+                let customer = [];
+
+                for (let i = 0; i < data.length; i++) {
+                    let trips = d.filter(ride => ride.usertype === data[i]);
+                    let rides = trips.length;
+                    let total_dur = 0;
+                    trips.forEach(ride => total_dur += ride.tripduration);
+                    let avg_trip_dur = total_dur/rides/60;
+                    if (i == 0) {
+                        subscriber.push(rides);
+                        subscriber.push(avg_trip_dur);
+                    } else {
+                        customer.push(rides);
+                        customer.push(avg_trip_dur);
+                    }
+                }
+                return [subscriber, customer]
+            }
+            function gender(d) {
+                let data = [0, 1, 2]
+                let gen_unknown = [];
+                let gen_m = [];
+                let gen_f = [];
+
+                for (let i = 0; i < data.length; i++) {
+                    let trips = d.filter(ride => ride.gender === data[i]);
+                    let rides = trips.length;
+                    let total_dur = 0;
+                    trips.forEach(ride => total_dur += ride.tripduration);
+                    let avg_trip_dur = total_dur/rides/60;
+                    if (i === 0) {
+                        gen_unknown.push(rides);
+                        gen_unknown.push(avg_trip_dur);
+                    } else if(i === 1) {
+                        gen_m.push(rides);
+                        gen_m.push(avg_trip_dur);
+                    }
+                    else{
+                        gen_f.push(rides);
+                        gen_f.push(avg_trip_dur);
+                    }
+                }
+                return [gen_unknown, gen_m, gen_f];
+            }
+
 
         // ensure sorted by day
         vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
@@ -328,9 +419,18 @@ class LineChart {
         }));
 
         vis.y.domain([0, d3.max(vis.displayData, function (d) {
-            return d.num_rides;
+            return d[selectedCategory];
         })]);
 
+        // update y axis label
+        if(selectedCategory === "num_rides"){
+            vis.yLabel.text("# rides");
+        }
+        else{
+            vis.yLabel.text("average trip duration (min)");
+        }
+
+        // draw data lines
         if (vis.variable === "overview"){
             // call brush component
             vis.brushGroup
@@ -340,15 +440,14 @@ class LineChart {
             // D3 path generator
             vis.dataLine = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides));
+                .y(d => vis.y(d[selectedCategory]));
 
             // Call the line path function and update the path
-            vis.linePath.datum(vis.displayData)
+            vis.linePath
+                .datum(vis.displayData)
                 .attr("d", vis.dataLine)
                 .attr("clip-path", "url(#clip)");
 
-            // make sure x-axis updates with zoom
-            vis.xAxis.scale(vis.x);
         }
 
         if (vis.variable === "member"){
@@ -358,7 +457,7 @@ class LineChart {
             // draw data lines
             vis.dataLine_sub = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides_user_subscriber));
+                .y(d => vis.y(d[selectedCategory + "_user_subscriber"]));
 
             vis.linePath_sub
                 .transition().duration(200).style("opacity",0)
@@ -368,7 +467,7 @@ class LineChart {
 
             vis.dataLine_cus = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides_user_customer));
+                .y(d => vis.y(d[selectedCategory + "_user_customer"]));
 
             vis.linePath_cus
                 .transition().duration(200).style("opacity",0)
@@ -385,7 +484,7 @@ class LineChart {
             // draw data lines
             vis.dataLine_un = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides_gen_unknown));
+                .y(d => vis.y(d[selectedCategory + "_gen_unknown"]));
 
             vis.linePath_un
                 .transition().duration(200).style("opacity",0)
@@ -395,7 +494,7 @@ class LineChart {
 
             vis.dataLine_f = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides_gen_female));
+                .y(d => vis.y(d[selectedCategory + "_gen_female"]));
 
             vis.linePath_f
                 .transition().duration(200).style("opacity",0)
@@ -405,7 +504,7 @@ class LineChart {
 
             vis.dataLine_m = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides_gen_male));
+                .y(d => vis.y(d[selectedCategory + "_gen_male"]));
 
             vis.linePath_m
                 .transition().duration(200).style("opacity",0)
@@ -420,7 +519,7 @@ class LineChart {
 
             vis.dataLine_youth = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides_age_youth));
+                .y(d => vis.y(d[selectedCategory + "_age_youth"]));
 
             vis.linePath_youth
                 .transition().duration(200).style("opacity",0)
@@ -430,7 +529,7 @@ class LineChart {
 
             vis.dataLine_ya = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides_age_young_adult));
+                .y(d => vis.y(d[selectedCategory + "_age_young_adult"]));
 
             vis.linePath_ya
                 .transition().duration(200).style("opacity",0)
@@ -440,7 +539,7 @@ class LineChart {
 
             vis.dataLine_adult = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides_age_adult));
+                .y(d => vis.y(d[selectedCategory + "_age_adult"]));
 
             vis.linePath_adult
                 .transition().duration(200).style("opacity",0)
@@ -450,7 +549,7 @@ class LineChart {
 
             vis.dataLine_unknown = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d.num_rides_age_missing));
+                .y(d => vis.y(d[selectedCategory + "_age_missing"]));
 
             vis.linePath_unknown
                 .transition().duration(200).style("opacity",0)
@@ -460,10 +559,8 @@ class LineChart {
         }
 
         // Update axes
-        vis.svg.select(".y-axis").call(vis.yAxis);
-        vis.svg.select(".x-axis").call(vis.xAxis);
-
-        //console.log(Date("2018-01-01 05:22:01").getTime() >= Date("2018-01-10 05:22:01").getTime())
+        vis.svg.select(".y-axis").transition().duration(800).call(vis.yAxis);
+        vis.svg.select(".x-axis").transition().duration(800).call(vis.xAxis);
 
     }
 
@@ -473,20 +570,20 @@ class LineChart {
         let dateParser = d3.timeParse("%Y-%m-%d");
         let timeFormat = d3.timeFormat("%Y-%m-%d");
 
-    vis.filteredData = {};
+        vis.filteredData = {};
         Object.entries(vis.data).forEach(d => {
-            // console.log(timeFormat(dateParser(d[0])));
-            // console.log(timeFormat(selectionStart));
-            //  console.log(timeFormat(dateParser(d[0])) >= timeFormat(selectionStart));
-
-           let date = timeFormat(dateParser(d[0]));
+            let date = timeFormat(dateParser(d[0]));
             if (date >= timeFormat(selectionStart) && date <= timeFormat(selectionEnd)) {
-
-               vis.filteredData[date] = d[1];
+                vis.filteredData[date] = d[1];
             }
-        })
-        console.log(vis.filteredData)
+        });
+        //console.log(vis.filteredData)
         vis.wrangleData();
+    }
 
+    onUpdateLabels(selectionStart, selectionEnd){
+        let timeFormat = d3.timeFormat("%Y-%m-%d");
+        d3.select("#time-period-min").text(timeFormat(selectionStart));
+        d3.select("#time-period-max").text(timeFormat(selectionEnd));
     }
 }

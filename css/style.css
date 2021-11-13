@@ -17,13 +17,6 @@
     height: 100%;
     width: 100%;
 }
-.success {
-    color: green;
-}
-.error {
-    color: red
-}
-
 .axis path,
 .axis line {
     fill: none;
@@ -39,3 +32,18 @@
 .legend text{
     font-size: 10px;
 }
+#time-period-min, #time-period-max{
+    font-family: 'Neuton', serif;
+}
+
+#time-period-min-box, #time-period-max-box{
+    fill: lightgrey;
+}
+
+.success {
+    color: green;
+}
+.error {
+    color: red
+}
+

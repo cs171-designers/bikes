@@ -1,3 +1,6 @@
+let selectedCategory; // global variable holding form selection - num_Rides or avg_trip_dur
+let generalLine, memberLine, genderLine, ageLine; // visuals for dashboard -- defined globally so that categoryChange function can be called
+
 function init() {
     console.log("instantiating Data");
     let dataHandler = new DataHandler("load-status");
@@ -6,10 +9,13 @@ function init() {
     // Dashboard view
     // load data
     dataHandler.load().then(() => {
+
+        // pieChart
+        let pieChart = new PieChart("pie-chart", dataHandler);
+
+        // Dashboard View
         let lineData = dataHandler.groupDate();
         console.log(lineData);
-
-       // let pieChart = new PieChart("pie-chart", dataHandler);
 
         // Create event handler
         let eventHandler = {
@@ -23,10 +29,12 @@ function init() {
             }
         };
 
-        let generalLine = new LineChart("main-line-chart", lineData, "overview", eventHandler);
-        let memberLine = new LineChart("member-line-chart", lineData, "member");
-        let genderLine = new LineChart("gender-line-chart", lineData, "gender");
-        let ageLine = new LineChart("age-line-chart", lineData, "age");
+        selectedCategory = document.getElementById('categorySelector').value; // default selection value
+
+        generalLine = new LineChart("main-line-chart", lineData, "overview", eventHandler);
+        memberLine = new LineChart("member-line-chart", lineData, "member");
+        genderLine = new LineChart("gender-line-chart", lineData, "gender");
+        ageLine = new LineChart("age-line-chart", lineData, "age");
 
         // Bind event handler
         eventHandler.bind("selectionChanged", function(event){
@@ -37,8 +45,23 @@ function init() {
             genderLine.onSelectionChange(rangeStart, rangeEnd);
             ageLine.onSelectionChange(rangeStart, rangeEnd);
         });
+        // Bind event handler
+        eventHandler.bind("updateLabels", function(event){
+            let rangeStart = event.detail[0];
+            let rangeEnd = event.detail[1];
+            generalLine.onUpdateLabels(rangeStart, rangeEnd);
+        });
+
 
     });
 
+}
+// switch between num_rides and avg_trip_dur
+function categoryChange() {
+    selectedCategory = document.getElementById('categorySelector').value;
+    generalLine.updateVis();
+    memberLine.updateVis();
+    genderLine.updateVis();
+    ageLine.updateVis();
 }
 init();
