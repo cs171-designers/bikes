@@ -329,10 +329,10 @@ class LineChart {
                 num_rides_gen_male: gender(d[1])[1][0],
                 num_rides_gen_female: gender(d[1])[2][0],
 
-                // num_rides_age_youth: ,
-                // num_rides_age_young_adult: ,
-                // num_rides_age_adult: ,
-                // num_rides_age_missing: , // missing because birth year unknown for non-subscribers
+                num_rides_age_youth: age(d[1])[0][0],
+                num_rides_age_young_adult: age(d[1])[1][0],
+                num_rides_age_adult: age(d[1])[2][0],
+                num_rides_age_missing: age(d[1])[3][0], // missing because birth year unknown for non-subscribers
 
                 avg_trip_dur: average_trip(d[1]),
                 avg_trip_dur_user_subscriber: user(d[1])[0][1],
@@ -340,12 +340,12 @@ class LineChart {
 
                 avg_trip_dur_gen_unknown: gender(d[1])[0][1],
                 avg_trip_dur_gen_male: gender(d[1])[1][1],
-                avg_trip_dur_gen_female: gender(d[1])[2][1]
+                avg_trip_dur_gen_female: gender(d[1])[2][1],
 
-                // avg_trip_dur_age_youth: ,
-                // avg_trip_dur_age_young_adult: ,
-                // avg_trip_dur_age_adult: ,
-                // avg_trip_dur_age_missing:
+                avg_trip_dur_age_youth: age(d[1])[0][1],
+                avg_trip_dur_age_young_adult: age(d[1])[1][1],
+                avg_trip_dur_age_adult: age(d[1])[2][1],
+                avg_trip_dur_age_missing: age(d[1])[3][1]
             }
         })
             function average_trip(d){
@@ -359,11 +359,20 @@ class LineChart {
                 let customer = [];
 
                 for (let i = 0; i < data.length; i++) {
+                    //subset data
                     let trips = d.filter(ride => ride.usertype === data[i]);
+                    // num_rides
                     let rides = trips.length;
+                    // calculate avg_trip_duration
                     let total_dur = 0;
                     trips.forEach(ride => total_dur += ride.tripduration);
-                    let avg_trip_dur = total_dur/rides/60;
+
+                    let avg_trip_dur = 0;
+                    if(rides != 0){
+                        avg_trip_dur = total_dur/rides/60;
+                    }
+
+                    // return values
                     if (i == 0) {
                         subscriber.push(rides);
                         subscriber.push(avg_trip_dur);
@@ -385,7 +394,11 @@ class LineChart {
                     let rides = trips.length;
                     let total_dur = 0;
                     trips.forEach(ride => total_dur += ride.tripduration);
-                    let avg_trip_dur = total_dur/rides/60;
+
+                    let avg_trip_dur = 0;
+                    if(rides != 0){
+                        avg_trip_dur = total_dur/rides/60;
+                    }
                     if (i === 0) {
                         gen_unknown.push(rides);
                         gen_unknown.push(avg_trip_dur);
@@ -400,7 +413,47 @@ class LineChart {
                 }
                 return [gen_unknown, gen_m, gen_f];
             }
+            function age(d) {
+                let age_youth = [];
+                let age_ya = [];
+                let age_adult = [];
+                let age_unknown = [];
 
+                let filtered_trips = [];
+                let youth_trips = d.filter(ride => ride.age < 18);
+                let ya_trips = d.filter(ride => ride.age >= 18 && ride.age < 25);
+                let adult_trips = d.filter(ride => ride.age >= 25);
+                let unknown_trips = d.filter(ride => ride.age != 0 && !ride.age);
+
+                filtered_trips.push(youth_trips, ya_trips, adult_trips, unknown_trips);
+
+                for (let i = 0; i < filtered_trips.length; i++) {
+                    let trips = filtered_trips[i];
+                    let rides = trips.length;
+                    let total_dur = 0;
+                    trips.forEach(ride => total_dur += ride.tripduration);
+                    let avg_trip_dur = 0;
+                    if(rides != 0){
+                        avg_trip_dur = total_dur/rides/60;
+                    }
+                    if (i === 0) {
+                        age_youth.push(rides);
+                        age_youth.push(avg_trip_dur);
+                    } else if(i === 1) {
+                        age_ya.push(rides);
+                        age_ya.push(avg_trip_dur);
+                    }
+                    else if (i === 2){
+                        age_adult.push(rides);
+                        age_adult.push(avg_trip_dur);
+                    }
+                    else {
+                        age_unknown.push(rides);
+                        age_unknown.push(avg_trip_dur);
+                    }
+                }
+                return [age_youth, age_ya, age_adult, age_unknown];
+            }
 
         // ensure sorted by day
         vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
@@ -413,14 +466,10 @@ class LineChart {
     updateVis() {
         let vis = this;
 
-        // Update domain
+        // Update domain - x axis same for all charts
         vis.x.domain(d3.extent(vis.displayData, function (d) {
             return d.date;
         }));
-
-        vis.y.domain([0, d3.max(vis.displayData, function (d) {
-            return d[selectedCategory];
-        })]);
 
         // update y axis label
         if(selectedCategory === "num_rides"){
@@ -431,7 +480,13 @@ class LineChart {
         }
 
         // draw data lines
+
         if (vis.variable === "overview"){
+            // update y axis
+            vis.y.domain([0, d3.max(vis.displayData, function (d) {
+                return d[selectedCategory];
+            })]);
+
             // call brush component
             vis.brushGroup
                 .attr("clip-path", "url(#clip)")
@@ -444,8 +499,11 @@ class LineChart {
 
             // Call the line path function and update the path
             vis.linePath
-                .datum(vis.displayData)
-                .attr("d", vis.dataLine)
+                // .datum(vis.displayData)
+                // .attr("d", vis.dataLine)
+                .transition().duration(200).style("opacity",0)
+                .transition().duration(400).attr("d", vis.dataLine(vis.displayData)) //pass in data for line generation
+                .transition().duration(800).style("opacity",1)
                 .attr("clip-path", "url(#clip)");
 
         }
@@ -453,6 +511,12 @@ class LineChart {
         if (vis.variable === "member"){
             // add chart title labels
             vis.svg.select(".lineTitle").text("By User Type")
+
+            // update y axis
+            let sub_displayData = vis.displayData.map(d => d[selectedCategory + "_user_subscriber"]);
+            let cus_displayData = vis.displayData.map(d => d[selectedCategory + "_user_customer"]);
+            let member_displayData = sub_displayData.concat(cus_displayData);
+            vis.y.domain([0, d3.max(member_displayData)]);
 
             // draw data lines
             vis.dataLine_sub = d3.line()
@@ -480,6 +544,13 @@ class LineChart {
         if (vis.variable === "gender"){
             // add chart title labels
             vis.svg.select(".lineTitle").text("By User Gender")
+
+            // update y axis
+            let unknown_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_unknown"]);
+            let male_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_male"]);
+            let female_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_female"]);
+            let gen_displayData = unknown_displayData.concat(male_displayData).concat(female_displayData);
+            vis.y.domain([0, d3.max(gen_displayData)]);
 
             // draw data lines
             vis.dataLine_un = d3.line()
@@ -516,6 +587,14 @@ class LineChart {
         if (vis.variable === "age"){
             // add chart title labels
             vis.svg.select(".lineTitle").text("By User Age")
+
+            // update y axis
+            let youth_displayData = vis.displayData.map(d => d[selectedCategory + "_age_youth"]);
+            let ya_displayData = vis.displayData.map(d => d[selectedCategory + "_age_young_adult"]);
+            let adult_displayData = vis.displayData.map(d => d[selectedCategory + "_age_adult"]);
+            let unknown_displayData = vis.displayData.map(d => d[selectedCategory + "_age_missing"]);
+            let age_displayData = youth_displayData.concat(ya_displayData).concat(adult_displayData).concat(unknown_displayData);
+            vis.y.domain([0, d3.max(age_displayData)]);
 
             vis.dataLine_youth = d3.line()
                 .x(d => vis.x(d.date))
