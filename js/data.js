@@ -85,8 +85,6 @@ class DataHandler {
                 // convert times to date objects
                 let dateParser = d3.timeParse("%Y-%m-%d %H:%M:%S");
 
-                let dateParser2 = d3.timeParse("%Y-%m-%d %H:%M:%S"); // later csv have starttime with seconds with decimals. eg 42 sec vs. 42.48 seconds.
-
                 dataHandler._rides.forEach(d => {
                     if (d.starttime) {
                         // add age attribute to data
