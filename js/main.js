@@ -1,5 +1,5 @@
 let selectedCategory; // global variable holding form selection - num_Rides or avg_trip_dur
-let generalLine, memberLine, genderLine, ageLine; // visuals for dashboard -- defined globally so that categoryChange function can be called
+let generalLine, memberLine, genderLine, ageLine, hourBar; // visuals for dashboard -- defined globally so that categoryChange function can be called
 
 function init() {
     console.log("instantiating Data");
@@ -35,6 +35,7 @@ function init() {
         memberLine = new LineChart("member-line-chart", lineData, "member");
         genderLine = new LineChart("gender-line-chart", lineData, "gender");
         ageLine = new LineChart("age-line-chart", lineData, "age");
+        hourBar = new BarChart("hour-bar-chart", lineData, eventHandler);
 
         // Bind event handler
         eventHandler.bind("selectionChanged", function(event){
@@ -44,6 +45,8 @@ function init() {
             memberLine.onSelectionChange(rangeStart, rangeEnd);
             genderLine.onSelectionChange(rangeStart, rangeEnd);
             ageLine.onSelectionChange(rangeStart, rangeEnd);
+            hourBar.onSelectionChange(rangeStart, rangeEnd);
+
         });
         // Bind event handler
         eventHandler.bind("updateLabels", function(event){
@@ -63,5 +66,6 @@ function categoryChange() {
     memberLine.updateVis();
     genderLine.updateVis();
     ageLine.updateVis();
+    hourBar.updateVis();
 }
 init();

@@ -98,7 +98,12 @@ class DataHandler {
 
                     }
                     if (d.stoptime) {
-                        d.stoptime = dateParser(d.stoptime);
+                        if(d.stoptime.length > 20){
+                            d.stoptime = dateParser(d.stoptime.slice(0,19)); //slice off the milliseconds... ?
+                        }
+                        else{
+                            d.stoptime = dateParser(d.stoptime);
+                        }
                     }
                 });
 
