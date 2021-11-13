@@ -1,17 +1,18 @@
 // create line charts for interactive, linked dashboard view
 
 class LineChart {
-    constructor(parentElement, data) {
+    constructor(parentElement, data, variable) {
         this.parentElement = parentElement;
         this.data = data;
         this.displayData = [];
+        this.variable = variable;
 
         this.initVis();
     }
     initVis() {
         let vis = this;
 
-        vis.margin = {top: 20, right: 10, bottom: 20, left: 40};
+        vis.margin = {top: 20, right: 10, bottom: 20, left: 50};
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
@@ -24,10 +25,6 @@ class LineChart {
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-        // Append a path for the line function, so that it is later behind the brush overlay
-        vis.timePath = vis.svg.append("path")
-            .attr("class", "line");
-
         // Scales and axes
         vis.x = d3.scaleTime()
             .range([0, vis.width]);
@@ -39,8 +36,7 @@ class LineChart {
             .scale(vis.y);
 
         vis.xAxis = d3.axisBottom()
-            .scale(vis.x)
-            .ticks(6);
+            .scale(vis.x);
 
         vis.svg.append("g")
             .attr("class", "y-axis axis");
@@ -49,8 +45,14 @@ class LineChart {
             .attr("class", "x-axis axis")
             .attr("transform", "translate(0," + vis.height + ")");
 
+        // ONLY IF overall chart??
+        if(vis.variable === "overview"){
+            // Append a path for the line function, so that it is later behind the brush overlay
+            vis.linePath = vis.svg.append("path")
+                .attr("class", "line");
+            // TO-DO: Add Brushing to Chart??
+        }
 
-        // TO-DO: Add Brushing to Chart??
 
         // (Filter, aggregate, modify data)
         vis.wrangleData();
@@ -66,9 +68,12 @@ class LineChart {
         //console.log("missing", Object.values(vis.data).map(d => d.filter(ride => ride.age != 0 && !ride.age)))
         // birth year only for subscribers, not known for customers
 
+
+        let dateParser = d3.timeParse("%Y-%m-%d");
+
         vis.displayData = Object.entries(vis.data).map(d => {
             return {
-                date: d[0],
+                date: dateParser(d[0]),
                 num_rides: d[1].length,
                 num_rides_user_subscriber: d[1].filter(ride => ride.usertype === "Subscriber").length,
                 num_rides_user_customer: d[1].filter(ride => ride.usertype === "Customer").length,
@@ -80,8 +85,9 @@ class LineChart {
                 num_rides_age_youth: d[1].filter(ride => ride.age < 18).length,
                 num_rides_age_young_adult: d[1].filter(ride => ride.age >= 18 && ride.age < 25).length,
                 num_rides_age_adult: d[1].filter(ride => ride.age >= 25).length,
-                num_rides_age_missing: d[1].filter(ride => ride.age != 0 && !ride.age).length
+                num_rides_age_missing: d[1].filter(ride => ride.age != 0 && !ride.age).length // missing because birth year unknown for non-subscribers
 
+                // group by starttime would be d[0] get only the time part, not the date...
 
                 // clarify that age visual is only for subscribers
             }
@@ -90,6 +96,8 @@ class LineChart {
         // ensure sorted by day
         vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
         console.log("displayData", vis.displayData);
+
+        vis.updateVis();
 
     }
 
@@ -101,23 +109,117 @@ class LineChart {
             return d.date;
         }));
         vis.y.domain([0, d3.max(vis.displayData, function (d) {
-            return d.value;
+            return d.num_rides; // edit for others?
         })]);
 
-        // D3 path generator
-        vis.line = d3.line()
-            .x(function (d) {
-                return vis.x(d.date);
-            })
-            .y0(vis.height)
-            .y1(function (d) {
-                return vis.y(d.num_rides);
-            });
 
-        // Call the line path function and update the path
-        vis.timePath
-           // .datum(vis.displayData)
-            .attr("d", vis.line(vis.displayData));
+        if (vis.variable === "overview"){
+            // D3 path generator
+            vis.dataLine = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides));
+
+            // Call the line path function and update the path
+            vis.linePath
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine);
+        }
+
+        if(vis.variable === "member"){
+            vis.dataLine_sub = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides_user_subscriber));
+
+            // Call the line path function and draw the path
+            vis.svg.append("path")
+                .attr("class", "line")
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine_sub);
+
+            vis.dataLine_cus = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides_user_customer));
+
+            // Call the line path function and draw the path
+            vis.svg.append("path")
+                .attr("class", "line")
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine_cus);
+        }
+
+        if(vis.variable === "gender"){
+            vis.dataLine_un = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides_gen_unknown));
+
+            // Call the line path function and draw the path
+            vis.svg.append("path")
+                .attr("class", "line")
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine_un);
+
+            vis.dataLine_f = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides_gen_female));
+
+            // Call the line path function and draw the path
+            vis.svg.append("path")
+                .attr("class", "line")
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine_f);
+
+            vis.dataLine_m = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides_gen_male));
+
+            // Call the line path function and draw the path
+            vis.svg.append("path")
+                .attr("class", "line")
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine_m);
+        }
+
+        if(vis.variable === "age"){
+            vis.dataLine_youth = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides_age_youth));
+
+            // Call the line path function and draw the path
+            vis.svg.append("path")
+                .attr("class", "line")
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine_youth);
+
+            vis.dataLine_ya = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides_age_young_adult));
+
+            // Call the line path function and draw the path
+            vis.svg.append("path")
+                .attr("class", "line")
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine_ya);
+
+            vis.dataLine_adult = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides_age_adult));
+
+            // Call the line path function and draw the path
+            vis.svg.append("path")
+                .attr("class", "line")
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine_adult);
+
+            vis.dataLine_unknown = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d.num_rides_age_missing));
+
+            // Call the line path function and draw the path
+            vis.svg.append("path")
+                .attr("class", "line")
+                .datum(vis.displayData)
+                .attr("d", vis.dataLine_unknown);
+        }
 
         // Update axes
         vis.svg.select(".y-axis").call(vis.yAxis);

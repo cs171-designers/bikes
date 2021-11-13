@@ -12,8 +12,8 @@ class DataHandler {
         // "2018/201803_hubway_tripdata.csv",
         // "2018/201804-hubway-tripdata.csv",
         "2018/201805-bluebikes-tripdata.csv",
-        "2018/201806-bluebikes-tripdata.csv",
-        "2018/201807-bluebikes-tripdata.csv",
+        // "2018/201806-bluebikes-tripdata.csv",
+        // "2018/201807-bluebikes-tripdata.csv",
         // "2018/201808-bluebikes-tripdata.csv",
         // "2018/201809-bluebikes-tripdata.csv",
         // "2018/201810-bluebikes-tripdata.csv",
@@ -91,13 +91,17 @@ class DataHandler {
                     if (d.starttime) {
                         // add age attribute to data
                         d.age = Number(d.starttime.slice(0, 4)) - d["birth year"];
-                        d.starttime = dateParser(d.starttime);
+                        if(d.starttime.length > 20){
+                            d.starttime = dateParser(d.starttime.slice(0,19)); //slice off the milliseconds... ?
+                        }
+                        else{
+                            d.starttime = dateParser(d.starttime);
+                        }
+
                     }
                     if (d.stoptime) {
                         d.stoptime = dateParser(d.stoptime);
                     }
-                    let getYear = d3.timeParse("%Y");
-                    // d.age = getYear(d.starttime) //- d["birth year"];
                 });
 
                 console.log("rides", dataHandler._rides);
