@@ -10,7 +10,7 @@ class PieChart {
         this.parentElement = parentElement;
         this.circleColors = d3.schemeSet3;
         this.secondaryColors = d3.schemeSet1;
-        console.log("coloirs", this.circleColors, this.secondaryColors)
+        // console.log("coloirs", this.circleColors, this.secondaryColors)
         this.title = title;
         this.data = data;
 
@@ -92,7 +92,7 @@ class PieChart {
                 this.displayData.push(item);
             })
         });
-        console.log("data", this.data, this.displayData)
+        // console.log("data", this.data, this.displayData)
 
         // // generate random data
         // for (let i = 0; i < 4; i++) {
@@ -121,17 +121,17 @@ class PieChart {
             .merge(arcs)
             .attr("class", "arc") // important
             .attr("d", vis.arc)
-            .attr("data-parent", d => d.data.parent.label.replaceAll(" ", "_"))
+            .attr("data-parent", d => d.data.parent.label.replaceAll(" ", "_").replaceAll("+","_").replaceAll("(","_").replaceAll(")","_"))
             .style("fill", function (d, index) {
                 // console.log("item", d)
                 return d.data.color;
             })
             .on('mouseover', function (event, d) {
-                console.log("mouseover", d);
-                console.log("mouseover", d.data, d.data.parent);
+                // console.log("mouseover", d);
+                // console.log("mouseover", d.data, d.data.parent);
                 vis.svg.selectAll("path.arc")
                     .style("opacity", 0.2)
-                vis.svg.selectAll(`path[data-parent=${d.data.parent.label.replaceAll(" ", "_")}]`)
+                vis.svg.selectAll(`path[data-parent=${d.data.parent.label.replaceAll(" ", "_").replaceAll("+","_").replaceAll("(","_").replaceAll(")","_")}]`)
                     .style("fill", function (d, index) {
                         // console.log("item", d)
                         return d.data.secondaryColor;
