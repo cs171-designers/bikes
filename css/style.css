@@ -1,0 +1,49 @@
+.container-fluid {
+    padding-right: 5vw;
+    padding-left: 5vw;
+}
+.leftContainer{
+    height: 60vh;
+    margin-top: 15vh;
+    margin-right: 5vh;
+}
+.linkedContainer{
+    height: 30vh;
+    padding-bottom: 5px;
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+}
+#main-line-chart, #member-line-chart, #age-line-chart, #gender-line-chart, #hour-bar-chart {
+    height: 100%;
+    width: 100%;
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5px;
+}
+.legend text{
+    font-size: 10px;
+}
+#time-period-min, #time-period-max{
+    font-family: 'Neuton', serif;
+}
+
+#time-period-min-box, #time-period-max-box{
+    fill: lightgrey;
+}
+
+.success {
+    color: green;
+}
+.error {
+    color: red
+}
+

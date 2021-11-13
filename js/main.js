@@ -1,63 +1,67 @@
-let promises = [
-    d3.csv("data/2018/201801_hubway_tripdata.csv"),
-    d3.csv("data/2018/201802_hubway_tripdata.csv"),
-    /*
-    d3.csv("data/2018/201803_hubway_tripdata.csv"),
-    d3.csv("data/2018/201804-hubway-tripdata.csv"),
-    d3.csv("data/2018/201805-bluebikes-tripdata.csv"),
-    d3.csv("data/2018/201806-bluebikes-tripdata.csv"),
-    d3.csv("data/2018/201807-bluebikes-tripdata.csv"),
-    d3.csv("data/2018/201808-bluebikes-tripdata.csv"),
-    d3.csv("data/2018/201809-bluebikes-tripdata.csv"),
-    d3.csv("data/2018/201810-bluebikes-tripdata.csv"),
-    d3.csv("data/2018/201811-bluebikes-tripdata.csv"),
-    d3.csv("data/2018/201812-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201901-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201902-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201903-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201904-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201905-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201906-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201907-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201908-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201909-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201910-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201911-bluebikes-tripdata.csv"),
-    d3.csv("data/2019/201912-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202001-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202002-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202003-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202004-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202005-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202006-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202007-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202008-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202009-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202010-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202011-bluebikes-tripdata.csv"),
-    d3.csv("data/2020/202012-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202101-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202102-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202103-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202104-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202105-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202106-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202107-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202108-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202109-bluebikes-tripdata.csv"),
-    d3.csv("data/2021/202110-blueblikes-tripdata.csv")
-    */
-];
+let selectedCategory; // global variable holding form selection - num_Rides or avg_trip_dur
+let generalLine, memberLine, genderLine, ageLine; // visuals for dashboard -- defined globally so that categoryChange function can be called
 
-Promise.all(promises)
-    .then(function (data) {
-        createVis(data)
-    })
-    .catch(function (err) {
-        console.log(err)
+function init() {
+    console.log("instantiating Data");
+    let dataHandler = new DataHandler("load-status");
+    // let vis1 = Vis1(dataHandler)
+
+    // Dashboard view
+    // load data
+    dataHandler.load().then(() => {
+
+        // pieChart
+        let pieChart = new PieChart("pie-chart", dataHandler);
+
+        // Dashboard View
+        let lineData = dataHandler.groupDate();
+        console.log(lineData);
+
+        // Create event handler
+        let eventHandler = {
+            bind: (eventName, handler) => {
+                document.body.addEventListener(eventName, handler);
+            },
+            trigger: (eventName, extraParameters) => {
+                document.body.dispatchEvent(new CustomEvent(eventName, {
+                    detail: extraParameters
+                }));
+            }
+        };
+
+        selectedCategory = document.getElementById('categorySelector').value; // default selection value
+
+        generalLine = new LineChart("main-line-chart", lineData, "overview", eventHandler);
+        memberLine = new LineChart("member-line-chart", lineData, "member");
+        genderLine = new LineChart("gender-line-chart", lineData, "gender");
+        ageLine = new LineChart("age-line-chart", lineData, "age");
+
+        // Bind event handler
+        eventHandler.bind("selectionChanged", function(event){
+            //console.log("brush")
+            let rangeStart = event.detail[0];
+            let rangeEnd = event.detail[1];
+            memberLine.onSelectionChange(rangeStart, rangeEnd);
+            genderLine.onSelectionChange(rangeStart, rangeEnd);
+            ageLine.onSelectionChange(rangeStart, rangeEnd);
+        });
+        // Bind event handler
+        eventHandler.bind("updateLabels", function(event){
+            let rangeStart = event.detail[0];
+            let rangeEnd = event.detail[1];
+            generalLine.onUpdateLabels(rangeStart, rangeEnd);
+        });
+
+
     });
 
-function createVis(data) {
-    console.log(data.length)
-    console.log("done")
 }
+// switch between num_rides and avg_trip_dur
+function categoryChange() {
+    selectedCategory = document.getElementById('categorySelector').value;
+    generalLine.updateVis();
+    memberLine.updateVis();
+    genderLine.updateVis();
+    ageLine.updateVis();
+}
+init();
