@@ -1,5 +1,6 @@
 let selectedCategory; // global variable holding form selection - num_Rides or avg_trip_dur
 let generalLine, memberLine, genderLine, ageLine, hourBar; // visuals for dashboard -- defined globally so that categoryChange function can be called
+let bikeMap;
 
 function init() {
     console.log("instantiating Data");
@@ -39,6 +40,7 @@ function init() {
 
         selectedCategory = document.getElementById('categorySelector').value; // default selection value
 
+        bikeMap = new BlueBikeMap("bike-map", null, [42.360082, -71.058880])
         generalLine = new LineChart("main-line-chart", lineData, "overview", eventHandler);
         memberLine = new LineChart("member-line-chart", lineData, "member");
         genderLine = new LineChart("gender-line-chart", lineData, "gender");
