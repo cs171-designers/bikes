@@ -1,3 +1,5 @@
+
+// Create map class
 class BlueBikeMap {
 
     constructor(parentElement, bikeData, center) {

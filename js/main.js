@@ -11,6 +11,9 @@ function init() {
     // load data
     dataHandler.load().then(() => {
 
+        // map
+        bikeMap = new BlueBikeMap("bike-map", null, [42.360082, -71.058880])
+
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
         const pie_charts = {
@@ -40,7 +43,6 @@ function init() {
 
         selectedCategory = document.getElementById('categorySelector').value; // default selection value
 
-        bikeMap = new BlueBikeMap("bike-map", null, [42.360082, -71.058880])
         generalLine = new LineChart("main-line-chart", lineData, "overview", eventHandler);
         memberLine = new LineChart("member-line-chart", lineData, "member");
         genderLine = new LineChart("gender-line-chart", lineData, "gender");
