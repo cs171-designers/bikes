@@ -7,7 +7,6 @@ function init() {
     let dataHandler = new DataHandler("load-status");
     // let vis1 = Vis1(dataHandler)
 
-    // Dashboard view
     // load data
     dataHandler.load().then(() => {
 

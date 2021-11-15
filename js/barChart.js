@@ -1,3 +1,5 @@
+// code still in progress - for creating bar chart grouping data by starttime of trips
+
 class BarChart {
 
     constructor(parentElement, data, _eventHandler) {
@@ -137,7 +139,7 @@ class BarChart {
             let hourFormat = d3.timeFormat("%H");
 
             let morn_trips = d.filter(ride => hourFormat(ride.starttime) <= 11);
-            console.log("morn_trips", morn_trips)
+            //console.log("morn_trips", morn_trips)
 
             // let total_dur = 0;
             // d.forEach(ride => total_dur += ride.tripduration);
