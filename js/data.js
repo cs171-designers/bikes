@@ -140,7 +140,7 @@ class DataHandler {
     // group data by bike id
     groupBikeID() {
         let dataHandler = this
-        let groupedBikes = {}
+        let groupedBikes = []
 
         dataHandler._rides.forEach(d => {
             let bikeID = d.bikeid
@@ -156,8 +156,19 @@ class DataHandler {
         let bike1 = groupedBikes[1].sort(function (a, b) {
             return a.starttime - b.starttime
         })
-        console.log("BIKE 1", bike1)
-        return groupedBikes
+
+        let groupedBikesSorted = []
+
+        groupedBikes.forEach(d => {
+            let sortedBike = d.sort(function (a, b) {
+                return a.starttime - b.starttime
+            });
+            groupedBikesSorted[d[0].bikeid] = sortedBike
+        })
+
+
+        console.log("TRIPS GROUPED BY BIKE ID, CHRONOLOGICAL ORDER", groupedBikesSorted)
+        return groupedBikesSorted
     }
 
     count_filters = {
