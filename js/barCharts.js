@@ -16,7 +16,7 @@ class barChart {
         let vis = this;
 
         // margin conventions
-        vis.margin = { top: 10, right: 50, bottom: 10, left: 50 };
+        vis.margin = { top: 10, right: 50, bottom: 70, left: 50 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.top - vis.margin.bottom;
 
@@ -26,6 +26,7 @@ class barChart {
             .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
+
 
 
         // Scales and axes
@@ -132,6 +133,7 @@ class barChart {
         console.log("y scale range", vis.y.range())
 
         console.log("x scale domain", vis.x.domain())
+        console.log("height", vis.height)
 
         vis.svg.selectAll("mybar")
             .data(vis.topFiveStations)
@@ -141,17 +143,21 @@ class barChart {
             .attr("width", vis.x.bandwidth())
             .attr("fill", "#69b3a2")
             // no bar at the beginning thus:
-            .attr("height", function(d) { return (vis.height - vis.y(d.numTrips))})
-                //vis.height - vis.y(0); }) // always equal to 0
+            .attr("height", function(d) {return vis.height - vis.y(0); }) // always equal to 0
             .attr("y", function(d) { return vis.y(0); })
 
-        // // Animation
-        // vis.svg.selectAll("rect")
-        //     .transition()
-        //     .duration(800)
-        //     .attr("y", function(d) { return vis.y(d.numTrips); })
-        //     .attr("height", function(d) { return -(vis.height - vis.y(d.numTrips)); })
-        //     .delay(function(d,i){console.log(i) ; return(i*100)})
+        // Animation
+        vis.svg.selectAll("rect")
+            .transition()
+            .duration(800)
+            .attr("y", function(d) { return vis.y(d.numTrips); })
+            .attr("height", function(d) {
+                let height = (vis.height - vis.y(d.numTrips))
+                console.log(height)
+                return height})
+            .delay(function(d,i){console.log(i) ; return(i*100)})
+
+
 
 
 
