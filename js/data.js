@@ -117,6 +117,27 @@ class DataHandler {
                 console.log("finished loading bikes")
             });
     }
+
+    // get station coordinates
+    getStationCoords() {
+        let dataHandler = this;
+        let stationCoords = {};
+
+        dataHandler._stations.forEach(d => {
+            let station = d["Id"];
+
+            if (stationCoords[station]) {
+                stationCoords[station].push(d);
+            }
+            else {
+                stationCoords[station] = [d];
+            }
+        })
+        //console.log(groupedDate);
+        return stationCoords;
+    }
+
+
     // group data by date
     groupDate() {
         let dataHandler = this;
@@ -135,6 +156,25 @@ class DataHandler {
         })
         //console.log(groupedDate);
         return groupedDate;
+    }
+
+    // group data by station id
+    groupStation() {
+        let dataHandler = this;
+        let groupedStation = [];
+
+        dataHandler._rides.forEach(d => {
+            let station = d["start station id"]
+
+            if (groupedStation[station]) {
+                groupedStation[station].push(d);
+            }
+            else {
+                groupedStation[station] = [d];
+            }
+        })
+        //console.log(groupedStation);
+        return groupedStation;
     }
 
     // group data by bike id
