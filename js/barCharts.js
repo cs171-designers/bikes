@@ -1,11 +1,12 @@
 // create bar chart for trip duration
 
 class barChart {
-    constructor(parentElement, data){
+    constructor(parentElement, ridesData, stationData){
                 // , variable) {
         this.parentElement = parentElement;
-        this.data = data;
-        this.displayData = [];
+        this.ridesData = ridesData;
+        this.stationData = stationData;
+        this.displayData = ridesData;
         // this.variable = variable;
         // this.eventHandler = _eventHandler;
 
@@ -68,9 +69,36 @@ class barChart {
     }
     wrangleData() {
         let vis = this;
+        console.log("LARA STATION DATA", vis.stationData)
+        console.log("LARA RIDES DATA", vis.ridesData)
+        let sorted = []
 
-        // vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
-        console.log("displayData", vis.displayData);
+
+        vis.ridesData.forEach(function (d) {
+            let numTrips = d.length;
+            let stationID = d[0]['start station id'].toString()
+
+            let stationLatitude = vis.stationData[stationID][0]['Latitude']
+            let stationLongitude = vis.stationData[stationID][0]['Longitude']
+            // console.log(stationLatitude)
+            sorted.push({id: stationID, numTrips: numTrips,
+                lat: stationLatitude, long: stationLongitude})
+            // console.log(numTrips);
+
+            // vis.stationData[d]
+
+
+
+
+
+        });
+        // console.log(sorted)
+
+        vis.newsorted = sorted.sort((a,b)=> b.numTrips - a.numTrips);
+        // console.log("sorted", vis.newsorted);
+
+        vis.topFiveStations = vis.newsorted.slice(0,5)
+        console.log(vis.topFiveStations)
 
         vis.updateVis();
 

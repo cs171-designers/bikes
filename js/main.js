@@ -8,7 +8,6 @@ function init() {
     let dataHandler = new DataHandler("load-status");
     // let vis1 = Vis1(dataHandler)
 
-    // Dashboard view
     // load data
     dataHandler.load().then(() => {
 
@@ -16,9 +15,7 @@ function init() {
         let bikeData = dataHandler.groupBikeID()
         bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
 
-        // barCharts
-        let ridesData = dataHandler.loadRides()
-        barCharts = new barChart("trip-length-barchart", ridesData) // , variable)
+
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
@@ -72,6 +69,11 @@ function init() {
             let rangeEnd = event.detail[1];
             generalLine.onUpdateLabels(rangeStart, rangeEnd);
         });
+
+        // barCharts
+        let ridesData = dataHandler.groupStation();
+        let stationData = dataHandler.getStationCoords();
+        barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
 
 
     });
