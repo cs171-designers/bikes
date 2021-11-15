@@ -13,7 +13,7 @@ function init() {
 
         // map
         let bikeData = dataHandler.groupBikeID()
-        bikeMap = new BlueBikeMap("bike-map", bikeData, [42.360082, -71.058880])
+        bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
