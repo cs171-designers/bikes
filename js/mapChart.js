@@ -35,6 +35,12 @@ class BlueBikeMap {
     wrangleData() {
         let vis = this
 
+        // Look at bike 1 and get the stations it visited
+        vis.bike1 = vis.bikeData[1]
+        console.log("1", vis.bike1)
+
+        vis.startStations = vis.bike1.map(trip => trip["start station id"])
+        console.log(vis.startStations)
 
         vis.updateVis()
     }
@@ -42,11 +48,15 @@ class BlueBikeMap {
     updateVis() {
         let vis = this
 
-        // Loop over station data and create markers
+        // Loop over station data and create markers for each station the chosen bike visited
         vis.stationData.forEach(function (d) {
-            let marker = L.marker([d.Latitude, d.Longitude])
-                .bindPopup(`Station: ${d.Name}`)
-            vis.stationGroup.addLayer(marker)
+
+            if (vis.startStations.includes(d["Id"])) {
+                console.log("station", d["Id"])
+                let marker = L.marker([d.Latitude, d.Longitude])
+                    .bindPopup(`Station: ${d.Name}`)
+                vis.stationGroup.addLayer(marker)
+            }
         })
 
     }
