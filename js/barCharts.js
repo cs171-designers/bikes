@@ -69,7 +69,7 @@ class barChart {
     }
     wrangleData() {
         let vis = this;
-        console.log("LARA BARCHART DATA", vis.stationData)
+        console.log("LARA STATION DATA", vis.stationData)
         console.log("LARA RIDES DATA", vis.ridesData)
         let sorted = []
 
@@ -77,7 +77,12 @@ class barChart {
         vis.ridesData.forEach(function (d) {
             let numTrips = d.length;
             let stationID = d[0]['start station id'].toString()
-            sorted.push({id: stationID, numTrips: numTrips})
+
+            let stationLatitude = vis.stationData[stationID][0]['Latitude']
+            let stationLongitude = vis.stationData[stationID][0]['Longitude']
+            // console.log(stationLatitude)
+            sorted.push({id: stationID, numTrips: numTrips,
+                lat: stationLatitude, long: stationLongitude})
             // console.log(numTrips);
 
             // vis.stationData[d]
@@ -87,10 +92,10 @@ class barChart {
 
 
         });
-        console.log(sorted)
+        // console.log(sorted)
 
-        vis.newsorted = vis.sorted.sort((a,b)=> a.numTrips - b.numTrips);
-        console.log("sorted", vis.newsorted);
+        vis.newsorted = sorted.sort((a,b)=> b.numTrips - a.numTrips);
+        // console.log("sorted", vis.newsorted);
 
         vis.topFiveStations = vis.newsorted.slice(0,5)
         console.log(vis.topFiveStations)
