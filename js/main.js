@@ -15,6 +15,9 @@ function init() {
         let bikeData = dataHandler.groupBikeID()
         bikeMap = new BlueBikeMap("bike-map", bikeData, [42.360082, -71.058880])
 
+        // barCharts
+        // let barCharts = new barChart("trip-length-barchart", dataHandler) // , variable)
+
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
         const pie_charts = {
