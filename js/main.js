@@ -1,6 +1,7 @@
 let selectedCategory; // global variable holding form selection - num_Rides or avg_trip_dur
 let generalLine, memberLine, genderLine, ageLine, hourBar; // visuals for dashboard -- defined globally so that categoryChange function can be called
 let bikeMap;
+let barCharts;
 
 function init() {
     console.log("instantiating Data");
@@ -16,7 +17,8 @@ function init() {
         bikeMap = new BlueBikeMap("bike-map", bikeData, [42.360082, -71.058880])
 
         // barCharts
-        // let barCharts = new barChart("trip-length-barchart", dataHandler) // , variable)
+        let ridesData = dataHandler.loadRides()
+        barCharts = new barChart("trip-length-barchart", ridesData) // , variable)
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();

@@ -1,11 +1,12 @@
-// create bar chart for
+// create bar chart for trip duration
 
 class barChart {
-    constructor(parentElement, dataHandler, variable) {
+    constructor(parentElement, data){
+                // , variable) {
         this.parentElement = parentElement;
-        this.dataHandler = dataHandler;
+        this.data = data;
         this.displayData = [];
-        this.variable = variable;
+        // this.variable = variable;
         // this.eventHandler = _eventHandler;
 
         this.initVis();
@@ -68,7 +69,7 @@ class barChart {
     wrangleData() {
         let vis = this;
 
-        vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
+        // vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
         console.log("displayData", vis.displayData);
 
         vis.updateVis();
