@@ -2,9 +2,10 @@
 // Create map class
 class BlueBikeMap {
 
-    constructor(parentElement, bikeData, center) {
+    constructor(parentElement, bikeData, stationData, center) {
         this.parentElement = parentElement
         this.bikeData = bikeData
+        this.stationData = stationData
         this.center = center
 
         this.initVis()
@@ -12,6 +13,9 @@ class BlueBikeMap {
 
     initVis() {
         let vis = this
+
+        // Set image path
+        L.Icon.Default.imagePath = 'img/';
 
         // Initialize Leaflet objects
         vis.map = L.map(vis.parentElement).setView(vis.center, 13);
@@ -37,5 +41,13 @@ class BlueBikeMap {
 
     updateVis() {
         let vis = this
+
+        // Loop over station data and create markers
+        vis.stationData.forEach(function (d) {
+            let marker = L.marker([d.Latitude, d.Longitude])
+                .bindPopup(`Station: ${d.Name}`)
+            vis.stationGroup.addLayer(marker)
+        })
+
     }
 }
