@@ -137,6 +137,25 @@ class DataHandler {
         return groupedDate;
     }
 
+    // group data by bike id
+    groupBikeID() {
+        let dataHandler = this
+        let groupedBikes = {}
+
+        dataHandler._rides.forEach(d => {
+            let bikeID = d.bikeid
+
+            if (groupedBikes[bikeID]) {
+                groupedBikes[bikeID].push(d)
+            }
+            else {
+                groupedBikes[bikeID] = [d]
+            }
+        })
+        console.log("GROUPED BIKES", groupedBikes)
+        return groupedBikes
+    }
+
     count_filters = {
         user: {
             "All": filtered_array => filtered_array,
