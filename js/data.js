@@ -152,7 +152,11 @@ class DataHandler {
                 groupedBikes[bikeID] = [d]
             }
         })
-        console.log("GROUPED BIKES", groupedBikes)
+
+        let bike1 = groupedBikes[1].sort(function (a, b) {
+            return a.starttime - b.starttime
+        })
+        console.log("BIKE 1", bike1)
         return groupedBikes
     }
 
