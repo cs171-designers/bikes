@@ -15,7 +15,10 @@ function init() {
         let bikeData = dataHandler.groupBikeID()
         bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
 
-
+        // barCharts
+        let ridesData = dataHandler.groupStation();
+        let stationData = dataHandler.getStationCoords();
+        barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
@@ -70,10 +73,6 @@ function init() {
             generalLine.onUpdateLabels(rangeStart, rangeEnd);
         });
 
-        // barCharts
-        let ridesData = dataHandler.groupStation();
-        let stationData = dataHandler.getStationCoords();
-        barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
 
 
     });
