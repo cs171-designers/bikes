@@ -10,25 +10,25 @@ function init() {
     // load data
     dataHandler.load().then(() => {
 
-        // // map
-        // let bikeData = dataHandler.groupBikeID()
-        // bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
-        //
-        // // barCharts
-        // let ridesData = dataHandler.groupStation();
-        // let stationData = dataHandler.getStationCoords();
-        // barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
-        //
-        // // pieChart
-        // let counts = dataHandler.getMultiLevelCounts();
-        // const pie_charts = {
-        //     "gender-age": "Gender Pie Chart (Hover for Age)",
-        //     "user-age": "User Pie Chart (Hover for Age)",
-        //     "age-user": "Age Pie Chart (Hover for User)",
-        // };
-        // Object.entries(pie_charts).forEach(([chart, title]) => {
-        //     let pieChart = new PieChart(chart + "-pie-chart", title, counts[chart]);
-        // })
+        // map
+        let bikeData = dataHandler.groupBikeID()
+        bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
+
+        // barCharts
+        let ridesData = dataHandler.groupStation();
+        let stationData = dataHandler.getStationCoords();
+        barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
+
+        // pieChart
+        let counts = dataHandler.getMultiLevelCounts();
+        const pie_charts = {
+            "gender-age": "Gender Pie Chart (Hover for Age)",
+            "user-age": "User Pie Chart (Hover for Age)",
+            "age-user": "Age Pie Chart (Hover for User)",
+        };
+        Object.entries(pie_charts).forEach(([chart, title]) => {
+            let pieChart = new PieChart(chart + "-pie-chart", title, counts[chart]);
+        })
 
         // Dashboard View
         let lineData = dataHandler.groupDate();
