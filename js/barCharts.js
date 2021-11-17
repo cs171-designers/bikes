@@ -129,11 +129,11 @@ class barChart {
 
         vis.svg.append("g")
             .call(vis.yAxis)
-        console.log("y scale domain", vis.y.domain())
-        console.log("y scale range", vis.y.range())
+        //console.log("y scale domain", vis.y.domain())
+        //console.log("y scale range", vis.y.range())
 
-        console.log("x scale domain", vis.x.domain())
-        console.log("height", vis.height)
+        //console.log("x scale domain", vis.x.domain())
+        //console.log("height", vis.height)
 
         vis.svg.selectAll("mybar")
             .data(vis.topFiveStations)
@@ -153,9 +153,9 @@ class barChart {
             .attr("y", function(d) { return vis.y(d.numTrips); })
             .attr("height", function(d) {
                 let height = (vis.height - vis.y(d.numTrips))
-                console.log(height)
+                //console.log(height)
                 return height})
-            .delay(function(d,i){console.log(i) ; return(i*100)})
+            .delay(function(d,i){return(i*100)}) //console.log(i) ;
 
 
 

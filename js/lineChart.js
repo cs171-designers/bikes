@@ -308,18 +308,6 @@ class LineChart {
         vis.displayData = Object.entries(vis.filteredData).map(d => {
             return {
                 date: dateParser(d[0]),
-                // num_rides: d[1].length,
-                // num_rides_user_subscriber: d[1].filter(ride => ride.usertype === "Subscriber").length,
-                // num_rides_user_customer: d[1].filter(ride => ride.usertype === "Customer").length,
-                //
-                // num_rides_gen_unknown: d[1].filter(ride => ride.gender === 0).length,
-                // num_rides_gen_male: d[1].filter(ride => ride.gender === 1).length,
-                // num_rides_gen_female: d[1].filter(ride => ride.gender === 2).length,
-                //
-                // num_rides_age_youth: d[1].filter(ride => ride.age < 18).length,
-                // num_rides_age_young_adult: d[1].filter(ride => ride.age >= 18 && ride.age < 25).length,
-                // num_rides_age_adult: d[1].filter(ride => ride.age >= 25).length,
-                // num_rides_age_missing: d[1].filter(ride => ride.age != 0 && !ride.age).length, // missing because birth year unknown for non-subscribers
 
                 num_rides: d[1].length,
                 num_rides_user_subscriber: user(d[1])[0][0],
@@ -457,7 +445,7 @@ class LineChart {
 
         // ensure sorted by day
         vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
-        //console.log("displayData", vis.displayData);
+        console.log("displayData", vis.displayData);
 
         vis.updateVis();
 
@@ -522,6 +510,7 @@ class LineChart {
             vis.dataLine_sub = d3.line()
                 .x(d => vis.x(d.date))
                 .y(d => vis.y(d[selectedCategory + "_user_subscriber"]));
+            console.log(selectedCategory + "_user_subscriber")
 
             vis.linePath_sub
                 .transition().duration(200).style("opacity",0)
@@ -555,7 +544,7 @@ class LineChart {
             // draw data lines
             vis.dataLine_un = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d[selectedCategory + "_gen_unknown"]));
+                .y(function(d) {return vis.y(d[selectedCategory + "_gen_unknown"])});
 
             vis.linePath_un
                 .transition().duration(200).style("opacity",0)
@@ -565,7 +554,7 @@ class LineChart {
 
             vis.dataLine_f = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d[selectedCategory + "_gen_female"]));
+                .y(function(d){return vis.y(d[selectedCategory + "_gen_female"])});
 
             vis.linePath_f
                 .transition().duration(200).style("opacity",0)
@@ -656,8 +645,15 @@ class LineChart {
                 vis.filteredData[date] = d[1];
             }
         });
-        //console.log(vis.filteredData)
+
         vis.wrangleData();
+
+        // filter displayData on date? loop through display data and filter on d.date
+        // console.log("orig", vis.displayData)
+        // vis.displayData.filter(ride => ride.date >= timeFormat(selectionStart) && ride.date <= timeFormat(selectionEnd))
+        // vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
+        // console.log("brush", vis.displayData)
+        // vis.updateVis();
     }
 
     onUpdateLabels(selectionStart, selectionEnd){

@@ -154,8 +154,25 @@ class DataHandler {
                 groupedDate[date] = [d];
             }
         })
-        //console.log(groupedDate);
         return groupedDate;
+    }
+    // group data by day (1 week view)
+    groupWeek() {
+        let dataHandler = this;
+        let groupedWeek = {};
+
+        dataHandler._rides.forEach(d => {
+            let weekFormat = d3.timeFormat("%U-%Y"); // Sunday-based week of the year as a decimal number [00, 53]
+            let week = weekFormat(d.starttime);
+
+            if (groupedWeek[week]) {
+                groupedWeek[week].push(d);
+            }
+            else {
+                groupedWeek[week] = [d];
+            }
+        })
+        return groupedWeek;
     }
 
     // group data by station id
@@ -191,10 +208,6 @@ class DataHandler {
             else {
                 groupedBikes[bikeID] = [d]
             }
-        })
-
-        let bike1 = groupedBikes[1].sort(function (a, b) {
-            return a.starttime - b.starttime
         })
 
         let groupedBikesSorted = []

@@ -48,6 +48,13 @@ class BarChart {
         vis.xAxis = d3.axisBottom()
             .scale(vis.x);
 
+        // format ticks to convey hour categories. Categories do not update
+        let tickStrings = ["12-6 am", "6-9 am", "9-12 pm", "12-3 pm", "3-6 pm", "6-9 pm", "9-12 am"];
+        vis.xAxis.tickFormat(function(d,i) {
+            return tickStrings[i];
+        });
+
+
         vis.svg.append("g")
             .attr("class", "y-axis axis");
 
@@ -94,42 +101,6 @@ class BarChart {
         }
         vis.displayData = dataHolder;
 
-        // vis.displayData.push({
-        //     hour: "overnight",
-        //     num_rides: categorize(data)[0][0],
-        //     avg_trip_dur: categorize(data)[1][0]
-        //     },
-        //     {
-        //         hour: "morn1",
-        //         num_rides: categorize(data)[0][1],
-        //         avg_trip_dur: categorize(data)[1][1]
-        //     },
-        //     {
-        //         hour: "morn2",
-        //         num_rides: categorize(data)[0][2],
-        //         avg_trip_dur: categorize(data)[1][2]
-        //     },
-        //     {
-        //         hour: "aft1",
-        //         num_rides: categorize(data)[0][3],
-        //         avg_trip_dur: categorize(data)[1][3]
-        //     },
-        //     {
-        //         hour: "aft2",
-        //         num_rides: categorize(data)[0][4],
-        //         avg_trip_dur: categorize(data)[1][4]
-        //     },
-        //     {
-        //         hour: "night1",
-        //         num_rides: categorize(data)[0][5],
-        //         avg_trip_dur: categorize(data)[1][5]
-        //     },
-        //     {
-        //         hour: "night2",
-        //         num_rides: categorize(data)[0][6],
-        //         avg_trip_dur: categorize(data)[1][6]
-        //     }
-        // )
         function categorize(d){
             let hourFormat = d3.timeFormat("%H");
 
@@ -163,8 +134,7 @@ class BarChart {
             }
             return [num_rides, avg_trip_duration];
         }
-
-        console.log("BAR displayData", vis.displayData);
+        //console.log("BAR displayData", vis.displayData);
 
         vis.updateVis();
 
@@ -175,23 +145,6 @@ class BarChart {
 
         // Update domain
         vis.x.domain(vis.displayData.map(d => d.hour));
-
-        // tickFormat?? ["12-6 am", "6-9 am", "9-12 pm", "12-3 pm", "3-6 pm", "6-9 pm", "9-12 am"]);
-
-        // need maximum num_rides or avg_trip_duration from all subcategories
-        // let ovn_displayData = vis.displayData.map(d => d[selectedCategory + "_overnight"]);
-        // let morn1_displayData = vis.displayData.map(d => d[selectedCategory + "_morn1"]);
-        // let morn2_displayData = vis.displayData.map(d => d[selectedCategory + "_morn2"]);
-        // let aft1_displayData = vis.displayData.map(d => d[selectedCategory + "_aft1"]);
-        // let aft2_displayData = vis.displayData.map(d => d[selectedCategory + "_aft2"]);
-        // let night1_displayData = vis.displayData.map(d => d[selectedCategory + "_night1"]);
-        // let night2_displayData = vis.displayData.map(d => d[selectedCategory + "_night2"]);
-        //
-        // let hour_displayData = ovn_displayData
-        //     .concat(morn1_displayData).concat(morn2_displayData)
-        //     .concat(aft1_displayData).concat(aft2_displayData)
-        //     .concat(night1_displayData).concat(night2_displayData);
-
         vis.y.domain([0, d3.max(vis.displayData.map(d => d[selectedCategory]))]);
 
         // update y axis label
@@ -204,7 +157,9 @@ class BarChart {
 
         // draw data
         let bar = vis.svg.selectAll("rect")
-            .data(vis.displayData)//, d => d.hour)
+            .data(vis.displayData)
+
+//console.log(bar) // why is first one empty?? so "overnight" is empty?
 
         bar.enter().append("rect")
             .attr("class", "bar")
