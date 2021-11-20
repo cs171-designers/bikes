@@ -40,33 +40,42 @@ class BlueBikeMap {
         console.log("1", vis.bike1)
 
         vis.startStationIDs = vis.bike1.map(trip => trip["start station id"])
+        console.log(vis.startStationIDs)
 
-        // Get coords of these stations
-        vis.stationCoords = []
-        vis.startStationIDs.forEach(function (station) {
-            vis.stationData.forEach(function (d) {
-                if (d["Id"] === station) {
-                    vis.stationCoords.push([d.Latitude, d.Longitude])
+        // Get station objects in order of arrival
+        vis.visitedStations = []
+        vis.startStationIDs.forEach(function (visitedId){
+             vis.stationData.forEach(function (station) {
+                if (visitedId === station["Id"]) {
+                    if (station["Number"] != null) {
+                        vis.visitedStations.push(station)
+                    }
                 }
             })
         })
 
+        console.log("Visited Stations", vis.visitedStations)
+
+        // Get array of coords for ease of use later
+        vis.stationCoords = []
+        vis.visitedStations.forEach(function (station) {
+            vis.stationCoords.push([station.Latitude, station.Longitude])
+        })
 
         console.log(vis.stationCoords)
+
         vis.updateVis()
     }
 
     updateVis() {
         let vis = this
 
-        // Loop over station data and create markers for each station the chosen bike visited
-        vis.stationData.forEach(function (d) {
 
-            if (vis.startStationIDs.includes(d["Id"])) {
+        // Loop over station data and create markers for each station the chosen bike visited
+        vis.visitedStations.forEach(function (d) {
                 let marker = L.marker([d.Latitude, d.Longitude])
                     .bindPopup(`Station: ${d.Name}`)
                 vis.stationGroup.addLayer(marker)
-            }
         })
 
         // TODO: Make this part interactive
@@ -80,5 +89,17 @@ class BlueBikeMap {
             }
         ).addTo(vis.map);
 
+        // Create click listeners for buttons
+        vis.prevListener = d3.select("#previous-button").on("click", previousStop)
+        function previousStop() {
+            vis.map.removeLayer(vis.stationGroup)
+            vis.map.removeLayer(vis.stationLines)
+        }
+
+        vis.nextListener = d3.select("#next-button").on("click", nextStop)
+        function nextStop() {
+            vis.map.addLayer(vis.stationGroup)
+            vis.map.addLayer(vis.stationLines)
+        }
     }
 }
