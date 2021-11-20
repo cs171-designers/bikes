@@ -2,6 +2,8 @@ let selectedCategory; // global variable holding form selection - num_Rides or a
 let generalLine, memberLine, genderLine, ageLine, hourBar; // visuals for dashboard -- defined globally so that categoryChange function can be called
 let bikeMap;
 let barCharts;
+let previousButton = document.getElementById("previous-button");
+let nextButton = document.getElementById("next-button");
 
 function init() {
     console.log("instantiating Data");
