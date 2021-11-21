@@ -119,5 +119,20 @@ class BlueBikeMap {
                 return true
             }
         }
+
+        vis.generatorListener = d3.select("#generator-button").on("click", regenBike)
+        function regenBike() {
+            vis.marker.forEach(function (d) {
+                vis.map.removeLayer(d)
+            })
+
+            vis.stationLines.forEach(function (d) {
+                vis.map.removeLayer(d)
+            })
+
+            vis.wrangleData()
+            return true
+        }
+
     }
 }
