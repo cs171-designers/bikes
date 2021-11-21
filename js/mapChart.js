@@ -28,6 +28,8 @@ class BlueBikeMap {
         // Create empty station group
         vis.stationGroup = L.layerGroup().addTo(vis.map)
 
+        // Create time format
+        vis.timeFormat = d3.timeFormat("%m/%d/%Y %I:%M %p")
 
         vis.wrangleData()
     }
@@ -77,7 +79,9 @@ class BlueBikeMap {
         vis.marker = []
         for (let i=0; i<vis.visitedStations.length; i++) {
             vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude])
-                .bindPopup(`Station: ${vis.visitedStations[i].Name}`)
+                .bindPopup(`Station: ${vis.visitedStations[i].Name} <br>
+                    Departure Time: ${vis.timeFormat(vis.bike[i].starttime)} <br>
+                    Trip Duration: ${parseInt(vis.bike[i].tripduration / 60) + " minutes " + vis.bike[i].tripduration % 60 + " seconds"}`)
         }
         vis.map.addLayer(vis.marker[0])
 
