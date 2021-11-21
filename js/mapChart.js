@@ -105,6 +105,11 @@ class BlueBikeMap {
                 vis.map.removeLayer(vis.marker[vis.counter])
                 vis.map.removeLayer(vis.stationLines[vis.counter-1])
                 vis.counter -= 1
+                vis.map.setView([
+                        vis.visitedStations[vis.counter].Latitude,
+                        vis.visitedStations[vis.counter].Longitude],
+                    13, {animation: false}
+                )
                 return true
             }
         }
@@ -118,6 +123,11 @@ class BlueBikeMap {
                 vis.map.addLayer(vis.marker[vis.counter + 1])
                 vis.map.addLayer(vis.stationLines[vis.counter])
                 vis.counter += 1
+                vis.map.setView([
+                    vis.visitedStations[vis.counter].Latitude,
+                    vis.visitedStations[vis.counter].Longitude],
+                    13, {animation: false}
+                )
                 return true
             }
         }
