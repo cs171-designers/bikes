@@ -10,25 +10,25 @@ class DataHandler {
         "2018/201801_hubway_tripdata.csv",
         "2018/201802_hubway_tripdata.csv",
         "2018/201803_hubway_tripdata.csv",
-        // "2018/201804-hubway-tripdata.csv",
-        // "2018/201805-bluebikes-tripdata.csv",
-        // "2018/201806-bluebikes-tripdata.csv",
-        // "2018/201807-bluebikes-tripdata.csv",
-        // "2018/201808-bluebikes-tripdata.csv",
-        // "2018/201809-bluebikes-tripdata.csv",
-        // "2018/201810-bluebikes-tripdata.csv",
-        // "2018/201811-bluebikes-tripdata.csv",
+        "2018/201804-hubway-tripdata.csv",
+        "2018/201805-bluebikes-tripdata.csv",
+        "2018/201806-bluebikes-tripdata.csv",
+        "2018/201807-bluebikes-tripdata.csv",
+        "2018/201808-bluebikes-tripdata.csv",
+        "2018/201809-bluebikes-tripdata.csv",
+        "2018/201810-bluebikes-tripdata.csv",
+        "2018/201811-bluebikes-tripdata.csv",
         // "2018/201812-bluebikes-tripdata.csv",
         // "2019/201901-bluebikes-tripdata.csv",
         // "2019/201902-bluebikes-tripdata.csv",
         // "2019/201903-bluebikes-tripdata.csv",
-        // "2019/201904-bluebikes-tripdata.csv",
-        // "2019/201905-bluebikes-tripdata.csv",
-        // "2019/201906-bluebikes-tripdata.csv",
-        // "2019/201907-bluebikes-tripdata.csv",
-        // "2019/201908-bluebikes-tripdata.csv",
-        // "2019/201909-bluebikes-tripdata.csv",
-        // "2019/201910-bluebikes-tripdata.csv",
+        "2019/201904-bluebikes-tripdata.csv",
+        "2019/201905-bluebikes-tripdata.csv",
+        "2019/201906-bluebikes-tripdata.csv",
+        "2019/201907-bluebikes-tripdata.csv",
+        "2019/201908-bluebikes-tripdata.csv",
+        "2019/201909-bluebikes-tripdata.csv",
+        "2019/201910-bluebikes-tripdata.csv",
         "2019/201911-bluebikes-tripdata.csv",
         "2019/201912-bluebikes-tripdata.csv",
     ];
@@ -36,13 +36,24 @@ class DataHandler {
         console.log("Data constructor");
         this.status_label_id = status_label_id;
     }
+    statusType = null;
+    statusMessage = null;
+    loadingDone = false;
+    updateStatus() {
+        console.log("updating loading status", this.statusMessage)
+        if (this.statusMessage !== null) document.getElementById(this.status_label_id).innerText = this.statusMessage;
+        if (this.statusType !== null) document.getElementById(this.status_label_id).classList.add((this.statusType) ? "success" : "error");
+    }
     load() {
         return this.loadStations().then(() => {
             return this.loadRides();
         }).finally(() => {
+            console.log("finished loading", this.status_label_id)
             if (this.status_label_id) {
-                document.getElementById(this.status_label_id).innerText = (this._stations && this._rides) ? "Loaded" : "Error Loading";
-                document.getElementById(this.status_label_id).classList.add((this._stations && this._rides) ? "success" : "error");
+                this.loadingDone = true;
+                this.statusType = (this._stations && this._rides);
+                this.statusMessage = (this._stations && this._rides) ? "Loaded" : "Error Loading";
+                this.updateStatus();
             }
         });
     }
@@ -73,11 +84,21 @@ class DataHandler {
                 console.log("finished loading stations")
             });
     }
+    ridesLoaded = 1;
+    updateRideStatus() {
+        if (this.loadingDone) return;
+        this.statusMessage = `Loading (${this.ridesLoaded}/${this.files.length} files loaded)...`
+        this.updateStatus();
+    }
     loadRides() {
         let dataHandler = this;
         let USE_MIN = true;
         console.log("loading bikes")
-        return Promise.all([...this.files.map(f => d3.csv("data/" + (USE_MIN ? "min/" : "") + f, d3.autoType))])
+        return Promise.all([...this.files.map(f => d3.csv("data/" + (USE_MIN ? "min/" : "") + f, d3.autoType).then(res => {
+            this.ridesLoaded++;
+            this.updateRideStatus()
+            return res;
+        }))])
             .then(function (data) {
                 // process ride data
                 dataHandler._rides = data.flat(1);
@@ -89,19 +110,19 @@ class DataHandler {
                     if (d.starttime) {
                         // add age attribute to data
                         d.age = Number(d.starttime.slice(0, 4)) - d["birth year"];
-                        if(d.starttime.length > 20){
-                            d.starttime = dateParser(d.starttime.slice(0,19)); //slice off the milliseconds... ?
+                        if (d.starttime.length > 20) {
+                            d.starttime = dateParser(d.starttime.slice(0, 19)); //slice off the milliseconds... ?
                         }
-                        else{
+                        else {
                             d.starttime = dateParser(d.starttime);
                         }
 
                     }
                     if (d.stoptime) {
-                        if(d.stoptime.length > 20){
-                            d.stoptime = dateParser(d.stoptime.slice(0,19)); //slice off the milliseconds... ?
+                        if (d.stoptime.length > 20) {
+                            d.stoptime = dateParser(d.stoptime.slice(0, 19)); //slice off the milliseconds... ?
                         }
-                        else{
+                        else {
                             d.stoptime = dateParser(d.stoptime);
                         }
                     }
