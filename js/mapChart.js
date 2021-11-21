@@ -63,7 +63,9 @@ class BlueBikeMap {
             vis.stationCoords.push([station.Latitude, station.Longitude])
         })
 
-        console.log(vis.stationCoords)
+        console.log(vis.stationCoords[0])
+
+        vis.map.setView(vis.stationCoords[0], 13, {animation: false})
 
         vis.updateVis()
     }
