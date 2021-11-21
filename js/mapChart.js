@@ -70,27 +70,7 @@ class BlueBikeMap {
     updateVis() {
         let vis = this
 
-/*
-        // Loop over station data and create markers for each station the chosen bike visited
-        vis.visitedStations.forEach(function (d) {
-                let marker = L.marker([d.Latitude, d.Longitude])
-                    .bindPopup(`Station: ${d.Name}`)
-                vis.stationGroup.addLayer(marker)
-        })
-
-        // TODO: Make this part interactive
-        // Add lines between stations
-        vis.stationLines = L.polyline(
-            vis.stationCoords,
-            {
-                color: 'blue',
-                opacity: 0.6,
-                weight: 8
-            }
-        ).addTo(vis.map);
-
- */
-        // Initialize markers and lines
+    // Initialize markers and lines
         vis.marker = []
         for (let i=0; i<vis.visitedStations.length; i++) {
             vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude])
