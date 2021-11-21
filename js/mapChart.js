@@ -36,10 +36,11 @@ class BlueBikeMap {
         let vis = this
 
         // Look at bike 1 and get the stations it visited
-        vis.bike1 = vis.bikeData[1]
-        console.log("1", vis.bike1)
+        vis.randId = d3.randomInt(1, vis.bikeData.length)()
+        vis.bike = vis.bikeData[vis.randId]
+        console.log(vis.bike)
 
-        vis.startStationIDs = vis.bike1.map(trip => trip["start station id"])
+        vis.startStationIDs = vis.bike.map(trip => trip["start station id"])
         console.log(vis.startStationIDs)
 
         // Get station objects in order of arrival
