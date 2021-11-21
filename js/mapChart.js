@@ -70,7 +70,7 @@ class BlueBikeMap {
     updateVis() {
         let vis = this
 
-
+/*
         // Loop over station data and create markers for each station the chosen bike visited
         vis.visitedStations.forEach(function (d) {
                 let marker = L.marker([d.Latitude, d.Longitude])
@@ -89,17 +89,54 @@ class BlueBikeMap {
             }
         ).addTo(vis.map);
 
+ */
+        // Initialize markers and lines
+        vis.marker = []
+        for (let i=0; i<vis.visitedStations.length; i++) {
+            vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude])
+                .bindPopup(`Station: ${vis.visitedStations[i].Name}`)
+        }
+        vis.map.addLayer(vis.marker[0])
+
+        vis.stationLines = []
+        for (let i=0; i<vis.visitedStations.length-1; i++) {
+            vis.stationLines[i] = L.polyline(
+                [vis.stationCoords[i], vis.stationCoords[i+1]],
+                {
+                    color: 'blue',
+                    opacity: 0.6,
+                    weight: 8
+                }
+            )
+        }
+
         // Create click listeners for buttons
+        vis.counter = 0
+
         vis.prevListener = d3.select("#previous-button").on("click", previousStop)
         function previousStop() {
-            vis.map.removeLayer(vis.stationGroup)
-            vis.map.removeLayer(vis.stationLines)
+            if (vis.counter === 0) {
+                return false
+            }
+            else {
+                vis.map.removeLayer(vis.marker[vis.counter])
+                vis.map.removeLayer(vis.stationLines[vis.counter-1])
+                vis.counter -= 1
+                return true
+            }
         }
 
         vis.nextListener = d3.select("#next-button").on("click", nextStop)
         function nextStop() {
-            vis.map.addLayer(vis.stationGroup)
-            vis.map.addLayer(vis.stationLines)
+            if (vis.counter === vis.visitedStations.length - 1) {
+                return false
+            }
+            else {
+                vis.map.addLayer(vis.marker[vis.counter + 1])
+                vis.map.addLayer(vis.stationLines[vis.counter])
+                vis.counter += 1
+                return true
+            }
         }
     }
 }
