@@ -12,12 +12,12 @@ class DataHandler {
         "2018/201803_hubway_tripdata.csv",
         "2018/201804-hubway-tripdata.csv",
         "2018/201805-bluebikes-tripdata.csv",
-        "2018/201806-bluebikes-tripdata.csv",
-        "2018/201807-bluebikes-tripdata.csv",
-        "2018/201808-bluebikes-tripdata.csv",
-        "2018/201809-bluebikes-tripdata.csv",
-        "2018/201810-bluebikes-tripdata.csv",
-        "2018/201811-bluebikes-tripdata.csv",
+        // "2018/201806-bluebikes-tripdata.csv",
+        // "2018/201807-bluebikes-tripdata.csv",
+        // "2018/201808-bluebikes-tripdata.csv",
+        // "2018/201809-bluebikes-tripdata.csv",
+        // "2018/201810-bluebikes-tripdata.csv",
+        // "2018/201811-bluebikes-tripdata.csv",
         // "2018/201812-bluebikes-tripdata.csv",
         // "2019/201901-bluebikes-tripdata.csv",
         // "2019/201902-bluebikes-tripdata.csv",
@@ -44,17 +44,24 @@ class DataHandler {
         if (this.statusMessage !== null) document.getElementById(this.status_label_id).innerText = this.statusMessage;
         if (this.statusType !== null) document.getElementById(this.status_label_id).classList.add((this.statusType) ? "success" : "error");
     }
+    updateStatusCompete() {
+        if (this.status_label_id) {
+            this.loadingDone = true;
+            this.statusType = !!(this._stations && this._rides);
+            this.statusMessage = (this._stations && this._rides) ? "Loaded" : "Error Loading";
+            console.log("finished loading files update", this.statusType, this.statusMessage);
+            this.updateStatus();
+        }
+    }
     load() {
         return this.loadStations().then(() => {
             return this.loadRides();
+        }).then((res) => {
+            this.updateStatusCompete();
+            return res;
         }).finally(() => {
             console.log("finished loading", this.status_label_id)
-            if (this.status_label_id) {
-                this.loadingDone = true;
-                this.statusType = (this._stations && this._rides);
-                this.statusMessage = (this._stations && this._rides) ? "Loaded" : "Error Loading";
-                this.updateStatus();
-            }
+            this.updateStatusCompete(); 
         });
     }
     loadStations() {
