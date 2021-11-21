@@ -219,40 +219,11 @@ class DataHandler {
             groupedBikesSorted[d[0].bikeid] = sortedBike
         })
 
+        // filter out undefined values
+        let groupedBikesFinal = groupedBikesSorted.filter((a) => a)
 
-
-        console.log("TRIPS GROUPED BY BIKE ID, CHRONOLOGICAL ORDER", groupedBikesSorted)
-        return groupedBikesSorted
-        
-        /*
-        let dataHandler = this
-        let groupedBikes = []
-
-        dataHandler._rides.forEach(d => {
-            let bikeID = d.bikeid
-
-            if (groupedBikes[bikeID]) {
-                groupedBikes[bikeID].push(d)
-            }
-            else {
-                groupedBikes[bikeID] = [d]
-            }
-        })
-
-        let groupedBikesSorted = []
-
-        groupedBikes.forEach(d => {
-            let sortedBike = d.sort(function (a, b) {
-                return a.starttime - b.starttime
-            });
-            groupedBikesSorted[d[0].bikeid] = sortedBike
-        })
-
-
-
-        console.log("TRIPS GROUPED BY BIKE ID, CHRONOLOGICAL ORDER", groupedBikesSorted)
-        return groupedBikesSorted
-         */
+        console.log("TRIPS GROUPED BY BIKE ID, CHRONOLOGICAL ORDER", groupedBikesFinal)
+        return groupedBikesFinal
     }
 
     count_filters = {
