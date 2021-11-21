@@ -247,9 +247,11 @@ class DataHandler {
             groupedBikesSorted[d[0].bikeid] = sortedBike
         })
 
+        // filter out undefined values
+        let groupedBikesFinal = groupedBikesSorted.filter((a) => a)
 
-        console.log("TRIPS GROUPED BY BIKE ID, CHRONOLOGICAL ORDER", groupedBikesSorted)
-        return groupedBikesSorted
+        console.log("TRIPS GROUPED BY BIKE ID, CHRONOLOGICAL ORDER", groupedBikesFinal)
+        return groupedBikesFinal
     }
 
     count_filters = {

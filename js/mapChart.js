@@ -28,6 +28,8 @@ class BlueBikeMap {
         // Create empty station group
         vis.stationGroup = L.layerGroup().addTo(vis.map)
 
+        // Create time format
+        vis.timeFormat = d3.timeFormat("%m/%d/%Y %I:%M %p")
 
         vis.wrangleData()
     }
@@ -36,49 +38,117 @@ class BlueBikeMap {
         let vis = this
 
         // Look at bike 1 and get the stations it visited
-        vis.bike1 = vis.bikeData[1]
-        console.log("1", vis.bike1)
+        vis.randId = d3.randomInt(1, vis.bikeData.length)()
+        vis.bike = vis.bikeData[vis.randId]
+        console.log(vis.bike)
 
-        vis.startStationIDs = vis.bike1.map(trip => trip["start station id"])
+        vis.startStationIDs = vis.bike.map(trip => trip["start station id"])
+        console.log(vis.startStationIDs)
 
-        // Get coords of these stations
-        vis.stationCoords = []
-        vis.startStationIDs.forEach(function (station) {
-            vis.stationData.forEach(function (d) {
-                if (d["Id"] === station) {
-                    vis.stationCoords.push([d.Latitude, d.Longitude])
+        // Get station objects in order of arrival
+        vis.visitedStations = []
+        vis.startStationIDs.forEach(function (visitedId){
+             vis.stationData.forEach(function (station) {
+                if (visitedId === station["Id"]) {
+                    if (station["Number"] != null) {
+                        vis.visitedStations.push(station)
+                    }
                 }
             })
         })
 
+        console.log("Visited Stations", vis.visitedStations)
 
-        console.log(vis.stationCoords)
+        // Get array of coords for ease of use later
+        vis.stationCoords = []
+        vis.visitedStations.forEach(function (station) {
+            vis.stationCoords.push([station.Latitude, station.Longitude])
+        })
+
+        console.log(vis.stationCoords[0])
+
+        vis.map.setView(vis.stationCoords[0], 13, {animation: false})
+
         vis.updateVis()
     }
 
     updateVis() {
         let vis = this
 
-        // Loop over station data and create markers for each station the chosen bike visited
-        vis.stationData.forEach(function (d) {
+    // Initialize markers and lines
+        vis.marker = []
+        for (let i=0; i<vis.visitedStations.length; i++) {
+            vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude])
+                .bindPopup(`Station: ${vis.visitedStations[i].Name} <br>
+                    Departure Time: ${vis.timeFormat(vis.bike[i].starttime)} <br>
+                    Trip Duration: ${parseInt(vis.bike[i].tripduration / 60) + " minutes " + vis.bike[i].tripduration % 60 + " seconds"}`)
+        }
+        vis.map.addLayer(vis.marker[0])
 
-            if (vis.startStationIDs.includes(d["Id"])) {
-                let marker = L.marker([d.Latitude, d.Longitude])
-                    .bindPopup(`Station: ${d.Name}`)
-                vis.stationGroup.addLayer(marker)
-            }
-        })
+        vis.stationLines = []
+        for (let i=0; i<vis.visitedStations.length-1; i++) {
+            vis.stationLines[i] = L.polyline(
+                [vis.stationCoords[i], vis.stationCoords[i+1]],
+                {
+                    color: 'blue',
+                    opacity: 0.6,
+                    weight: 8
+                }
+            )
+        }
 
-        // TODO: Make this part interactive
-        // Add lines between stations
-        vis.stationLines = L.polyline(
-            vis.stationCoords,
-            {
-                color: 'blue',
-                opacity: 0.6,
-                weight: 8
+        // Create click listeners for buttons
+        vis.counter = 0
+
+        vis.prevListener = d3.select("#previous-button").on("click", previousStop)
+        function previousStop() {
+            if (vis.counter === 0) {
+                return false
             }
-        ).addTo(vis.map);
+            else {
+                vis.map.removeLayer(vis.marker[vis.counter])
+                vis.map.removeLayer(vis.stationLines[vis.counter-1])
+                vis.counter -= 1
+                vis.map.setView([
+                        vis.visitedStations[vis.counter].Latitude,
+                        vis.visitedStations[vis.counter].Longitude],
+                    13, {animation: false}
+                )
+                return true
+            }
+        }
+
+        vis.nextListener = d3.select("#next-button").on("click", nextStop)
+        function nextStop() {
+            if (vis.counter === vis.visitedStations.length - 1) {
+                return false
+            }
+            else {
+                vis.map.addLayer(vis.marker[vis.counter + 1])
+                vis.map.addLayer(vis.stationLines[vis.counter])
+                vis.counter += 1
+                vis.map.setView([
+                    vis.visitedStations[vis.counter].Latitude,
+                    vis.visitedStations[vis.counter].Longitude],
+                    13, {animation: false}
+                )
+                return true
+            }
+        }
+
+        vis.generatorListener = d3.select("#generator-button").on("click", regenBike)
+        function regenBike() {
+            vis.marker.forEach(function (d) {
+                vis.map.removeLayer(d)
+            })
+
+            vis.stationLines.forEach(function (d) {
+                vis.map.removeLayer(d)
+            })
+
+            vis.wrangleData()
+            return true
+        }
 
     }
 }
