@@ -1,6 +1,7 @@
 let selectedCategory; // global variable holding form selection - num_Rides or avg_trip_dur
 let generalLine, memberLine, genderLine, ageLine, hourBar; // visuals for dashboard -- defined globally so that categoryChange function can be called
 let bikeMap;
+let stationDashboard;
 let barCharts;
 
 function init() {
@@ -16,6 +17,8 @@ function init() {
 
         let arrivalData = dataHandler.groupStationArrivals()
         let departureData = dataHandler.groupStationDepartures()
+
+        stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.360082, -71.058880])
 
         // barCharts
         let ridesData = dataHandler.groupStation();
