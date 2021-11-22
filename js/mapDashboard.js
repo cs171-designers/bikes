@@ -44,7 +44,7 @@ class BlueBikeMapDashboard {
             if (station.Id in vis.arrivalData) {
                 count = vis.arrivalData[station.Id].length
             }
-            vis.arrivalSums.push([[station.Latitude, station.Longitude], count])
+            vis.arrivalSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
         console.log(vis.arrivalSums)
 
@@ -54,9 +54,11 @@ class BlueBikeMapDashboard {
             if (station.Id in vis.departureData) {
                 count = vis.departureData[station.Id].length
             }
-            vis.departureSums.push([[station.Latitude, station.Longitude], count])
+            vis.departureSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
         console.log(vis.departureSums)
+
+        vis.totalSums = []
 
         vis.updateVis()
     }
