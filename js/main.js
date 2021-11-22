@@ -11,19 +11,19 @@ function init() {
     // load data
     dataHandler.load().then(() => {
 
-        // // map
-        // let bikeData = dataHandler.groupBikeID()
-        // bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
-        //
-        // let arrivalData = dataHandler.groupStationArrivals()
-        // let departureData = dataHandler.groupStationDepartures()
-        //
-        // stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.360082, -71.058880])
-        //
-        // // barCharts
-        // let ridesData = dataHandler.groupStation();
-        // let stationData = dataHandler.getStationCoords();
-        // // barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
+        // map
+        let bikeData = dataHandler.groupBikeID()
+        bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
+
+        let arrivalData = dataHandler.groupStationArrivals()
+        let departureData = dataHandler.groupStationDepartures()
+
+        stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.360082, -71.058880])
+
+        // barCharts
+        let ridesData = dataHandler.groupStation();
+        let stationData = dataHandler.getStationCoords();
+        // barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();

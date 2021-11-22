@@ -59,6 +59,18 @@ class BlueBikeMapDashboard {
         console.log(vis.departureSums)
 
         vis.totalSums = []
+        vis.stationData.forEach(station => {
+            let count = 0;
+            if (station.Id in vis.departureData) {
+                count = vis.departureData[station.Id].length
+            }
+
+            if (station.Id in vis.arrivalData) {
+                count += vis.arrivalData[station.Id].length
+            }
+            vis.totalSums.push([station.Id, [station.Latitude, station.Longitude], count])
+        })
+        console.log(vis.totalSums)
 
         vis.updateVis()
     }
