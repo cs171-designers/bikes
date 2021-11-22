@@ -3,6 +3,7 @@ let generalLine, memberLine, genderLine, ageLine, hourBar; // visuals for dashbo
 let bikeMap;
 let stationDashboard;
 let barCharts;
+let selectedDashboardView;
 
 function init() {
     // console.log("instantiating Data");
@@ -17,8 +18,9 @@ function init() {
 
         let arrivalData = dataHandler.groupStationArrivals()
         let departureData = dataHandler.groupStationDepartures()
+        selectedDashboardView = document.getElementById("map-dashboard-dropdown").value
 
-        stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.360082, -71.058880])
+        stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.374443, -71.116943])
 
         // barCharts
         let ridesData = dataHandler.groupStation();

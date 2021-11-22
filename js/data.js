@@ -50,7 +50,7 @@ class DataHandler {
         // "2018/201811-bluebikes-tripdata.csv",
         // "2018/201812-bluebikes-tripdata.csv",
         // "2019/201901-bluebikes-tripdata.csv",
-        "2019/201902-bluebikes-tripdata.csv",
+        // "2019/201902-bluebikes-tripdata.csv",
         "2019/201903-bluebikes-tripdata.csv",
         "2019/201904-bluebikes-tripdata.csv",
         "2019/201905-bluebikes-tripdata.csv",
