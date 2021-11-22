@@ -16,7 +16,7 @@ class StationBarChart {
         let vis = this;
 
         // margin conventions
-        vis.margin = { top: 10, right: 50, bottom: 100, left: 50 };
+        vis.margin = { top: 10, right: 50, bottom: 100, left: 70 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.top - vis.margin.bottom;
 
@@ -72,29 +72,54 @@ class StationBarChart {
         console.log("LARA STATION DATA", vis.stationData)
         console.log("LARA RIDES DATA", vis.ridesData)
         let sorted = []
+        let rideLengths = {}
+
+
 
 
         vis.ridesData.forEach(function (d) {
             let numTrips = d.length;
+            // console.log(numTrips)
             let stationID = d[0]['start station id'].toString()
+            // console.log(stationID)
+            rideLengths[stationID] = numTrips
+        })
+        console.log(rideLengths)
 
-            // console.log("data barcharts", vis.stationData, vis.stationData[stationID], stationID, d)
-            let stationLatitude = vis.stationData[stationID][0]['Latitude']
-            let stationLongitude = vis.stationData[stationID][0]['Longitude']
-            let name = vis.stationData[stationID][0]['Name']
-            // console.log(stationLatitude)
-            sorted.push({id: stationID, name: name,
+        for (let stationID in vis.stationData) {
+            // console.log(stationID) // gives you 10 or 17 or whatever
+            let numTrips = rideLengths[stationID]
+            console.log(numTrips)
+            if (numTrips !== undefined) {
+                sorted.push({id: stationID,
+                    name: vis.stationData[stationID][0]['Name'],
                 numTrips: numTrips,
-                lat: stationLatitude, long: stationLongitude})
+                lat: vis.stationData[stationID][0]['Latitude'],
+                    long: vis.stationData[stationID][0]['Longitude']})
+
+
+            }
+
+            // sorted.push({id: stationID, name: name,
+            //     numTrips: numTrips,
+            //     lat: stationLatitude, long: stationLongitude})
             // console.log(numTrips);
 
-            // vis.stationData[d]
+        }
+        console.log(sorted)
 
-
-
-
-
-        });
+        //     // console.log("data barcharts", vis.stationData, vis.stationData[stationID], stationID, d)
+        //     let stationLatitude = vis.stationData[stationID][0]['Latitude']
+        //     let stationLongitude = vis.stationData[stationID][0]['Longitude']
+        //     let name = vis.stationData[stationID][0]['Name']
+        //     // console.log(stationLatitude)
+        //     sorted.push({id: stationID, name: name,
+        //         numTrips: numTrips,
+        //         lat: stationLatitude, long: stationLongitude})
+        //     // console.log(numTrips);
+        //
+        //     // vis.stationData[d]
+        // });
         // console.log(sorted)
 
         vis.newsorted = sorted.sort((a,b)=> b.numTrips - a.numTrips);
@@ -122,7 +147,7 @@ class StationBarChart {
             .attr("transform", "translate(0," + vis.height + ")")
             .call(vis.xAxis)
             .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
+            .attr("transform", "translate(-10,0)rotate(-30)")
             .style("text-anchor", "end");
 
         vis.y.domain([0, d3.max(vis.topFiveStations, function (d) {
