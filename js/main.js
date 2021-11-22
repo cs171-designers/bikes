@@ -20,7 +20,7 @@ function init() {
         let departureData = dataHandler.groupStationDepartures()
         selectedDashboardView = document.getElementById("map-dashboard-dropdown").value
 
-        stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.360082, -71.058880])
+        stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.374443, -71.116943])
 
         // barCharts
         let ridesData = dataHandler.groupStation();
