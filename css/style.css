@@ -96,3 +96,7 @@ h5 {
 p {
     margin-bottom: 1rem;
 }
+
+body {
+    font-family: Helvetica;
+}
