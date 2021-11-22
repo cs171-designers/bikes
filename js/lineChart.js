@@ -445,7 +445,7 @@ class LineChart {
 
         // ensure sorted by day
         vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
-        console.log("displayData", vis.displayData);
+        //console.log("displayData", vis.displayData);
 
         vis.updateVis();
 
@@ -485,6 +485,8 @@ class LineChart {
                 .x(d => vis.x(d.date))
                 .y(d => vis.y(d[selectedCategory]));
 
+            //console.log("all", vis.displayData.map(d => d[selectedCategory]))
+
             // Call the line path function and update the path
             vis.linePath
                 // .datum(vis.displayData)
@@ -510,7 +512,8 @@ class LineChart {
             vis.dataLine_sub = d3.line()
                 .x(d => vis.x(d.date))
                 .y(d => vis.y(d[selectedCategory + "_user_subscriber"]));
-            console.log(selectedCategory + "_user_subscriber")
+
+            //console.log("subscriber", vis.displayData.map(d => d[selectedCategory + "_user_subscriber"]))
 
             vis.linePath_sub
                 .transition().duration(200).style("opacity",0)
@@ -521,6 +524,9 @@ class LineChart {
             vis.dataLine_cus = d3.line()
                 .x(d => vis.x(d.date))
                 .y(d => vis.y(d[selectedCategory + "_user_customer"]));
+
+            //console.log("customer", vis.displayData.map(d => d[selectedCategory + "_user_customer"]))
+
 
             vis.linePath_cus
                 .transition().duration(200).style("opacity",0)
@@ -546,6 +552,8 @@ class LineChart {
                 .x(d => vis.x(d.date))
                 .y(function(d) {return vis.y(d[selectedCategory + "_gen_unknown"])});
 
+            //console.log("gen_unknown", vis.displayData.map(d => d[selectedCategory + "_gen_unknown"]))
+
             vis.linePath_un
                 .transition().duration(200).style("opacity",0)
                 .transition().duration(400).attr("d", vis.dataLine_un(vis.displayData)) //pass in data for line generation
@@ -556,6 +564,8 @@ class LineChart {
                 .x(d => vis.x(d.date))
                 .y(function(d){return vis.y(d[selectedCategory + "_gen_female"])});
 
+            //console.log("gen_female", vis.displayData.map(d => d[selectedCategory + "_gen_female"]))
+
             vis.linePath_f
                 .transition().duration(200).style("opacity",0)
                 .transition().duration(400).attr("d", vis.dataLine_f(vis.displayData))
@@ -565,6 +575,9 @@ class LineChart {
             vis.dataLine_m = d3.line()
                 .x(d => vis.x(d.date))
                 .y(d => vis.y(d[selectedCategory + "_gen_male"]));
+
+            //console.log("gen_male", vis.displayData.map(d => d[selectedCategory + "_gen_male"]))
+
 
             vis.linePath_m
                 .transition().duration(200).style("opacity",0)
