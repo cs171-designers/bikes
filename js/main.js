@@ -2,7 +2,8 @@ let selectedCategory; // global variable holding form selection - num_Rides or a
 let generalLine, memberLine, genderLine, ageLine, hourBar; // visuals for dashboard -- defined globally so that categoryChange function can be called
 let bikeMap;
 let stationDashboard;
-let barCharts;
+let barChartsMost;
+let barChartsLeast;
 let selectedDashboardView;
 
 function init() {
@@ -25,7 +26,8 @@ function init() {
         // barCharts
         let ridesData = dataHandler.groupStation();
         let stationData = dataHandler.getStationCoords();
-        barCharts = new StationBarChart("trip-length-barchart", ridesData, stationData) // , variable)
+        barChartsMost = new StationBarChart("trip-length-barchart-most", ridesData, stationData, true); // , variable)
+        barChartsLeast = new StationBarChart("trip-length-barchart-least", ridesData, stationData, false);
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();

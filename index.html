@@ -104,7 +104,7 @@
 
 		<div class="row">
 			<p>
-				From this map, we see ...
+				From this map, we see ... stations are most popular.
 			</p>
 		</div>
 
@@ -117,7 +117,10 @@
 
 			</div>
 			<div class="col-md-6">
-				<div id="trip-length-barchart"></div>
+				<div id="trip-length-barchart-most"></div>
+			</div>
+			<div class="col-md-6">
+				<div id="trip-length-barchart-least"></div>
 			</div>
 		</div>
 
@@ -148,6 +151,14 @@
 				<div id="age-user-pie-chart"></div>
 			</div>
 		</div>
+		<div class="row">
+			<p>
+				From these pie charts, we see that most BLUEbike users are Males, then Females. Users with unspecified
+				gender are likely customers who were not registered members, so their demographic information is unavailable.
+
+				[...]
+			</p>
+		</div>
 
 		<!-- Dashboard view -- 1 row, 2 columns-->
 		<div class="row">
@@ -157,7 +168,7 @@
 				into the demographics of Bluebikes users to see how their usage varies.
 		</div>
 
-		<h2> Explore Breakdown by User Demographics </h2>
+		<h5> Explore Breakdown by User Demographics </h5>
 		<div id="formContainer">
 			<!-- Select box to choose the ranking type -->
 			<form class="form-inline">
@@ -200,6 +211,20 @@
 
 	</div>
 
+	<div class="row">
+		<p>
+			Some insights from the dashboard:
+			
+		</p>
+	</div>
+
+	<div>
+		<h5>Conclusions</h5>
+		<p>
+			...
+		</p>
+	</div>
+
 
 	<!-- embedding JS libraries -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
@@ -211,9 +236,9 @@
 	<script src="js/leaflet.js"></script>
 
 	<!-- own js files -->
+	<script src="js/data.js"></script>
 	<script src="js/mapChart.js"></script>
 	<script src="js/mapDashboard.js"></script>
-	<script src="js/data.js"></script>
 	<script src="js/lineChart.js"></script>
 	<script src="js/stationBarCharts.js"></script>
 	<script src="js/dashBarChart.js"></script>

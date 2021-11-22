@@ -1,12 +1,13 @@
 // create bar chart for trip duration
 
 class StationBarChart {
-    constructor(parentElement, ridesData, stationData){
+    constructor(parentElement, ridesData, stationData, sortByMost){
         // , variable) {
         this.parentElement = parentElement;
         this.ridesData = ridesData;
         this.stationData = stationData;
         this.displayData = ridesData;
+        this.sortByMost = sortByMost;
         // this.variable = variable;
         // this.eventHandler = _eventHandler;
 
@@ -121,17 +122,23 @@ class StationBarChart {
         //     // vis.stationData[d]
         // });
         // console.log(sorted)
+        if (vis.sortByMost) {
+            vis.newsorted = sorted.sort((a,b)=> b.numTrips - a.numTrips);
+        }
+        else {
+            vis.newsorted = sorted.sort((a,b)=> a.numTrips - b.numTrips);
+        }
 
-        vis.newsorted = sorted.sort((a,b)=> b.numTrips - a.numTrips);
+        // vis.newsorted = sorted.sort((a,b)=> b.numTrips - a.numTrips);
         // console.log("sorted", vis.newsorted);
 
         vis.topFiveStations = vis.newsorted.slice(0,5)
         // console.log(vis.topFiveStations)
 
 
-        vis.topFiveStations.forEach(function(station) {
-
-        })
+        // vis.topFiveStations.forEach(function(station) {
+        //
+        // })
 
         vis.updateVis();
 
