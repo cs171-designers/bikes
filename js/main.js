@@ -13,6 +13,10 @@ function init() {
     // load data
     dataHandler.load().then(() => {
 
+        // $(document).ready(function() {
+        //     $('#pagepiling').pagepiling();
+        // });
+
         // map
         let bikeData = dataHandler.groupBikeID()
         bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
