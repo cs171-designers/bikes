@@ -4,22 +4,22 @@ Id,Number,Name,Latitude,Longitude,District,Public,Total docks
 330,S32023,30 Dane St,42.38100143038052,-71.10402522613185,Somerville,Yes,15
 116,M32026,359 Broadway - Broadway at Fayette Street,42.370803,-71.104412,Cambridge,Yes,23
 446,B32060,700 Commonwealth Ave.,42.34960945333059,-71.10391523698127,Boston,Yes,12
-398,M32064,75 Binney St,42.36550728505653,-71.0801375997653,Cambridge,Yes,19
-318,M32059,Ames St at Broadway,42.3636929,-71.0875672,Cambridge,Yes,19
-107,M32037,Ames St at Main St,42.3625,-71.08822,Cambridge,Yes,19
 10,A32003,B.U. Central - 725 Comm. Ave.,42.350406,-71.108279,Boston,Yes,11
-53,B32016,Beacon St at Massachusetts Ave,42.35082680669095,-71.0898108780384,Boston,Yes,19
+360,B32055,Bartlett St at John Elliot Sq,42.3294633,-71.0901582,Boston,Yes,15
 79,S32003,Beacon St at Washington / Kirkland,42.37842,-71.105668,Somerville,Yes,19
-437,M32067,Berkshire Street at Cambridge Street,42.37207657915397,-71.08995433905875,Cambridge,Yes,19
 400,B32058,Big Papi Station,42.34734473177431,-71.1001680795016,Boston,Yes,19
-117,M32027,Binney St / Sixth St,42.36608797388682,-71.08633603909765,Cambridge,Yes,19
-61,C32008,Boylston St at Fairfield St,42.348762,-71.082383,Boston,Yes,19
-55,B32018,Boylston St at Massachusetts Ave,42.347265,-71.088088,Boston,Yes,15
-225,M32052,Cambridge Dept. of Public Works -147 Hampshire St.,42.37119727759414,-71.09759867191315,Cambridge,Yes,19
+342,B32034,Boylston St at Jersey St,42.344650628878306,-71.09732501226972,Boston,Yes,15
+30,B32013,Brigham Circle - Francis St at Huntington Ave,42.33462893055976,-71.10407917767589,Boston,Yes,15
+15,A32005,Brighton Mills - 370 Western Ave,42.3615457081725,-71.13776206970215,Boston,Yes,15
+193,K32005,Brookline Town Hall,42.33376472623494,-71.12046446660315,Brookline,Yes,15
+86,K32003,Brookline Village - Station Street at MBTA,42.3329989199507,-71.11634425762531,Brookline,Yes,15
+122,B32020,Burlington Ave at Brookline Ave,42.345733,-71.100694,Boston,Yes,15
 96,M32013,Cambridge Main Library at Broadway / Trowbridge St,42.373379,-71.111075,Cambridge,Yes,19
-95,M32007,Cambridge St - at Columbia St / Webster Ave,42.372969,-71.094445,Cambridge,Yes,15
 76,M32012,Central Sq Post Office / Cambridge City Hall at Mass Ave / Pleasant St,42.366426,-71.105495,Cambridge,Yes,17
 68,M32011,Central Square at Mass Ave / Essex St,42.36507,-71.1031,Cambridge,Yes,19
+3,B32006,Colleges of the Fenway - Fenway at Avenue Louis Pasteur,42.34011512249236,-71.10061883926392,Boston,Yes,15
+9,A32002,Commonwealth Ave at Agganis Way,42.35169201885973,-71.11903488636017,Boston,Yes,15
+226,K32006,Commonwealth Ave At Babcock St,42.35154734791375,-71.12126246094704,Brookline,Yes,15
 71,S32004,Conway Park - Somerville Avenue,42.383405,-71.107593,Somerville,Yes,23
 139,M32030,Dana Park,42.361780439606044,-71.10809952020645,Cambridge,Yes,19
 361,B32037,Deerfield St at Commonwealth Ave,42.34924376955301,-71.09728209692548,Boston,Yes,19
@@ -27,48 +27,55 @@ Id,Number,Name,Latitude,Longitude,District,Public,Total docks
 89,M32020,Harvard Law School at Mass Ave / Jarvis St,42.379011,-71.119945,Cambridge,Yes,19
 73,M32017,Harvard Square at Brattle St / Eliot St,42.373231,-71.120886,Cambridge,Yes,15
 74,M32018,Harvard Square at Mass Ave/ Dunster,42.373268,-71.118579,Cambridge,Yes,19
-335,M32055,Harvard St at Greene-Rose Heritage Park,42.36599432867437,-71.09522221614498,Cambridge,Yes,19
 108,M32023,Harvard University / SEAS Cruft-Pierce Halls at 29 Oxford St,42.377945,-71.116865,Cambridge,Yes,17
 110,M32021,Harvard University Gund Hall at Quincy St / Kirkland S,42.376369,-71.114025,Cambridge,Yes,15
 87,M32014,Harvard University Housing - 115 Putnam Ave at Peabody Terrace,42.366621,-71.114214,Cambridge,Yes,15
 104,M32024,Harvard University Radcliffe Quadrangle at Shepard St / Garden St,42.380287,-71.125107,Cambridge,Yes,19
 97,M32038,Harvard University River Houses at DeWolfe St / Cowperthwaite St,42.36919031768079,-71.11714124679565,Cambridge,Yes,19
+14,B32003,HMS/HSPH - Avenue Louis Pasteur at Longwood Ave,42.3374174845973,-71.10286116600037,Boston,Yes,21
+376,A32040,Honan Library,42.36027370454934,-71.12852452327388,Boston,Yes,15
+331,B32033,Huntington Ave at Mass Art,42.336585554561154,-71.0988699646623,Boston,Yes,15
 381,M32062,Inman Square at Springfield St.,42.37438408515815,-71.1001574621514,Cambridge,Yes,19
 29,A32011,Innovation Lab - 125 Western Ave at Batten Way,42.363732,-71.124565,Boston,Yes,15
-141,M32032,Kendall Street,42.363560158429884,-71.08216792345047,Cambridge,Yes,15
-189,M32004,Kendall T,42.362427842912396,-71.08495473861694,Cambridge,Yes,23
+131,E32006,Jackson Square T Stop,42.32293117195949,-71.10014140605927,Boston,Yes,18
 33,B32010,Kenmore Square,42.348706,-71.097009,Boston,Yes,27
-413,M32065,Kennedy-Longfellow School 158 Spring St,42.36955297756508,-71.08579014980933,Cambridge,Yes,19
-75,M32009,Lafayette Square at Mass Ave / Main St / Columbia St,42.36346469304347,-71.10057324171066,Cambridge,Yes,15
 176,M32039,Lesley University,42.38674802045056,-71.11901879310608,Cambridge,Yes,15
-380,M32061,Mass Ave at Albany St,42.36135837662249,-71.09670273977825,Cambridge,Yes,18
-67,M32006,MIT at Mass Ave / Amherst St,42.3581,-71.093198,Cambridge,Yes,27
-178,M32041,MIT Pacific St at Purrington St,42.35957320109044,-71.10129475593567,Cambridge,Yes,19
-80,M32005,MIT Stata Center at Vassar St / Main St,42.3621312344991,-71.09115600585936,Cambridge,Yes,35
-179,M32042,MIT Vassar St,42.355601213279265,-71.10394477844238,Cambridge,Yes,25
+11,A32004,Longwood Ave at Binney St,42.338629,-71.1065,Boston,Yes,15
+105,M32022,Lower Cambridgeport at Magazine St / Riverside Rd,42.357218503176526,-71.1138716340065,Cambridge,Yes,19
+403,K32012,Marion St at Harvard St,42.33978052668946,-71.12133350232398,Brookline,Yes,15
 180,M32043,Mt Auburn,42.37478628706384,-71.13320231437683,Cambridge,Yes,19
-52,B32000,Newbury St at Hereford St,42.348717,-71.085954,Boston,Yes,23
-72,M32003,One Broadway / Kendall Sq at Main St / 3rd St,42.36224178650923,-71.0831107199192,Cambridge,Yes,23
-91,M32002,One Kendall Square at Hampshire St / Portland St,42.366277,-71.09169,Cambridge,Yes,19
-228,M32053,One Memorial Drive,42.361619320766856,-71.0804355052096,Cambridge,Yes,19
+5,B32012,Northeastern University - North Parking Lot,42.341814,-71.090179,Boston,Yes,15
+359,B32036,One Brigham Circle,42.333922701369964,-71.10446508982932,Boston,Yes,15
+41,A32012,Packard's Corner - Commonwealth Ave at Brighton Ave,42.352261,-71.123831,Boston,Yes,27
+19,A32008,Park Dr at Buswell St,42.347241,-71.105301,Boston,Yes,15
 377,S32034,Perry Park,42.37927324600841,-71.10341902831351,Somerville,Yes,19
 115,M32029,Porter Square Station,42.387995,-71.119084,Cambridge,Yes,19
-144,M32035,Rogers St & Land Blvd,42.36575798214837,-71.07699394226073,Cambridge,Yes,19
+27,C32001,Roxbury Crossing T Stop - Columbus Ave at Tremont St,42.331184,-71.095171,Boston,Yes,23
+12,B32002,Ruggles T Stop - Columbus Ave at Melnea Cass Blvd,42.33624444796878,-71.08798563480377,Boston,Yes,18
+159,E32007,S Huntington Ave at Heath St,42.32760387040573,-71.11089169979095,Boston,Yes,15
 386,M32063,Sennott Park  Broadway at Norfolk Street,42.36860524248197,-71.09930185605663,Cambridge,Yes,19
-184,M32047,Sidney Research Campus/ Erie Street at Waverly,42.35775309465199,-71.10393404960632,Cambridge,Yes,19
 227,D32032,Silber Way,42.34949599514002,-71.10057592391968,Boston,Yes,19
 17,A32006,Soldiers Field Park - 111 Western Ave,42.364263440638524,-71.1182756971175,Boston,Yes,15
-185,M32048,Third at Binney,42.36544486137399,-71.08277142047882,Cambridge,Yes,15
-177,M32040,University Park,42.36264779118595,-71.10006093978882,Cambridge,Yes,19
+233,K32007,St Mary's,42.346197076555455,-71.10728681087494,Brookline,Yes,15
 221,M32050,Verizon Innovation Hub 10 Ware Street,42.37250864997261,-71.11305356025696,Cambridge,Yes,19
+160,B32021,Wentworth Institute of Technology - Huntington Ave at Vancouver St,42.33758601097239,-71.09627097845076,Boston,Yes,14
+443,B32059,Whittier St Health Center,42.332862884862635,-71.09218861916816,Boston,Yes,19
 99,S32005,Wilson Square,42.385582,-71.113341,Somerville,Yes,15
+32,,Landmark Center - Brookline Ave at Park Dr,42.34519428944095,-71.1016970872879,,,
 88,,Inman Square at Vellucci Plaza / Hampshire St,42.374035,-71.101427,,,
+193,,Brookline Village - Station Street @ MBTA TEMPORARY WINTER LOCATION,42.33376472623494,-71.12046446660315,,,
+193,,Brookline Village - Station Street @ MBTA,42.33376472623494,-71.12046446660315,,,
+45,,Yawkey Way at Boylston St.,42.3446808403874,-71.09785348176956,,,
+45,,Jersey St. at Boylston St.,42.3446808403874,-71.09785348176956,,,
+86,,Brookline Village - Pearl Street at MBTA,42.332799,-71.116205,,,
 294,,Deerfield St at Commonwealth Ave (former),42.349205689770685,-71.09727063041646,,,
-240,,Harvard St at Greene-Rose Heritage Park (former),42.36599406030789,-71.09516322612761,,,
+247,,Boylston St at Jersey St (former),42.344695708662215,-71.09723791480063,,,
+155,,Huntington Ave at Mass Art (former),42.33651909304393,-71.0989692435578,,,
+284,,One Brigham Circle (former),42.333919727205775,-71.10446777203833,,,
+293,,Bartlett St at John Elliot Sq (former),42.32946325922549,-71.09015820552486,,,
 286,,30 Dane St. (former),42.38112284630097,-71.10410027224134,,,
 330,,30 Dane St.,42.38100143038052,-71.10402522613185,,,
+229,,8D QC Station 01,42.34503315560333,-71.09664916992188,,,
 386,,Sennott Park Broadway at Norfolk Street,42.36860524248197,-71.09930185605663,,,
-184,,Sidney Research Campus/Erie Street at Waverly,42.35775309465199,-71.10393404960632,,,
 110,,Harvard University Gund Hall at Quincy St / Kirkland St,42.376369,-71.114025,,,
 400,,Lansdowne T Stop,42.34734473177431,-71.1001680795016,,,
-438,,Mobile Temporary Station,42.359675363711105,-71.10160055174674,,,
