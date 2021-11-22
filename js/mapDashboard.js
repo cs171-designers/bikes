@@ -49,6 +49,8 @@ class BlueBikeMapDashboard {
 
  */
 
+
+
         vis.wrangleData()
     }
 
@@ -63,6 +65,7 @@ class BlueBikeMapDashboard {
             }
             vis.arrivalSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
+        vis.arrivalSums.sort((a, b) => b[2] - a[2])
         console.log(vis.arrivalSums)
 
         vis.departureSums = []
@@ -73,6 +76,7 @@ class BlueBikeMapDashboard {
             }
             vis.departureSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
+        vis.departureSums.sort((a, b) => b[2] - a[2])
         console.log(vis.departureSums)
 
         vis.totalSums = []
@@ -87,6 +91,7 @@ class BlueBikeMapDashboard {
             }
             vis.totalSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
+        vis.totalSums.sort((a, b) => b[2] - a[2])
         console.log(vis.totalSums)
 
         // Create scale for radius of circles
@@ -99,7 +104,7 @@ class BlueBikeMapDashboard {
         vis.radiusScale = d3.scaleLinear()
             .domain([0, d3.max(sums)])
             .range([0, 500])
-
+        console.log("station data", vis.stationData)
         vis.updateVis()
     }
 
@@ -108,13 +113,30 @@ class BlueBikeMapDashboard {
 
         vis.circleCounter = 0
         vis.circles = []
+        let popupBlurb = ""
+        if (selectedDashboardView === "totalSums") {
+            popupBlurb = "Total departures and arrivals:"
+        }
+        else if (selectedDashboardView === "departureSums") {
+            popupBlurb = "Total departures:"
+        }
+        else {
+            popupBlurb = "Total arrivals:"
+        }
+
         vis[selectedDashboardView].forEach(station => {
+            let stationName = ""
+            vis.stationData.forEach(d => {
+                if (d.Id === station[0]) {
+                    stationName = d.Name
+                }
+            })
             vis.circles[vis.circleCounter] = L.circle(station[1], vis.radiusScale(station[2]), {
                 color: 'blue',
                 fillColor: '#ddd',
                 fillOpacity: 0.5
             })
-                .bindPopup(`Station: `)
+                .bindPopup(`Station: ${stationName} <br>${popupBlurb} ${station[2]}`)
                 .addTo(vis.map);
             vis.circleCounter += 1
         })
