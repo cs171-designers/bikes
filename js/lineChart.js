@@ -512,7 +512,7 @@ class LineChart {
             vis.dataLine_sub = d3.line()
                 .x(d => vis.x(d.date))
                 .y(d => vis.y(d[selectedCategory + "_user_subscriber"]));
-            // console.log(selectedCategory + "_user_subscriber")
+            console.log(selectedCategory + "_user_subscriber")
 
             vis.linePath_sub
                 .data([vis.displayData])

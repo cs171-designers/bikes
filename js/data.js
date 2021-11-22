@@ -293,6 +293,68 @@ class DataHandler {
         return groupedBikesFinal
     }
 
+    // group stations by arrivals
+    groupStationArrivals() {
+        let datahandler = this
+        let groupedStationArrivals = []
+
+        datahandler._rides.forEach(d => {
+            let stationId = d["start station id"]
+
+            if (groupedStationArrivals[stationId]) {
+                groupedStationArrivals[stationId].push(d)
+            }
+            else {
+                groupedStationArrivals[stationId] = [d]
+            }
+        })
+
+        let groupedArrivalsSorted = []
+        groupedStationArrivals.forEach(d => {
+            let sortedStation = d.sort(function (a, b) {
+                return a.starttime - b.starttime
+            });
+            groupedArrivalsSorted[d[0]["start station id"]] = sortedStation
+        })
+
+        // filter out undefined values
+        let groupedArrivalsFinal = groupedArrivalsSorted.filter((a) => a)
+        console.log("grouped arrivals", groupedArrivalsFinal)
+
+        return groupedArrivalsFinal
+    }
+
+    // group stations by departures
+    groupStationDepartures() {
+        let datahandler = this
+        let groupedStationDepartures = []
+
+        datahandler._rides.forEach(d => {
+            let stationId = d["end station id"]
+
+            if (groupedStationDepartures[stationId]) {
+                groupedStationDepartures[stationId].push(d)
+            }
+            else {
+                groupedStationDepartures[stationId] = [d]
+            }
+        })
+
+        let groupedDeparturesSorted = []
+        groupedStationDepartures.forEach(d => {
+            let sortedStation = d.sort(function (a, b) {
+                return a.starttime - b.starttime
+            });
+            groupedDeparturesSorted[d[0]["end station id"]] = sortedStation
+        })
+
+        // filter out undefined values
+        let groupedDeparturesFinal = groupedDeparturesSorted.filter((a) => a)
+        console.log("grouped departures", groupedDeparturesFinal)
+
+        return groupedDeparturesFinal
+    }
+
     count_filters = {
         user: {
             "All": filtered_array => filtered_array,
