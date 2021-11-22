@@ -12,6 +12,7 @@ CENTERS = {
         Longitude: -71.094053
     }
 }
+MAX_TRIP_DURATION = 3 * 60 * 60;
 function toRad(Value) {
     return Value * Math.PI / 180
 }
@@ -176,6 +177,9 @@ function read_csv(arr, file_index) {
                 }) <= 1;
                 return start || end;
             })) {
+                return;
+            }
+            if (row["tripduration"] > MAX_TRIP_DURATION || !row["tripduration"]) {
                 return;
             }
             formatted_rows.push(formatted_row)
