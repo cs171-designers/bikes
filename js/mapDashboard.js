@@ -31,7 +31,7 @@ class BlueBikeMapDashboard {
 
         // Create time format
         vis.timeFormat = d3.timeFormat("%m/%d/%Y %I:%M %p")
-/*
+
         let harvard = CENTERS.HARVARD
         let mit = CENTERS.MIT
 
@@ -47,7 +47,7 @@ class BlueBikeMapDashboard {
             fillOpacity: 0.5
         }).addTo(vis.map);
 
- */
+
 
         vis.wrangleData()
     }
@@ -63,6 +63,7 @@ class BlueBikeMapDashboard {
             }
             vis.arrivalSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
+        vis.arrivalSums.sort((a, b) => b[2] - a[2])
         console.log(vis.arrivalSums)
 
         vis.departureSums = []
@@ -73,6 +74,7 @@ class BlueBikeMapDashboard {
             }
             vis.departureSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
+        vis.departureSums.sort((a, b) => b[2] - a[2])
         console.log(vis.departureSums)
 
         vis.totalSums = []
@@ -87,6 +89,7 @@ class BlueBikeMapDashboard {
             }
             vis.totalSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
+        vis.totalSums.sort((a, b) => b[2] - a[2])
         console.log(vis.totalSums)
 
         // Create scale for radius of circles
@@ -114,7 +117,7 @@ class BlueBikeMapDashboard {
                 fillColor: '#ddd',
                 fillOpacity: 0.5
             })
-                .bindPopup(`Station: `)
+                .bindPopup(`Station: ${station[2]}`)
                 .addTo(vis.map);
             vis.circleCounter += 1
         })
