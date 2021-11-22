@@ -30,17 +30,38 @@
 
 		<!-- Follow a bike -->
 		<div class="row">
-				<h5>Intro on our motivations. Now let's follow a bike!</h5>
+			<h5>Intro on our motivations</h5>
+			<p>
+				Both interest and need for sustainable and usable public transportation systems are growing.
+				Transportation is a key part of student life, as well as city and campus planning. Walk times, shuttles,
+				buses, trains, and bikes are all transportation systems that impact the day to day life of students,
+				residents, and college administrators.
+
+				We chose to focus on biking, since the city bike organization for Boston, Bluebikes, publishes its data
+				and encourages analysis of the data and creation of data visualizations. We chose Bluebikes specifically,
+				because the data and analysis is relevant to us students; in fact, two of the members of this team actively
+				use Bluebikes. Cambridge is a particularly bike-friendly city in terms of terrain and climate, which should
+				yield interesting data that can inform the implementation of bike sharing programs in other cities.
+
+				In our analysis of BLUEbike usage, we have focused on identifying trends in usage around college
+				campuses. We have chosen Harvard and MIT campuses specifically as representative institutions. We also
+				analyze only 2018-2019 data, which includes more detailed demographic information along with the rides data.
+
+			</p>
+
+			<h5>Let's follow a bike! Understanding BLUEbikes</h5>
 			<p>
 				Welcome to Boston!
 				Here is a map that follows a bike around the city. We will go on a virtual ride
-				so that even if you have never borrowed a Bluebike, you can understand how
+				so that even if you have never borrowed a Bluebike, you can understand the process of how
 				a bike may be checked out from one station, ridden for a certain amount of time,
 				and then returned to another station;
 				then another user may borrow the bike from that station,
 				and the cycle continues.
-			</p>
 
+				Click "next" to move from one station along the trip to another. You can also select a different bike
+				to follow!
+			</p>
 		</div>
 
 		<div class="row justify-content-center">
@@ -74,12 +95,12 @@
 		<!-- Bar charts for trip length -->
 
 		<div class="row justify-content-center">
-			<div class="col-md-4">
+			<div class="col-md-6">
 				Wow! There sure are a lot of stations. Which ones are the most frequented?
 				Shown in this barchart are the 5 most popular stations, each with the count of rides that depart from that station.
 
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<div id="trip-length-barchart"></div>
 			</div>
 		</div>
@@ -94,14 +115,13 @@
 		</div>
 
 		<div class="row">
-			<div class="col-md-4">
+			<p>
 				Now that you're a bit more familiar with how the bikesharing system works,
 				let's take a look at the demographics of people who use the service.
 				Can you see which demographics you fit into?
-			</div>
+			</p>
 		</div>
 		<div class="row">
-
 			<div class="col-md-4">
 				<div id="gender-age-pie-chart"></div>
 			</div>
@@ -112,21 +132,13 @@
 				<div id="age-user-pie-chart"></div>
 			</div>
 		</div>
-		<!-- Animated "race"? -->
-
-		<!-- Circle size changing over time -->
-
-
 
 		<!-- Dashboard view -- 1 row, 2 columns-->
 		<div class="row">
-			<div class="col">
 				<h5>Brief explanation of dashboard</h5>
-			</div>
-			<div class="col">
+
 				Below you will have a chance to dive further
 				into the demographics of Bluebikes users to see how their usage varies.
-			</div>
 		</div>
 
 		<h2> Explore Breakdown by User Demographics </h2>
