@@ -31,6 +31,23 @@ class BlueBikeMapDashboard {
 
         // Create time format
         vis.timeFormat = d3.timeFormat("%m/%d/%Y %I:%M %p")
+/*
+        let harvard = CENTERS.HARVARD
+        let mit = CENTERS.MIT
+
+        vis.harvardCircle = L.circle([harvard.Latitude, harvard.Longitude], 1609.34, {
+            color: 'red',
+            fillColor: '#ddd',
+            fillOpacity: 0.5
+        }).addTo(vis.map);
+
+        vis.mitCircle = L.circle([mit.Latitude, mit.Longitude], 1609.34, {
+            color: 'orange',
+            fillColor: '#ddd',
+            fillOpacity: 0.5
+        }).addTo(vis.map);
+
+ */
 
         vis.wrangleData()
     }
@@ -96,7 +113,9 @@ class BlueBikeMapDashboard {
                 color: 'blue',
                 fillColor: '#ddd',
                 fillOpacity: 0.5
-            }).addTo(vis.map);
+            })
+                .bindPopup(`Station: `)
+                .addTo(vis.map);
             vis.circleCounter += 1
         })
 
