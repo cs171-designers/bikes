@@ -75,21 +75,9 @@ class BlueBikeMapDashboard {
         // Create scale for radius of circles
         let sums = []
 
-        if (selectedDashboardView === "total") {
-            vis.totalSums.forEach(d => {
-                sums.push(d[2])
-            })
-        }
-        else if (selectedDashboardView === "departures") {
-            vis.departureSums.forEach(d => {
-                sums.push(d[2])
-            })
-        }
-        else {
-            vis.arrivalSums.forEach(d => {
-                sums.push(d[2])
-            })
-        }
+        vis[selectedDashboardView].forEach(d => {
+            sums.push(d[2])
+        })
 
         vis.radiusScale = d3.scaleLinear()
             .domain([0, d3.max(sums)])
@@ -101,13 +89,25 @@ class BlueBikeMapDashboard {
     updateVis() {
         let vis = this
 
-        vis.totalSums.forEach(station => {
-            let circle = L.circle(station[1], vis.radiusScale(station[2]), {
+        vis.circleCounter = 0
+        vis.circles = []
+        vis[selectedDashboardView].forEach(station => {
+            vis.circles[vis.circleCounter] = L.circle(station[1], vis.radiusScale(station[2]), {
                 color: 'blue',
                 fillColor: '#ddd',
                 fillOpacity: 0.5
             }).addTo(vis.map);
+            vis.circleCounter += 1
         })
 
+        vis.dropdownListener = d3.select("#map-dashboard-dropdown").on("change", changeView)
+        function changeView() {
+            vis.circles.forEach(circle => {
+                vis.map.removeLayer(circle)
+            })
+            selectedDashboardView = document.getElementById("map-dashboard-dropdown").value
+            console.log(selectedDashboardView)
+            vis.wrangleData()
+        }
     }
 }
