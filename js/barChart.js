@@ -14,7 +14,7 @@ class BarChart {
     initVis() {
         let vis = this;
 
-        vis.margin = {top: 20, right: 10, bottom: 20, left: 50};
+        vis.margin = { top: 20, right: 10, bottom: 20, left: 50 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
@@ -50,7 +50,7 @@ class BarChart {
 
         // format ticks to convey hour categories. Categories do not update
         let tickStrings = ["12-6 am", "6-9 am", "9-12 pm", "12-3 pm", "3-6 pm", "6-9 pm", "9-12 am"];
-        vis.xAxis.tickFormat(function(d,i) {
+        vis.xAxis.tickFormat(function (d, i) {
             return tickStrings[i];
         });
 
@@ -64,15 +64,15 @@ class BarChart {
 
         // add chart title placeholder
         vis.svg.append("text")
-            .attr("x",-vis.margin.left + vis.width/2)
-            .attr("y",0)
-            .attr("class","lineTitle");
+            .attr("x", -vis.margin.left + vis.width / 2)
+            .attr("y", 0)
+            .attr("class", "lineTitle");
 
         // y-axis label
         vis.yLabel = vis.svg.append("text")
             .attr("class", "axis-label")
             .attr("transform", "rotate(-90)")
-            .attr("x", -vis.height/2)
+            .attr("x", -vis.height / 2)
             .attr("y", -vis.margin.left + 10)
             .style("text-anchor", "middle");
 
@@ -87,12 +87,11 @@ class BarChart {
 
         let data = Object.values(vis.filteredData).flat();
 
-        let hour = ["overnight","morn1","morn2","aft1","aft2","night1","night2"];
+        let hour = ["overnight", "morn1", "morn2", "aft1", "aft2", "night1", "night2"];
 
         let dataHolder = [];
 
-        for (let i=0; i<hour.length; i++)
-        {
+        for (let i = 0; i < hour.length; i++) {
             dataHolder.push({
                 hour: hour[i],
                 num_rides: categorize(data)[0][i],
@@ -100,8 +99,9 @@ class BarChart {
             })
         }
         vis.displayData = dataHolder;
+        console.log("display data bar hours", vis.displayData)
 
-        function categorize(d){
+        function categorize(d) {
             let hourFormat = d3.timeFormat("%H");
 
             // define arrays to hold returned data
@@ -126,8 +126,8 @@ class BarChart {
                 let total_dur = 0;
                 trips.forEach(ride => total_dur += ride.tripduration);
                 let avg_trip_dur = 0;
-                if(rides != 0){
-                    avg_trip_dur = total_dur/rides/60;
+                if (rides != 0) {
+                    avg_trip_dur = total_dur / rides / 60;
                 }
                 num_rides.push(rides);
                 avg_trip_duration.push(avg_trip_dur);
@@ -148,28 +148,36 @@ class BarChart {
         vis.y.domain([0, d3.max(vis.displayData.map(d => d[selectedCategory]))]);
 
         // update y axis label
-        if(selectedCategory === "num_rides"){
+        if (selectedCategory === "num_rides") {
             vis.yLabel.text("# rides");
         }
-        else{
+        else {
             vis.yLabel.text("average trip duration (min)");
         }
 
         // draw data
-        let bar = vis.svg.selectAll("rect")
+        let bar = vis.svg.selectAll("rect.bar-chart_bar")
             .data(vis.displayData)
+        console.log("render basr chart hour", vis.displayData)
 
-//console.log(bar) // why is first one empty?? so "overnight" is empty?
+        //console.log(bar) // why is first one empty?? so "overnight" is empty?
 
         bar.enter().append("rect")
-            .attr("class", "bar")
+            .attr("class", "bar bar-chart_bar")
             .merge(bar)
-            .style("fill","grey")
+            .style("fill", "grey")
             .transition()
             .duration(800)
-            .attr("x", d => vis.x(d.hour))
+            .attr("data-name", d => d.hour)
+            .attr("x", d => {
+                console.log("x", vis.x(d.hour), d);
+                return vis.x(d.hour);
+            })
             .attr("width", vis.x.bandwidth())
-            .attr("y", d => vis.y(d[selectedCategory]))
+            .attr("y", d => {
+                console.log("y", vis.y(d[selectedCategory]), d);
+                return vis.y(d[selectedCategory])
+            })
             .attr("height", d => vis.height - (vis.y(d[selectedCategory])));
 
         // Update axes
@@ -178,7 +186,7 @@ class BarChart {
 
     }
 
-    onSelectionChange(selectionStart, selectionEnd){
+    onSelectionChange(selectionStart, selectionEnd) {
         let vis = this;
 
         let dateParser = d3.timeParse("%Y-%m-%d");
