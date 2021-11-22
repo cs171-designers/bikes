@@ -21,7 +21,13 @@
 <body>
 	<div class="container-fluid">
 
+
 		<div class="row">
+			<div class="col">
+				<div src="" class="hero-image img-fluid" alt="Responsive image"></div>
+			</div>
+		</div>
+		<div class="row title-row text-row">
 			<div class="col">
 				<h1>Blue Bike Visualization</h1>
 				<p>Status: <span id="load-status">Loading...</span></p>
@@ -29,46 +35,58 @@
 		</div>
 
 		<!-- Follow a bike -->
-		<div class="row">
-			<h5>Intro on our motivations</h5>
-			<p>
-				Both interest and need for sustainable and usable public transportation systems are growing.
-				Transportation is a key part of student life, as well as city and campus planning. Walk times, shuttles,
-				buses, trains, and bikes are all transportation systems that impact the day to day life of students,
-				residents, and college administrators.
+		<div class="row text-row">
+			<div class="col">
+				<h5>Intro on our motivations</h5>
+				<p>
+					Both interest and need for sustainable and usable public transportation systems are growing.
+					Transportation is a key part of student life, as well as city and campus planning. Walk times,
+					shuttles,
+					buses, trains, and bikes are all transportation systems that impact the day to day life of students,
+					residents, and college administrators.
 
-				</br>
-				We chose to focus on biking, since the city bike organization for Boston, Bluebikes, publishes its data
-				and encourages analysis of the data and creation of data visualizations. We chose Bluebikes specifically,
-				because the data and analysis is relevant to us students; in fact, two of the members of this team actively
-				use Bluebikes. Cambridge is a particularly bike-friendly city in terms of terrain and climate, which should
-				yield interesting data that can inform the implementation of bike sharing programs in other cities.
+					</br>
+					We chose to focus on biking, since the city bike organization for Boston, Bluebikes, publishes its
+					data
+					and encourages analysis of the data and creation of data visualizations. We chose Bluebikes
+					specifically,
+					because the data and analysis is relevant to us students; in fact, two of the members of this team
+					actively
+					use Bluebikes. Cambridge is a particularly bike-friendly city in terms of terrain and climate, which
+					should
+					yield interesting data that can inform the implementation of bike sharing programs in other cities.
 
-				</br>
-				In our analysis of BLUEbike usage, we have focused on identifying trends in usage on Harvard campus specifically.
-				We are interested in exploring where on campus, including both the undergraduate and graduate schools,
-				are most frequently visited using BlueBikes and what the typical user profile is like.
-				We also analyze only 2018-2019 data, which includes more detailed demographic information along with the rides data.
+					</br>
+					In our analysis of BLUEbike usage, we have focused on identifying trends in usage on Harvard campus
+					specifically.
+					We are interested in exploring where on campus, including both the undergraduate and graduate
+					schools,
+					are most frequently visited using BlueBikes and what the typical user profile is like.
+					We also analyze only 2018-2019 data, which includes more detailed demographic information along with
+					the
+					rides data.
 
-			</p>
+				</p>
 
-			<h5>Let's follow a bike! Understanding BLUEbikes</h5>
-			<p>
-				Welcome to Boston!
-				Here is a map that follows a bike around the city. We will go on a virtual ride
-				so that even if you have never borrowed a Bluebike, you can understand the process of how
-				a bike may be checked out from one station, ridden for a certain amount of time,
-				and then returned to another station;
-				then another user may borrow the bike from that station,
-				and the cycle continues.
+				<h5>Let's follow a bike! Understanding BLUEbikes</h5>
+				<p>
+					Welcome to Boston!
+					Here is a map that follows a bike around the city. We will go on a virtual ride
+					so that even if you have never borrowed a Bluebike, you can understand the process of how
+					a bike may be checked out from one station, ridden for a certain amount of time,
+					and then returned to another station;
+					then another user may borrow the bike from that station,
+					and the cycle continues.
 
-				</br>
-				BlueBike users may subscription members or customers who pay for each trip.
+					</br>
+					BlueBike users may subscription members or customers who pay for each trip.
 
-				</br>
-				Click "next" to move from one station along the trip to another. You can also select a different bike
-				to follow!
-			</p>
+					</br>
+					Click "next" to move from one station along the trip to another. You can also select a different
+					bike
+					to follow!
+				</p>
+			</div>
 		</div>
 
 		<div class="row justify-content-center">
@@ -81,13 +99,15 @@
 		</div>
 
 		<!-- Map -->
-		<div class="row">
+		<div class="row text-row">
+			<div class="col">
 				<h5>Now let's look at a map with station info</h5>
-			<p>
-				In this map, we explore what stations on Harvard and MIT campus are most popular. Popularity is based
-				on total traffic or solely on departures from or arrivals to each station.
-			</p>
-
+				<p>
+					In this map, we explore what stations on Harvard and MIT campus are most popular. Popularity is
+					based
+					on total traffic or solely on departures from or arrivals to each station.
+				</p>
+			</div>
 		</div>
 
 		<div class="row justify-content-center">
@@ -103,20 +123,24 @@
 			</div>
 		</div>
 
-		<div class="row">
-			<p>
-				From this map, we see ... stations are most popular.
-			</p>
+		<div class="row text-row">
+			<div class="col">
+				<p>
+					From this map, we see ... stations are most popular.
+				</p>
+			</div>
 		</div>
 
 		<!-- Bar charts for trip length -->
 
-		<div class="row justify-content-center">
-			<div class="col-md-6">
+		<div class="row text-row">
+			<div class="col">
 				Wow! There sure are a lot of stations. Which ones are the most frequented?
-				Shown in this barchart are the 5 most popular stations, each with the count of rides that depart from that station.
-
+				Shown in this barchart are the 5 most popular stations, each with the count of rides that depart from
+				that station.
 			</div>
+		</div>
+		<div class="row justify-content-center">
 			<div class="col-md-6">
 				<div id="trip-length-barchart-most"></div>
 			</div>
@@ -128,18 +152,20 @@
 
 
 		<!-- Pie chart, membership -->
-		<div class="row">
+		<div class="row text-row">
 			<div class="col">
 				<h5>Transition into our interest in membership stats</h5>
 			</div>
 		</div>
 
-		<div class="row">
-			<p>
-				Now that you're a bit more familiar with how the bikesharing system works,
-				let's take a look at the demographics of people who use the service.
-				Can you see which demographics you fit into?
-			</p>
+		<div class="row text-row">
+			<div class="col">
+				<p>
+					Now that you're a bit more familiar with how the bikesharing system works,
+					let's take a look at the demographics of people who use the service.
+					Can you see which demographics you fit into?
+				</p>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-4">
@@ -152,30 +178,41 @@
 				<div id="age-user-pie-chart"></div>
 			</div>
 		</div>
-		<div class="row">
-			<p>
-				From these pie charts, we see that most BLUEbike users are Males, then Females. Users with unspecified
-				gender are likely customers who were not registered members, so their demographic information is unavailable.
+		<div class="row text-row">
+			<div class="col">
+				<p>
+					From these pie charts, we see that most BLUEbike users are Males, then Females. Users with
+					unspecified
+					gender are likely customers who were not registered members, so their demographic information is
+					unavailable.
 
-				[...]
-			</p>
+					[...]
+				</p>
+			</div>
 		</div>
 
 		<!-- Dashboard view -- 1 row, 2 columns-->
-		<div class="row">
+		<div class="row text-row">
+			<div class="col">
 				<h5>Brief explanation of dashboard</h5>
 
 				Below you will have a chance to dive further
 				into the demographics of Bluebikes users to see how their usage varies.
+			</div>
 		</div>
 
-		<h5> Explore Breakdown by User Demographics </h5>
+		<div class="row text-row">
+			<div class="col">
+				<h5> Explore Breakdown by User Demographics </h5>
+			</div>
+		</div>
 		<div id="formContainer">
 			<!-- Select box to choose the ranking type -->
 			<form class="form-inline">
 				<div class="form-group">
 					<label for="categorySelector">Chart data:</label>
-					<select id='categorySelector' class="custom-select align-self-center" style="width: 60%" onchange="categoryChange()">
+					<select id='categorySelector' class="custom-select align-self-center" style="width: 60%"
+						onchange="categoryChange()">
 						<option value="num_rides">Number of Rides</option>
 						<option value="avg_trip_dur">Average Trip Duration (in min)</option>
 					</select>
@@ -190,7 +227,7 @@
 					<div class="align-self-center" id="main-line-chart"> </div>
 				</div>
 			</div>
-				<!-- linked views on right side -->
+			<!-- linked views on right side -->
 			<div class="col-md-6">
 				<div class="row justify-content-center linkedContainer">
 					<div class="align-self-center" id="member-line-chart"></div>
@@ -212,18 +249,22 @@
 
 	</div>
 
-	<div class="row">
-		<p>
-			Some insights from the dashboard:
-			
-		</p>
+	<div class="row text-row">
+		<div class="col">
+			<p>
+				Some insights from the dashboard:
+
+			</p>
+		</div>
 	</div>
 
-	<div>
-		<h5>Conclusions</h5>
-		<p>
-			...
-		</p>
+	<div class="row text-row">
+		<div class="col">
+			<h5>Conclusions</h5>
+			<p>
+				...
+			</p>
+		</div>
 	</div>
 
 
