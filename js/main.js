@@ -23,7 +23,7 @@ function init() {
         // barCharts
         let ridesData = dataHandler.groupStation();
         let stationData = dataHandler.getStationCoords();
-        //barCharts = new StationBarChart("trip-length-barchart", ridesData, stationData) // , variable)
+        barCharts = new StationBarChart("trip-length-barchart", ridesData, stationData) // , variable)
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
