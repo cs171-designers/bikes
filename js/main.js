@@ -24,6 +24,7 @@ function init() {
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
+        console.log("multi counts", counts)
         const pie_charts = {
             "gender-age": "Gender Pie Chart (Hover for Age)",
             "user-age": "User Pie Chart (Hover for Age)",
