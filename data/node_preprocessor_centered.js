@@ -7,9 +7,17 @@ CENTERS = {
         Latitude: 42.374469,
         Longitude: -71.116703
     },
-    "MIT": {
-        Latitude: 42.360043,
-        Longitude: -71.094053
+    // "MIT": {
+    //     Latitude: 42.360043,
+    //     Longitude: -71.094053
+    // }
+    "HBS": { // includes Allston
+        Latitude: 42.365219,
+        Longitude: -71.121885
+    },
+    "HMS": { // includes medical, dential, public health
+        Latitude: 42.336425, 
+        Longitude: -71.103574
     }
 }
 MAX_TRIP_DURATION = 3 * 60 * 60;
