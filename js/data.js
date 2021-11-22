@@ -90,6 +90,20 @@ class DataHandler {
     //     }
 
     // }
+    addStationCounts() {
+        this.stationMap = new Map();
+        this._stations.forEach((station) => {
+            station.start_rides = 0;
+            station.end_rides = 0;
+            this.stationMap.set(station.Id, station)
+        });
+        this._rides.forEach((ride) => {
+            let start = this.stationMap.get(ride["start station id"]);
+            start.start_rides++;
+            let end = this.stationMap.get(ride["end station id"]);
+            end.end_rides++;
+        })
+    }
     load() {
         const FILTER_CENTERS = true;
         return this.loadStations().then(() => {
@@ -356,13 +370,19 @@ class DataHandler {
             "All": filtered_array => filtered_array,
             "Subscriber": filtered_array => filtered_array.filter(ride => ride.usertype === "Subscriber"),
             "Customer": filtered_array => filtered_array.filter(ride => ride.usertype === "Customer"),
-            "Unspecified": filtered_array => filtered_array.filter(ride => ride.usertype === "Subscriber" && ride.usertype !== "Customer"),
+            "Unspecified": filtered_array => filtered_array.filter(ride => ride.usertype !== "Subscriber" && ride.usertype !== "Customer"),
         },
         age: {
             "All": filtered_array => filtered_array,
             "Youth (<18)": filtered_array => filtered_array.filter(ride => ride.age < 18),
-            "Young Adult (18-25)": filtered_array => filtered_array.filter(ride => ride.age >= 18 && ride.age < 25),
-            "Adult (25+)": filtered_array => filtered_array.filter(ride => ride.age >= 25),
+            "Adult (18-28)": filtered_array => filtered_array.filter(ride => ride.age >= 18 && ride.age < 25),
+            "Adult (28-38)": filtered_array => filtered_array.filter(ride => ride.age >= 28 && ride.age < 38),
+            "Adult (38-48)": filtered_array => filtered_array.filter(ride => ride.age >= 38 && ride.age < 48),
+            "Adult (48-58)": filtered_array => filtered_array.filter(ride => ride.age >= 48 && ride.age < 58),
+            "Adult (58-68)": filtered_array => filtered_array.filter(ride => ride.age >= 58 && ride.age < 68),
+            "Adult (68-78)": filtered_array => filtered_array.filter(ride => ride.age >= 68 && ride.age < 78),
+            "Adult (78-88)": filtered_array => filtered_array.filter(ride => ride.age >= 78 && ride.age < 88),
+            "Adult (88+)": filtered_array => filtered_array.filter(ride => ride.age >= 88),
             "Missing": filtered_array => filtered_array.filter(ride => ride.age != 0 && !ride.age),
         },
         gen: {

@@ -67,6 +67,16 @@ class PieChart {
             .attr('class', "tooltip")
             .attr('id', 'pieTooltip')
 
+        // create legend
+        vis.legend = vis.svg.append("g")
+            .attr("class", "legend")
+            .attr("transform", "translate(" + (vis.width-60) + ",0)");
+
+        vis.legend_width = 5;
+        vis.legend_height = 5;
+        vis.legend_padding_label = 2;
+        vis.legend_padding_height = 10;
+
         // call next method in pipeline
         this.wrangleData();
     }
@@ -102,7 +112,6 @@ class PieChart {
         //         color: vis.circleColors[i]
         //     })
         // }
-
         vis.updateVis()
 
     }
@@ -110,6 +119,22 @@ class PieChart {
     // updateVis method
     updateVis() {
         let vis = this;
+
+        // update legend
+        for(let i=0; i <= vis.data.length; i++){
+            console.log("for loop", vis.data[i])
+            vis.legend.append("rect")
+                .attr("x", 0)
+                .attr("y", -15 + i*vis.legend_padding_height)
+                .attr("width", vis.legend_width)
+                .attr("height", vis.legend_height)
+                .style("fill", vis.data[i].color);
+
+            vis.legend.append("text")
+                .text(vis.data[i].label)
+                .attr("x", vis.legend_width + vis.legend_padding_label)
+                .attr("y", -15 + 5); // add 5, half of font size -- centered with rect
+        }
 
         // Bind data
         let arcs = vis.pieChartGroup.selectAll(".arc")

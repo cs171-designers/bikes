@@ -447,7 +447,7 @@ class LineChart {
 
         // ensure sorted by day
         vis.displayData = (vis.displayData.sort((a, b) => a.date - b.date));
-        console.log("line displayData", vis.displayData);
+        //console.log("line displayData", vis.displayData);
 
         vis.updateVis();
 
