@@ -23,7 +23,7 @@ function init() {
         // barCharts
         let ridesData = dataHandler.groupStation();
         let stationData = dataHandler.getStationCoords();
-        // barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
+        //barCharts = new StationBarChart("trip-length-barchart", ridesData, stationData) // , variable)
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
@@ -63,7 +63,7 @@ function init() {
         memberLine = new LineChart("member-line-chart", lineData, "member");
         genderLine = new LineChart("gender-line-chart", lineData, "gender");
         ageLine = new LineChart("age-line-chart", lineData, "age");
-        hourBar = new BarChart("hour-bar-chart", lineData, eventHandler);
+        hourBar = new DashBarChart("hour-bar-chart", lineData, eventHandler);
 
         // Bind event handler
         eventHandler.bind("selectionChanged", function(event){
