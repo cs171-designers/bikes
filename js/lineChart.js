@@ -159,7 +159,7 @@ class LineChart {
                 .attr("y", -15)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
-                .style("fill", "blue");
+                .style("fill", "red");
 
             vis.legend.append("text")
                 .text("Subscriber")
@@ -171,7 +171,7 @@ class LineChart {
                 .attr("y", -5) // -15 + 10 = -5. 10 = height of rect + 5 for vertical padding
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
-                .style("fill", "red")
+                .style("fill", "blue")
 
             vis.legend.append("text")
                 .text("Customer")
@@ -519,7 +519,7 @@ class LineChart {
                 .style("opacity", 0)
                 .attr("d", vis.dataLine_sub) //pass in data for line generation
                 .style("opacity", 1)
-                .style("stroke", "blue");
+                .style("stroke", "red");
 
             vis.dataLine_cus = d3.line()
                 .x(d => vis.x(d.date))
@@ -530,7 +530,7 @@ class LineChart {
                 .style("opacity", 0)
                 .attr("d", vis.dataLine_cus)
                 .style("opacity", 1)
-                .style("stroke", "red");
+                .style("stroke", "blue");
 
         }
 
