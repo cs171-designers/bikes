@@ -70,7 +70,7 @@ class PieChart {
         // create legend
         vis.legend = vis.svg.append("g")
             .attr("class", "legend")
-            .attr("transform", "translate(" + (vis.width-20) + ",20)");
+            .attr("transform", "translate(" + (vis.width-20) + ",25)");
 
         vis.legend_width = 5;
         vis.legend_height = 5;
