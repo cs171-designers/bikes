@@ -2,9 +2,10 @@
 // Create map class
 class BlueBikeMapDashboard {
 
-    constructor(parentElement, bikeData, stationData, center) {
+    constructor(parentElement, arrivalData, departureData, stationData, center) {
         this.parentElement = parentElement
-        this.bikeData = bikeData
+        this.arrivalData = arrivalData
+        this.departureData = departureData
         this.stationData = stationData
         this.center = center
 

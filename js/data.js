@@ -310,7 +310,7 @@ class DataHandler {
     // group stations by arrivals
     groupStationArrivals() {
         let datahandler = this
-        let groupedStationArrivals = []
+        let groupedStationArrivals = {}
 
         datahandler._rides.forEach(d => {
             let stationId = d["start station id"]
@@ -323,25 +323,23 @@ class DataHandler {
             }
         })
 
-        let groupedArrivalsSorted = []
-        groupedStationArrivals.forEach(d => {
+        let groupedArrivalsSorted = {}
+        Object.values(groupedStationArrivals).forEach(d => {
             let sortedStation = d.sort(function (a, b) {
                 return a.starttime - b.starttime
             });
             groupedArrivalsSorted[d[0]["start station id"]] = sortedStation
         })
 
-        // filter out undefined values
-        let groupedArrivalsFinal = groupedArrivalsSorted.filter((a) => a)
-        console.log("grouped arrivals", groupedArrivalsFinal)
+        console.log("grouped arrivals", groupedArrivalsSorted)
 
-        return groupedArrivalsFinal
+        return groupedArrivalsSorted
     }
 
     // group stations by departures
     groupStationDepartures() {
         let datahandler = this
-        let groupedStationDepartures = []
+        let groupedStationDepartures = {}
 
         datahandler._rides.forEach(d => {
             let stationId = d["end station id"]
@@ -354,19 +352,17 @@ class DataHandler {
             }
         })
 
-        let groupedDeparturesSorted = []
-        groupedStationDepartures.forEach(d => {
+        let groupedDeparturesSorted = {}
+        Object.values(groupedStationDepartures).forEach(d => {
             let sortedStation = d.sort(function (a, b) {
                 return a.starttime - b.starttime
             });
             groupedDeparturesSorted[d[0]["end station id"]] = sortedStation
         })
 
-        // filter out undefined values
-        let groupedDeparturesFinal = groupedDeparturesSorted.filter((a) => a)
-        console.log("grouped departures", groupedDeparturesFinal)
+        console.log("grouped departures", groupedDeparturesSorted)
 
-        return groupedDeparturesFinal
+        return groupedDeparturesSorted
     }
 
     count_filters = {
