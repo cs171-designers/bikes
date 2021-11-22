@@ -62,8 +62,16 @@
     width: 100%;
     background: url("../img/hero.jpg") 50% 90% no-repeat;
     background-size: cover;
-    margin: 3rem 0 3rem;
     padding-top: 30%;
+}
+figcaption {
+    text-align: right;
+    opacity: 0.4;
+    margin-top: 1rem;
+}
+figure {
+    margin: 3rem 0 3rem;
+
 }
 .container-fluid.container-fluid.container-fluid.container-fluid.container-fluid.container-fluid {
 }
