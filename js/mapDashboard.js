@@ -38,6 +38,25 @@ class BlueBikeMapDashboard {
     wrangleData() {
         let vis = this
 
+        vis.arrivalSums = []
+        vis.stationData.forEach(station => {
+            let count = 0;
+            if (station.Id in vis.arrivalData) {
+                count = vis.arrivalData[station.Id].length
+            }
+            vis.arrivalSums.push([[station.Latitude, station.Longitude], count])
+        })
+        console.log(vis.arrivalSums)
+
+        vis.departureSums = []
+        vis.stationData.forEach(station => {
+            let count = 0;
+            if (station.Id in vis.departureData) {
+                count = vis.departureData[station.Id].length
+            }
+            vis.departureSums.push([[station.Latitude, station.Longitude], count])
+        })
+        console.log(vis.departureSums)
 
         vis.updateVis()
     }
