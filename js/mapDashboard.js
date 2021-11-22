@@ -72,10 +72,42 @@ class BlueBikeMapDashboard {
         })
         console.log(vis.totalSums)
 
+        // Create scale for radius of circles
+        let sums = []
+
+        if (selectedDashboardView === "total") {
+            vis.totalSums.forEach(d => {
+                sums.push(d[2])
+            })
+        }
+        else if (selectedDashboardView === "departures") {
+            vis.departureSums.forEach(d => {
+                sums.push(d[2])
+            })
+        }
+        else {
+            vis.arrivalSums.forEach(d => {
+                sums.push(d[2])
+            })
+        }
+
+        vis.radiusScale = d3.scaleLinear()
+            .domain([0, d3.max(sums)])
+            .range([0, 500])
+
         vis.updateVis()
     }
 
     updateVis() {
+        let vis = this
+
+        vis.totalSums.forEach(station => {
+            let circle = L.circle(station[1], vis.radiusScale(station[2]), {
+                color: 'blue',
+                fillColor: '#ddd',
+                fillOpacity: 0.5
+            }).addTo(vis.map);
+        })
 
     }
 }
