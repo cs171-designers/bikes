@@ -4,7 +4,7 @@ let bikeMap;
 let barCharts;
 
 function init() {
-    console.log("instantiating Data");
+    // console.log("instantiating Data");
     let dataHandler = new DataHandler("load-status");
 
     // load data
@@ -17,7 +17,7 @@ function init() {
         // barCharts
         let ridesData = dataHandler.groupStation();
         let stationData = dataHandler.getStationCoords();
-        barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
+        // barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
@@ -32,10 +32,10 @@ function init() {
 
         // Dashboard View
         let lineData = dataHandler.groupDate();
-        console.log(lineData);
+        // console.log(lineData);
 
         let weekData = dataHandler.groupWeek();
-        console.log("aggregated", weekData);
+        // console.log("aggregated", weekData);
 
         // Create event handler
         let eventHandler = {

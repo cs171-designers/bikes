@@ -1,6 +1,36 @@
 // useful for visualizations let dateFormatter = d3.timeFormat("%Y-%m-%d %H:%M:%S");
 
 // Has two very useful properties but should not be exposed: _rides and _stations
+// Converts numeric degrees to radians
+let USE_MIN = true; // must be true
+let USE_CENTERS = true; // higher ranking
+const directory = "data/" + (USE_CENTERS ? "centers/" : (USE_MIN ? "min/" : ""));
+CENTERS = {
+    "HARVARD": {
+        Latitude: 42.374469,
+        Longitude: -71.116703
+    },
+    "MIT": {
+        Latitude: 42.360043,
+        Longitude: -71.094053
+    }
+}
+function toRad(Value) {
+    return Value * Math.PI / 180
+}
+function calcCrow(lat1, lon1, lat2, lon2) {
+    var R = 6371 // km
+    var dLat = toRad(lat2 - lat1)
+    var dLon = toRad(lon2 - lon1)
+    var lat1 = toRad(lat1)
+    var lat2 = toRad(lat2)
+
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2)
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    var d = R * c
+    return d * 0.621371 // km to miles
+}
 class DataHandler {
     station_files = [
         "stations.csv",
@@ -12,16 +42,16 @@ class DataHandler {
         "2018/201803_hubway_tripdata.csv",
         "2018/201804-hubway-tripdata.csv",
         "2018/201805-bluebikes-tripdata.csv",
-        // "2018/201806-bluebikes-tripdata.csv",
-        // "2018/201807-bluebikes-tripdata.csv",
-        // "2018/201808-bluebikes-tripdata.csv",
-        // "2018/201809-bluebikes-tripdata.csv",
-        // "2018/201810-bluebikes-tripdata.csv",
-        // "2018/201811-bluebikes-tripdata.csv",
-        // "2018/201812-bluebikes-tripdata.csv",
-        // "2019/201901-bluebikes-tripdata.csv",
-        // "2019/201902-bluebikes-tripdata.csv",
-        // "2019/201903-bluebikes-tripdata.csv",
+        "2018/201806-bluebikes-tripdata.csv",
+        "2018/201807-bluebikes-tripdata.csv",
+        "2018/201808-bluebikes-tripdata.csv",
+        "2018/201809-bluebikes-tripdata.csv",
+        "2018/201810-bluebikes-tripdata.csv",
+        "2018/201811-bluebikes-tripdata.csv",
+        "2018/201812-bluebikes-tripdata.csv",
+        "2019/201901-bluebikes-tripdata.csv",
+        "2019/201902-bluebikes-tripdata.csv",
+        "2019/201903-bluebikes-tripdata.csv",
         "2019/201904-bluebikes-tripdata.csv",
         "2019/201905-bluebikes-tripdata.csv",
         "2019/201906-bluebikes-tripdata.csv",
@@ -40,7 +70,7 @@ class DataHandler {
     statusMessage = null;
     loadingDone = false;
     updateStatus() {
-        console.log("updating loading status", this.statusMessage)
+        // console.log("updating loading status", this.statusMessage)
         if (this.statusMessage !== null) document.getElementById(this.status_label_id).innerText = this.statusMessage;
         if (this.statusType !== null) document.getElementById(this.status_label_id).classList.add((this.statusType) ? "success" : "error");
     }
@@ -49,26 +79,36 @@ class DataHandler {
             this.loadingDone = true;
             this.statusType = !!(this._stations && this._rides);
             this.statusMessage = (this._stations && this._rides) ? "Loaded" : "Error Loading";
-            console.log("finished loading files update", this.statusType, this.statusMessage);
+            // console.log("finished loading files update", this.statusType, this.statusMessage);
             this.updateStatus();
         }
     }
+    // filterByCenters(radius = 1) {
+    //     if (!this._rides || !this._stations) {
+    //         console.error("data is missing so can't filter");
+    //         return;
+    //     }
+
+    // }
     load() {
+        const FILTER_CENTERS = true;
         return this.loadStations().then(() => {
             return this.loadRides();
         }).then((res) => {
             this.updateStatusCompete();
             return res;
+        }).then(res => {
+            // this.filterByCenters();
+            return res;
         }).finally(() => {
             console.log("finished loading", this.status_label_id)
-            this.updateStatusCompete(); 
+            this.updateStatusCompete();
         });
     }
     loadStations() {
-        let USE_MIN = true; // must be true
         let dataHandler = this;
         console.log("loading stations")
-        return Promise.all([...this.station_files.map(f => d3.csv("data/" + (USE_MIN ? "min/" : "") + f, d3.autoType))])
+        return Promise.all([...this.station_files.map(f => d3.csv(directory + f, d3.autoType))])
             .then(([stations]) => {
                 dataHandler._stations = stations.map(item => {
                     if ("Public" in item) {
@@ -80,7 +120,7 @@ class DataHandler {
                 //     // filter out duplicate stations
                 //     return index === array.findIndex(other => item.Number === other.Number);
                 // });
-                console.log("stations", dataHandler._stations);
+                // console.log("stations", dataHandler._stations);
                 console.log("one station");
                 console.table(dataHandler._stations[0]);
                 return dataHandler._stations;
@@ -99,9 +139,8 @@ class DataHandler {
     }
     loadRides() {
         let dataHandler = this;
-        let USE_MIN = true;
-        console.log("loading bikes")
-        return Promise.all([...this.files.map(f => d3.csv("data/" + (USE_MIN ? "min/" : "") + f, d3.autoType).then(res => {
+        // console.log("loading bikes")
+        return Promise.all([...this.files.map(f => d3.csv(directory + f, d3.autoType).then(res => {
             this.ridesLoaded++;
             this.updateRideStatus()
             return res;
@@ -135,7 +174,7 @@ class DataHandler {
                     }
                 });
 
-                console.log("rides", dataHandler._rides);
+                // console.log("rides", dataHandler._rides);
                 console.log("one ride");
                 console.table(dataHandler._rides[0])
             })

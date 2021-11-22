@@ -445,7 +445,7 @@ class LineChart {
 
         // ensure sorted by day
         vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
-        console.log("displayData", vis.displayData);
+        // console.log("displayData", vis.displayData);
 
         vis.updateVis();
 
@@ -510,7 +510,7 @@ class LineChart {
             vis.dataLine_sub = d3.line()
                 .x(d => vis.x(d.date))
                 .y(d => vis.y(d[selectedCategory + "_user_subscriber"]));
-            console.log(selectedCategory + "_user_subscriber")
+            // console.log(selectedCategory + "_user_subscriber")
 
             vis.linePath_sub
                 .transition().duration(200).style("opacity",0)

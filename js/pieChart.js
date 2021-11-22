@@ -8,8 +8,8 @@ class PieChart {
     // constructor method to initialize Timeline object
     constructor(parentElement, title, data) {
         this.parentElement = parentElement;
-        this.circleColors = d3.schemeSet3;
-        this.secondaryColors = d3.schemeSet1;
+        this.circleColors = d3.schemeSet1;
+        this.secondaryColors = d3.schemeSet3;
         // console.log("coloirs", this.circleColors, this.secondaryColors)
         this.title = title;
         this.data = data;
@@ -121,7 +121,7 @@ class PieChart {
             .merge(arcs)
             .attr("class", "arc") // important
             .attr("d", vis.arc)
-            .attr("data-parent", d => d.data.parent.label.replaceAll(" ", "_").replaceAll("+","_").replaceAll("(","_").replaceAll(")","_"))
+            .attr("data-parent", d => d.data.parent.label.replaceAll(" ", "_").replaceAll("+", "_").replaceAll("(", "_").replaceAll(")", "_"))
             .style("fill", function (d, index) {
                 // console.log("item", d)
                 return d.data.color;
@@ -131,11 +131,14 @@ class PieChart {
                 // console.log("mouseover", d.data, d.data.parent);
                 vis.svg.selectAll("path.arc")
                     .style("opacity", 0.2)
-                vis.svg.selectAll(`path[data-parent=${d.data.parent.label.replaceAll(" ", "_").replaceAll("+","_").replaceAll("(","_").replaceAll(")","_")}]`)
-                    .style("fill", function (d, index) {
-                        // console.log("item", d)
-                        return d.data.secondaryColor;
-                    }).style("opacity", 1)
+                vis.svg.selectAll(`path[data-parent=${d.data.parent.label.replaceAll(" ", "_").replaceAll("+", "_").replaceAll("(", "_").replaceAll(")", "_")}]`)
+                    // .style("fill", function (d, index) {
+                    //     // console.log("item", d)
+                    //     return d.data.secondaryColor;
+                    // })
+                    .attr('stroke-width', '1px')
+                    .attr('stroke', 'black')
+                    .style("opacity", 1)
                 d3.select(this)
                     .attr('stroke-width', '2px')
                     .attr('stroke', 'black')
@@ -159,7 +162,9 @@ class PieChart {
                     .style("fill", function (d, index) {
                         // console.log("item", d)
                         return d.data.color;
-                    }).style("opacity", 1)
+                    })
+                    .attr('stroke-width', '0px')
+                    .style("opacity", 1)
 
                 vis.tooltip
                     .style("opacity", 0)

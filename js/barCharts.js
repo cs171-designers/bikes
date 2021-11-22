@@ -78,6 +78,7 @@ class barChart {
             let numTrips = d.length;
             let stationID = d[0]['start station id'].toString()
 
+            // console.log("data barcharts", vis.stationData, vis.stationData[stationID], stationID, d)
             let stationLatitude = vis.stationData[stationID][0]['Latitude']
             let stationLongitude = vis.stationData[stationID][0]['Longitude']
             let name = vis.stationData[stationID][0]['Name']
@@ -100,7 +101,7 @@ class barChart {
         // console.log("sorted", vis.newsorted);
 
         vis.topFiveStations = vis.newsorted.slice(0,5)
-        console.log(vis.topFiveStations)
+        // console.log(vis.topFiveStations)
 
 
         vis.topFiveStations.forEach(function(station) {

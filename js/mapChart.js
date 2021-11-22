@@ -40,10 +40,10 @@ class BlueBikeMap {
         // Look at bike 1 and get the stations it visited
         vis.randId = d3.randomInt(1, vis.bikeData.length)()
         vis.bike = vis.bikeData[vis.randId]
-        console.log(vis.bike)
+        // console.log(vis.bike)
 
         vis.startStationIDs = vis.bike.map(trip => trip["start station id"])
-        console.log(vis.startStationIDs)
+        // console.log(vis.startStationIDs)
 
         // Get station objects in order of arrival
         vis.visitedStations = []
@@ -57,7 +57,7 @@ class BlueBikeMap {
             })
         })
 
-        console.log("Visited Stations", vis.visitedStations)
+        // console.log("Visited Stations", vis.visitedStations)
 
         // Get array of coords for ease of use later
         vis.stationCoords = []
@@ -65,7 +65,7 @@ class BlueBikeMap {
             vis.stationCoords.push([station.Latitude, station.Longitude])
         })
 
-        console.log(vis.stationCoords[0])
+        // console.log(vis.stationCoords[0])
 
         vis.map.setView(vis.stationCoords[0], 13, {animation: false})
 
