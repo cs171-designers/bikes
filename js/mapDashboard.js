@@ -31,7 +31,7 @@ class BlueBikeMapDashboard {
 
         // Create time format
         vis.timeFormat = d3.timeFormat("%m/%d/%Y %I:%M %p")
-
+/*
         let harvard = CENTERS.HARVARD
         let mit = CENTERS.MIT
 
@@ -46,6 +46,8 @@ class BlueBikeMapDashboard {
             fillColor: '#ddd',
             fillOpacity: 0.5
         }).addTo(vis.map);
+        
+ */
 
 
 
