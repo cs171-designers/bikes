@@ -1,6 +1,6 @@
 // create bar chart for trip duration
 
-class barChart {
+class StationBarChart {
     constructor(parentElement, ridesData, stationData){
         // , variable) {
         this.parentElement = parentElement;

@@ -70,7 +70,7 @@ class PieChart {
         // create legend
         vis.legend = vis.svg.append("g")
             .attr("class", "legend")
-            .attr("transform", "translate(" + (vis.width-20) + ",20)");
+            .attr("transform", "translate(" + (vis.width-15) + ",25)");
 
         vis.legend_width = 5;
         vis.legend_height = 5;
@@ -120,9 +120,8 @@ class PieChart {
     updateVis() {
         let vis = this;
 
-        // update legend
+        // update legend -- vis.data not defined color until after vis.wrangle
         for(let i=0; i < vis.data.length; i++){
-            console.log("for loop", vis.data[i])
             vis.legend.append("rect")
                 .attr("x", 0)
                 .attr("y", i*vis.legend_padding_height)

@@ -1,6 +1,6 @@
 // code still in progress - for creating bar chart grouping data by starttime of trips
 
-class BarChart {
+class DashBarChart {
 
     constructor(parentElement, data, _eventHandler) {
         this.parentElement = parentElement;
@@ -158,7 +158,7 @@ class BarChart {
         // draw data
         let bar = vis.svg.selectAll("rect.bar-chart_bar")
             .data(vis.displayData)
-        console.log("render basr chart hour", vis.displayData)
+        //console.log("render bar chart hour", vis.displayData)
 
         //console.log(bar) // why is first one empty?? so "overnight" is empty?
 
@@ -170,12 +170,12 @@ class BarChart {
             .duration(800)
             .attr("data-name", d => d.hour)
             .attr("x", d => {
-                console.log("x", vis.x(d.hour), d);
+                //console.log("x", vis.x(d.hour), d);
                 return vis.x(d.hour);
             })
             .attr("width", vis.x.bandwidth())
             .attr("y", d => {
-                console.log("y", vis.y(d[selectedCategory]), d);
+                //console.log("y", vis.y(d[selectedCategory]), d);
                 return vis.y(d[selectedCategory])
             })
             .attr("height", d => vis.height - (vis.y(d[selectedCategory])));
