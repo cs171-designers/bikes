@@ -70,7 +70,7 @@ class PieChart {
         // create legend
         vis.legend = vis.svg.append("g")
             .attr("class", "legend")
-            .attr("transform", "translate(" + (vis.width-60) + ",0)");
+            .attr("transform", "translate(" + (vis.width-40) + ",0)");
 
         vis.legend_width = 5;
         vis.legend_height = 5;
@@ -121,11 +121,11 @@ class PieChart {
         let vis = this;
 
         // update legend
-        for(let i=0; i <= vis.data.length; i++){
+        for(let i=0; i < vis.data.length; i++){
             console.log("for loop", vis.data[i])
             vis.legend.append("rect")
                 .attr("x", 0)
-                .attr("y", -15 + i*vis.legend_padding_height)
+                .attr("y", i*vis.legend_padding_height)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", vis.data[i].color);
@@ -133,7 +133,7 @@ class PieChart {
             vis.legend.append("text")
                 .text(vis.data[i].label)
                 .attr("x", vis.legend_width + vis.legend_padding_label)
-                .attr("y", -15 + 5); // add 5, half of font size -- centered with rect
+                .attr("y", i*vis.legend_padding_height + 5); // add 5, half of font size -- centered with rect
         }
 
         // Bind data

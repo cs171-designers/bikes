@@ -11,19 +11,19 @@ function init() {
     // load data
     dataHandler.load().then(() => {
 
-        // map
-        let bikeData = dataHandler.groupBikeID()
-        bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
-
-        let arrivalData = dataHandler.groupStationArrivals()
-        let departureData = dataHandler.groupStationDepartures()
-
-        stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.360082, -71.058880])
-
-        // barCharts
-        let ridesData = dataHandler.groupStation();
-        let stationData = dataHandler.getStationCoords();
-        // barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
+        // // map
+        // let bikeData = dataHandler.groupBikeID()
+        // bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
+        //
+        // let arrivalData = dataHandler.groupStationArrivals()
+        // let departureData = dataHandler.groupStationDepartures()
+        //
+        // stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.360082, -71.058880])
+        //
+        // // barCharts
+        // let ridesData = dataHandler.groupStation();
+        // let stationData = dataHandler.getStationCoords();
+        // // barCharts = new barChart("trip-length-barchart", ridesData, stationData) // , variable)
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
@@ -37,62 +37,62 @@ function init() {
             let pieChart = new PieChart(chart + "-pie-chart", title, counts[chart]);
         })
 
-        // Dashboard View
-        let lineData = dataHandler.groupDate();
-        // console.log(lineData);
-
-        let weekData = dataHandler.groupWeek();
-        // console.log("aggregated", weekData);
-
-        // Create event handler
-        let eventHandler = {
-            bind: (eventName, handler) => {
-                document.body.addEventListener(eventName, handler);
-            },
-            trigger: (eventName, extraParameters) => {
-                document.body.dispatchEvent(new CustomEvent(eventName, {
-                    detail: extraParameters
-                }));
-            }
-        };
-
-        selectedCategory = document.getElementById('categorySelector').value; // default selection value
-
-        // switch data between lineData and weekData?
-        generalLine = new LineChart("main-line-chart", lineData, "overview", eventHandler);
-        memberLine = new LineChart("member-line-chart", lineData, "member");
-        genderLine = new LineChart("gender-line-chart", lineData, "gender");
-        ageLine = new LineChart("age-line-chart", lineData, "age");
-        hourBar = new BarChart("hour-bar-chart", lineData, eventHandler);
-
-        // Bind event handler
-        eventHandler.bind("selectionChanged", function(event){
-            //console.log("brush")
-            let rangeStart = event.detail[0];
-            let rangeEnd = event.detail[1];
-            memberLine.onSelectionChange(rangeStart, rangeEnd);
-            genderLine.onSelectionChange(rangeStart, rangeEnd);
-            ageLine.onSelectionChange(rangeStart, rangeEnd);
-            hourBar.onSelectionChange(rangeStart, rangeEnd);
-
-        });
-        // Bind event handler
-        eventHandler.bind("updateLabels", function(event){
-            let rangeStart = event.detail[0];
-            let rangeEnd = event.detail[1];
-            generalLine.onUpdateLabels(rangeStart, rangeEnd);
-        });
-
+//         // Dashboard View
+//         let lineData = dataHandler.groupDate();
+//         // console.log(lineData);
+//
+//         let weekData = dataHandler.groupWeek();
+//         // console.log("aggregated", weekData);
+//
+//         // Create event handler
+//         let eventHandler = {
+//             bind: (eventName, handler) => {
+//                 document.body.addEventListener(eventName, handler);
+//             },
+//             trigger: (eventName, extraParameters) => {
+//                 document.body.dispatchEvent(new CustomEvent(eventName, {
+//                     detail: extraParameters
+//                 }));
+//             }
+//         };
+//
+//         selectedCategory = document.getElementById('categorySelector').value; // default selection value
+//
+//         // switch data between lineData and weekData?
+//         generalLine = new LineChart("main-line-chart", lineData, "overview", eventHandler);
+//         memberLine = new LineChart("member-line-chart", lineData, "member");
+//         genderLine = new LineChart("gender-line-chart", lineData, "gender");
+//         ageLine = new LineChart("age-line-chart", lineData, "age");
+//         hourBar = new BarChart("hour-bar-chart", lineData, eventHandler);
+//
+//         // Bind event handler
+//         eventHandler.bind("selectionChanged", function(event){
+//             //console.log("brush")
+//             let rangeStart = event.detail[0];
+//             let rangeEnd = event.detail[1];
+//             memberLine.onSelectionChange(rangeStart, rangeEnd);
+//             genderLine.onSelectionChange(rangeStart, rangeEnd);
+//             ageLine.onSelectionChange(rangeStart, rangeEnd);
+//             hourBar.onSelectionChange(rangeStart, rangeEnd);
+//
+//         });
+//         // Bind event handler
+//         eventHandler.bind("updateLabels", function(event){
+//             let rangeStart = event.detail[0];
+//             let rangeEnd = event.detail[1];
+//             generalLine.onUpdateLabels(rangeStart, rangeEnd);
+//         });
+//
     });
 
 }
-// switch between num_rides and avg_trip_dur
-function categoryChange() {
-    selectedCategory = document.getElementById('categorySelector').value;
-    generalLine.updateVis();
-    memberLine.updateVis();
-    genderLine.updateVis();
-    ageLine.updateVis();
-    hourBar.updateVis();
-}
+// // switch between num_rides and avg_trip_dur
+// function categoryChange() {
+//     selectedCategory = document.getElementById('categorySelector').value;
+//     generalLine.updateVis();
+//     memberLine.updateVis();
+//     genderLine.updateVis();
+//     ageLine.updateVis();
+//     hourBar.updateVis();
+// }
 init();
