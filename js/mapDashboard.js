@@ -95,14 +95,14 @@ class BlueBikeMapDashboard {
         console.log(vis.totalSums)
 
         // Create scale for radius of circles
-        let sums = []
+        let totals = []
 
-        vis[selectedDashboardView].forEach(d => {
-            sums.push(d[2])
+        vis.totalSums.forEach(d => {
+            totals.push(d[2])
         })
 
         vis.radiusScale = d3.scaleLinear()
-            .domain([0, d3.max(sums)])
+            .domain([0, d3.max(totals)])
             .range([0, 500])
         console.log("station data", vis.stationData)
         vis.updateVis()
@@ -148,7 +148,7 @@ class BlueBikeMapDashboard {
             })
             selectedDashboardView = document.getElementById("map-dashboard-dropdown").value
             console.log(selectedDashboardView)
-            vis.wrangleData()
+            vis.updateVis()
         }
     }
 }

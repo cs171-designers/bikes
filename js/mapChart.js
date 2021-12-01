@@ -31,6 +31,28 @@ class BlueBikeMap {
         // Create time format
         vis.timeFormat = d3.timeFormat("%m/%d/%Y %I:%M %p")
 
+        // Create bike icon class and generic class
+        vis.genericIconClass = L.Icon.extend({
+            options: {
+                shadowUrl: 'img/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [0, -28]
+            }
+        })
+
+        vis.genericIcon = new vis.genericIconClass({iconUrl: 'img/marker-icon-2x.png'})
+
+        vis.bikeIconClass = L.Icon.extend({
+            options: {
+                iconSize: [41, 41],
+                iconAnchor: [20, 41],
+                popupAnchor: [0, -28]
+            }
+        })
+
+        vis.bikeIcon = new vis.bikeIconClass({iconUrl: 'img/blue-bike-icon.png'})
+
         vis.wrangleData()
     }
 
@@ -78,11 +100,12 @@ class BlueBikeMap {
     // Initialize markers and lines
         vis.marker = []
         for (let i=0; i<vis.visitedStations.length; i++) {
-            vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude])
+            vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude], {icon: vis.genericIcon})
                 .bindPopup(`Station: ${vis.visitedStations[i].Name} <br>
                     Departure Time: ${vis.timeFormat(vis.bike[i].starttime)} <br>
                     Trip Duration: ${parseInt(vis.bike[i].tripduration / 60) + " minutes " + vis.bike[i].tripduration % 60 + " seconds"}`)
         }
+        vis.marker[0].setIcon(vis.bikeIcon)
         vis.map.addLayer(vis.marker[0])
 
         vis.stationLines = []
@@ -109,6 +132,9 @@ class BlueBikeMap {
                 vis.map.removeLayer(vis.marker[vis.counter])
                 vis.map.removeLayer(vis.stationLines[vis.counter-1])
                 vis.counter -= 1
+
+                // set new current stop to have bike icon
+                vis.marker[vis.counter].setIcon(vis.bikeIcon)
                 vis.map.setView([
                         vis.visitedStations[vis.counter].Latitude,
                         vis.visitedStations[vis.counter].Longitude],
@@ -124,6 +150,10 @@ class BlueBikeMap {
                 return false
             }
             else {
+                // set next stop to have bike icon and return previous one to generic icon
+                vis.marker[vis.counter + 1].setIcon(vis.bikeIcon)
+                vis.marker[vis.counter].setIcon(vis.genericIcon)
+
                 vis.map.addLayer(vis.marker[vis.counter + 1])
                 vis.map.addLayer(vis.stationLines[vis.counter])
                 vis.counter += 1
