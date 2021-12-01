@@ -105,6 +105,25 @@ class BlueBikeMapDashboard {
             .domain([0, d3.max(totals)])
             .range([0, 500])
         console.log("station data", vis.stationData)
+
+        // Wrangle data to get net bike flow
+        vis.netBikes = []
+        for (let i=0; i<vis.arrivalSums.length; i++) {
+            let tmp = vis.arrivalSums[i]
+            tmp[2] = vis.arrivalSums[i][2] - vis.departureSums[i][2]
+            vis.netBikes.push(tmp)
+        }
+        console.log("FLUX", vis.netBikes)
+
+        let netBikeTotals = []
+        vis.netBikes.forEach(d => {
+            netBikeTotals.push(d[2])
+        })
+
+        vis.netScale = d3.scaleLinear()
+            .domain([0, d3.max(netBikeTotals)])
+            .range([0, 500])
+
         vis.updateVis()
     }
 
