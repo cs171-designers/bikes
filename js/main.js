@@ -74,10 +74,10 @@ function init() {
         hourBar = new DashBarChart("hour-bar-chart", lineData, eventHandler);
 
         // Bind event handler
-        eventHandler.bind("selectionChanged", function(event){
+        eventHandler.bind("selectionChanged", function (event) {
             //console.log("brush")
-            let rangeStart = event.detail[0];
-            let rangeEnd = event.detail[1];
+            let rangeStart = !!event.detail ? event.detail[0] : null;
+            let rangeEnd = !!event.detail ? event.detail[1] : null;
             memberLine.onSelectionChange(rangeStart, rangeEnd);
             genderLine.onSelectionChange(rangeStart, rangeEnd);
             ageLine.onSelectionChange(rangeStart, rangeEnd);
@@ -85,9 +85,9 @@ function init() {
 
         });
         // Bind event handler
-        eventHandler.bind("updateLabels", function(event){
-            let rangeStart = event.detail[0];
-            let rangeEnd = event.detail[1];
+        eventHandler.bind("updateLabels", function (event) {
+            let rangeStart = !!event.detail ? event.detail[0] : null;
+            let rangeEnd = !!event.detail ? event.detail[1] : null;
             generalLine.onUpdateLabels(rangeStart, rangeEnd);
         });
 

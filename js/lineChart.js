@@ -77,19 +77,23 @@ class LineChart {
 
             // Add Brushing Component
             vis.currentBrushRegion = null;
+            const brushHandler = function (event) {
+                // User just selected a specific region
+                vis.currentBrushRegion = event.selection;
+                if (vis.currentBrushRegion) {
+                    vis.currentBrushRegion = vis.currentBrushRegion.map(vis.x.invert);
+                }
+
+                // Trigger the event 'selectionChanged' of our event handler
+                vis.eventHandler.trigger("selectionChanged", vis.currentBrushRegion);
+
+                // trigger event to update date labels
+                vis.eventHandler.trigger("updateLabels", vis.currentBrushRegion);
+            }
             vis.brush = d3.brushX()
                 .extent([[0, 0], [vis.width, vis.height]])
-                .on("brush", function (event) {
-                    // User just selected a specific region
-                    vis.currentBrushRegion = event.selection;
-                    vis.currentBrushRegion = vis.currentBrushRegion.map(vis.x.invert);
-
-                    // Trigger the event 'selectionChanged' of our event handler
-                    vis.eventHandler.trigger("selectionChanged", vis.currentBrushRegion);
-
-                    // trigger event to update date labels
-                    vis.eventHandler.trigger("updateLabels", vis.currentBrushRegion);
-                });
+                .on("brush", brushHandler)
+                .on("end", brushHandler);
 
             vis.brushGroup = vis.svg.append("g")
                 .attr("class", "brush");
@@ -652,6 +656,11 @@ class LineChart {
         vis.filteredData = {};
         Object.entries(vis.data).forEach(d => {
             let date = timeFormat(dateParser(d[0]));
+            if (!selectionStart || !selectionEnd) {
+                // filter reset
+                vis.filteredData[date] = d[1];
+                return;
+            }
             if (date >= timeFormat(selectionStart) && date <= timeFormat(selectionEnd)) {
                 vis.filteredData[date] = d[1];
             }
