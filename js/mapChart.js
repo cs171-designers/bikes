@@ -35,12 +35,12 @@ class BlueBikeMap {
         vis.genericIcon = L.Icon.extend({
             options: {
                 iconSize: [41, 41],
-                iconAnchor: [20, 31],
+                iconAnchor: [20, 41],
                 popupAnchor: [0, -28]
             }
         })
 
-        vis.bikeIcon = new vis.genericIcon({iconUrl: 'img/bike.png'})
+        vis.bikeIcon = new vis.genericIcon({iconUrl: 'img/blue-bike-icon.png'})
 
         vis.wrangleData()
     }
@@ -89,7 +89,7 @@ class BlueBikeMap {
     // Initialize markers and lines
         vis.marker = []
         for (let i=0; i<vis.visitedStations.length; i++) {
-            vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude])
+            vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude], {icon: vis.bikeIcon})
                 .bindPopup(`Station: ${vis.visitedStations[i].Name} <br>
                     Departure Time: ${vis.timeFormat(vis.bike[i].starttime)} <br>
                     Trip Duration: ${parseInt(vis.bike[i].tripduration / 60) + " minutes " + vis.bike[i].tripduration % 60 + " seconds"}`)
