@@ -76,7 +76,7 @@ function init() {
         memberLine = new LineChart("member-line-chart", lineData, "member", null, dateParser);
         genderLine = new LineChart("gender-line-chart", lineData, "gender", null, dateParser);
         ageLine = new LineChart("age-line-chart", lineData, "age", null, dateParser);
-        hourBar = new DashBarChart("hour-bar-chart", lineData, eventHandler);
+        hourBar = new DashBarChart("hour-bar-chart", lineData, eventHandler, dateParser);
 
         // Bind event handler
         eventHandler.bind("selectionChanged", function (event) {

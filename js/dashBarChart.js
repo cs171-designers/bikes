@@ -2,12 +2,13 @@
 
 class DashBarChart {
 
-    constructor(parentElement, data, _eventHandler) {
+    constructor(parentElement, data, _eventHandler, _dateParser) {
         this.parentElement = parentElement;
         this.data = data;
         this.filteredData = this.data;
         this.displayData = [];
         this.eventHandler = _eventHandler;
+        this.dateParser = _dateParser;
 
         this.initVis();
     }
