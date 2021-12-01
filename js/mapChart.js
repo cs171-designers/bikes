@@ -31,6 +31,18 @@ class BlueBikeMap {
         // Create time format
         vis.timeFormat = d3.timeFormat("%m/%d/%Y %I:%M %p")
 
+        // Create bike icon class
+        vis.genericIcon = L.Icon.extend({
+            options: {
+                shadowUrl: 'img/marker-shadow.png',
+                iconSize: [41, 41],
+                iconAnchor: [20, 41],
+                popupAnchor: [0, -28]
+            }
+        })
+
+        vis.bikeIcon = new vis.genericIcon({iconUrl: 'img/bike.png'})
+
         vis.wrangleData()
     }
 
@@ -78,7 +90,7 @@ class BlueBikeMap {
     // Initialize markers and lines
         vis.marker = []
         for (let i=0; i<vis.visitedStations.length; i++) {
-            vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude])
+            vis.marker[i] = L.marker([vis.visitedStations[i].Latitude, vis.visitedStations[i].Longitude], {icon: vis.bikeIcon})
                 .bindPopup(`Station: ${vis.visitedStations[i].Name} <br>
                     Departure Time: ${vis.timeFormat(vis.bike[i].starttime)} <br>
                     Trip Duration: ${parseInt(vis.bike[i].tripduration / 60) + " minutes " + vis.bike[i].tripduration % 60 + " seconds"}`)
