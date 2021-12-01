@@ -66,6 +66,7 @@ class BlueBikeMapDashboard {
             vis.arrivalSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
         vis.arrivalSums.sort((a, b) => b[2] - a[2])
+        console.log(vis.arrivalData)
         console.log(vis.arrivalSums)
 
         vis.departureSums = []
