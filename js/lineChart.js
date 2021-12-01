@@ -1,20 +1,21 @@
 // create line charts for interactive, linked dashboard view
 
 class LineChart {
-    constructor(parentElement, data, variable, _eventHandler) {
+    constructor(parentElement, data, variable, _eventHandler, _dateParser) {
         this.parentElement = parentElement;
         this.data = data;
         this.filteredData = this.data;
         this.displayData = [];
         this.variable = variable;
         this.eventHandler = _eventHandler;
+        this.dateParser = _dateParser;
 
         this.initVis();
     }
     initVis() {
         let vis = this;
 
-        vis.margin = { top: 20, right: 10, bottom: 20, left: 50 };
+        vis.margin = { top: 20, right: 10, bottom: 20, left: 60 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
@@ -306,8 +307,7 @@ class LineChart {
         //console.log("missing", Object.values(vis.data).map(d => d.filter(ride => ride.age != 0 && !ride.age)))
         // birth year only for subscribers, not known for customers
 
-
-        let dateParser = d3.timeParse("%Y-%m-%d");
+        let dateParser = d3.timeParse(vis.dateParser);
 
         vis.displayData = Object.entries(vis.filteredData).map(d => {
             return {
@@ -650,8 +650,9 @@ class LineChart {
     onSelectionChange(selectionStart, selectionEnd) {
         let vis = this;
 
-        let dateParser = d3.timeParse("%Y-%m-%d");
-        let timeFormat = d3.timeFormat("%Y-%m-%d");
+        // let dateParser = d3.timeParse("%Y-%m-%d");
+        let dateParser = d3.timeParse(vis.dateParser);
+        let timeFormat = d3.timeFormat(vis.dateParser);
 
         vis.filteredData = {};
         Object.entries(vis.data).forEach(d => {

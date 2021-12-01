@@ -46,9 +46,11 @@ function init() {
         })
 
         // Dashboard View
-        let lineData = dataHandler.groupDate();
+        let dayParser = "%Y-%m-%d";
+        let dayData = dataHandler.groupDate();
         // console.log(lineData);
-
+        
+        let weekParser = "%U-%Y";
         let weekData = dataHandler.groupWeek();
         // console.log("aggregated", weekData);
 
@@ -67,10 +69,13 @@ function init() {
         selectedCategory = document.getElementById('categorySelector').value; // default selection value
 
         // switch data between lineData and weekData?
-        generalLine = new LineChart("main-line-chart", lineData, "overview", eventHandler);
-        memberLine = new LineChart("member-line-chart", lineData, "member");
-        genderLine = new LineChart("gender-line-chart", lineData, "gender");
-        ageLine = new LineChart("age-line-chart", lineData, "age");
+        const USE_WEEKS = true;
+        let dateParser = (USE_WEEKS) ? weekParser : dayParser;
+        let lineData = (USE_WEEKS) ? weekData : dayData;
+        generalLine = new LineChart("main-line-chart", lineData, "overview", eventHandler, dateParser);
+        memberLine = new LineChart("member-line-chart", lineData, "member", null, dateParser);
+        genderLine = new LineChart("gender-line-chart", lineData, "gender", null, dateParser);
+        ageLine = new LineChart("age-line-chart", lineData, "age", null, dateParser);
         hourBar = new DashBarChart("hour-bar-chart", lineData, eventHandler);
 
         // Bind event handler
