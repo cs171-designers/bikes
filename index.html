@@ -135,18 +135,16 @@
 			</div>
 		</div>
 
-		<div class="row justify-content-center ">
-			<div class="col-md-6">
-				<select class="form-select" id="map-dashboard-dropdown" aria-label="Map dashboard select">
-					<option selected value="totalSums">Total departures and arrivals</option>
-					<option value="departureSums">Departures</option>
-					<option value="arrivalSums">Arrivals</option>
-					<option value="netBikes">Net Bikes</option>
-				</select>
-				<div id="station-dashboard"></div>
+		<div class="container-fluid section">
+			<div class="row justify-content-center ">
+				<div class="col-md-6">
+					<div id="bike-map"></div>
+					<input class="btn btn-primary" id="previous-button" type="button" value="Previous Stop">
+					<input class="btn btn-primary" id="next-button" type="button" value="Next Stop">
+					<input class="btn btn-primary" id="generator-button" type="button" value="Look at a different bike">
+				</div>
 			</div>
 		</div>
-
 		<!-- station sizes: Map -->
 		<div class="container-fluid section pp-scrollable">
 			<div class="row text-row ">
