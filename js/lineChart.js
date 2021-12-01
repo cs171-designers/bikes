@@ -678,7 +678,21 @@ class LineChart {
     }
 
     onUpdateLabels(selectionStart, selectionEnd) {
+        let vis = this;
         let timeFormat = d3.timeFormat("%Y-%m-%d");
+        if (!selectionStart) {
+            let start = d3.extent(vis.displayData, function (d) {
+                return d.date;
+            });
+            selectionStart = start[0];
+        }
+        if (!selectionEnd) {
+            let end = d3.extent(vis.displayData, function (d) {
+                return d.date;
+            });
+            selectionEnd = end[1];
+        }
+        console.log("selection", selectionStart, selectionEnd)
         d3.select("#time-period-min").text(timeFormat(selectionStart));
         d3.select("#time-period-max").text(timeFormat(selectionEnd));
     }
