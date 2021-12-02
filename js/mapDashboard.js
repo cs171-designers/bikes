@@ -126,7 +126,7 @@ class BlueBikeMapDashboard {
 
         vis.netScale = d3.scaleLinear()
             .domain([0, d3.max(netBikeTotals)])
-            .range([0, 500])
+            .range([0, 250])
 
         vis.updateVis()
     }
