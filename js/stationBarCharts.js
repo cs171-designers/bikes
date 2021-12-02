@@ -17,7 +17,7 @@ class StationBarChart {
         let vis = this;
 
         // margin conventions
-        vis.margin = { top: 10, right: 50, bottom: 100, left: 70 };
+        vis.margin = { top: 10, right: 50, bottom: 250, left: 180 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.top - vis.margin.bottom;
 
@@ -42,6 +42,15 @@ class StationBarChart {
 
         vis.yAxis = d3.axisLeft()
             .scale(vis.y);
+
+        vis.yLabel = vis.svg.append("text")
+            .attr("class", "axis-label")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -20)
+            .attr("y", -vis.margin.left + 10)
+            .style("text-anchor", "middle");
+
+        vis.yLabel.text("# rides");
 
         vis.svg.append("g")
             .attr("class", "y-axis axis");
@@ -125,7 +134,7 @@ class StationBarChart {
         vis.sortedByMost = sorted.sort((a,b)=> b.numTrips - a.numTrips);
 
         if (vis.sortByMost) {
-            vis.newsorted = sorted.sort((a,b)=> b.numTrips - a.numTrips);
+            vis.newsorted = vis.sortedByMost;
         }
         else {
             vis.newsorted = sorted.sort((a,b)=> a.numTrips - b.numTrips);
@@ -170,10 +179,13 @@ class StationBarChart {
         //console.log("x scale domain", vis.x.domain())
         //console.log("height", vis.height)
 
+
+
         vis.svg.selectAll("mybar")
             .data(vis.topFiveStations)
             .enter()
             .append("rect")
+            .style("fill", "grey")
             .attr("x", function(d) { return vis.x(d.name); })
             .attr("width", vis.x.bandwidth())
             .attr("fill", "#69b3a2")
