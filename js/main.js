@@ -53,7 +53,7 @@ function init() {
         let dayData = dataHandler.groupDate();
         // console.log(lineData);
         
-        let weekParser = "%Y-%U";
+        let weekParser = "%U-%Y";
         let weekData = dataHandler.groupWeek();
         // console.log("aggregated", weekData);
 
