@@ -5,6 +5,7 @@ let stationDashboard;
 let barChartsMost;
 let barChartsLeast;
 let selectedDashboardView;
+let riderTrendLine, memberTrend, genderTrend, ageTrend;
 
 function init() {
     // console.log("instantiating Data");
@@ -32,6 +33,7 @@ function init() {
         let stationData = dataHandler.getStationCoords();
         barChartsMost = new StationBarChart("trip-length-barchart-most", ridesData, stationData, true); // , variable)
         barChartsLeast = new StationBarChart("trip-length-barchart-least", ridesData, stationData, false);
+
 
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
@@ -65,7 +67,6 @@ function init() {
                 }));
             }
         };
-
         selectedCategory = document.getElementById('categorySelector').value; // default selection value
 
         // switch data between lineData and weekData?
@@ -95,6 +96,13 @@ function init() {
             let rangeEnd = !!event.detail ? event.detail[1] : null;
             generalLine.onUpdateLabels(rangeStart, rangeEnd);
         });
+
+
+        // ridershipTrend line
+        riderTrendLine = new LineChart("riderTrend", lineData, "overview", eventHandler, dateParser); // get rid of brush capability??
+        memberTrend = new LineChart("memberTrend", lineData, "member", null, dateParser);
+        genderTrend = new LineChart("genderTrend", lineData, "gender", null, dateParser);
+        ageTrend = new LineChart("ageTrend", lineData, "age", null, dateParser);
 
     });
 
