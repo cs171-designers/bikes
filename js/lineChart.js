@@ -76,67 +76,69 @@ class LineChart {
             vis.linePath = vis.svg.append("path")
                 .attr("class", "line");
 
-            // Add Brushing Component
-            vis.currentBrushRegion = null;
-            const brushHandler = function (event) {
-                // User just selected a specific region
-                vis.currentBrushRegion = event.selection;
-                if (vis.currentBrushRegion) {
-                    vis.currentBrushRegion = vis.currentBrushRegion.map(vis.x.invert);
+            if(vis.eventHandler != null){
+                // Add Brushing Component
+                vis.currentBrushRegion = null;
+                const brushHandler = function (event) {
+                    // User just selected a specific region
+                    vis.currentBrushRegion = event.selection;
+                    if (vis.currentBrushRegion) {
+                        vis.currentBrushRegion = vis.currentBrushRegion.map(vis.x.invert);
+                    }
+
+                    // Trigger the event 'selectionChanged' of our event handler
+                    vis.eventHandler.trigger("selectionChanged", vis.currentBrushRegion);
+
+                    // trigger event to update date labels
+                    vis.eventHandler.trigger("updateLabels", vis.currentBrushRegion);
                 }
+                vis.brush = d3.brushX()
+                    .extent([[0, 0], [vis.width, vis.height]])
+                    .on("brush", brushHandler)
+                    .on("end", brushHandler);
 
-                // Trigger the event 'selectionChanged' of our event handler
-                vis.eventHandler.trigger("selectionChanged", vis.currentBrushRegion);
+                vis.brushGroup = vis.svg.append("g")
+                    .attr("class", "brush");
 
-                // trigger event to update date labels
-                vis.eventHandler.trigger("updateLabels", vis.currentBrushRegion);
+                // Add SVG ABOVE main brush-able chart to show time period dates labels
+                vis.timeSvg = d3.select("#time").append("svg")
+                    .attr("width", vis.width + vis.margin.left + vis.margin.right)
+                    .attr("height", 20)
+                    .append("g")
+                    .attr("transform", "translate(" + vis.margin.left + ",0)");
+
+                vis.timeSvg.append("rect")
+                    .attr("id", "time-period-min-box")
+                    .attr("x", -55)
+                    .attr("y", 0)
+                    .attr("width", 80)
+                    .attr("height", 20);
+
+                vis.timeSvg.append("text")
+                    .attr("id", "time-period-min")
+                    .text("2018-01-01")
+                    .attr("x", -50)
+                    .attr("y", 15);
+
+                vis.timeSvg.append("text")
+                    .attr("id", "time-dash")
+                    .text("-")
+                    .attr("x", 30)
+                    .attr("y", 15);
+
+                vis.timeSvg.append("rect")
+                    .attr("id", "time-period-max-box")
+                    .attr("x", 45)
+                    .attr("y", 0)
+                    .attr("width", 80)
+                    .attr("height", 20);
+
+                vis.timeSvg.append("text")
+                    .attr("id", "time-period-max")
+                    .text("2019-12-31")
+                    .attr("x", 50)
+                    .attr("y", 15);
             }
-            vis.brush = d3.brushX()
-                .extent([[0, 0], [vis.width, vis.height]])
-                .on("brush", brushHandler)
-                .on("end", brushHandler);
-
-            vis.brushGroup = vis.svg.append("g")
-                .attr("class", "brush");
-
-            // Add SVG ABOVE main brush-able chart to show time period dates labels
-            vis.timeSvg = d3.select("#time").append("svg")
-                .attr("width", vis.width + vis.margin.left + vis.margin.right)
-                .attr("height", 20)
-                .append("g")
-                .attr("transform", "translate(" + vis.margin.left + ",0)");
-
-            vis.timeSvg.append("rect")
-                .attr("id", "time-period-min-box")
-                .attr("x", -55)
-                .attr("y", 0)
-                .attr("width", 80)
-                .attr("height", 20);
-
-            vis.timeSvg.append("text")
-                .attr("id", "time-period-min")
-                .text("2018-01-01")
-                .attr("x", -50)
-                .attr("y", 15);
-
-            vis.timeSvg.append("text")
-                .attr("id", "time-dash")
-                .text("-")
-                .attr("x", 30)
-                .attr("y", 15);
-
-            vis.timeSvg.append("rect")
-                .attr("id", "time-period-max-box")
-                .attr("x", 45)
-                .attr("y", 0)
-                .attr("width", 80)
-                .attr("height", 20);
-
-            vis.timeSvg.append("text")
-                .attr("id", "time-period-max")
-                .text("2019-12-31")
-                .attr("x", 50)
-                .attr("y", 15);
         }
 
         if (vis.variable != "overview") {
@@ -179,7 +181,7 @@ class LineChart {
                 .style("fill", "blue")
 
             vis.legend.append("text")
-                .text("Customer")
+                .text("Non-subscriber")
                 .attr("x", vis.legend_width + vis.legend_padding)
                 .attr("y", -5 + 5);
         }
@@ -302,7 +304,6 @@ class LineChart {
     }
     wrangleData() {
         let vis = this;
-
 
         //console.log("missing", Object.values(vis.data).map(d => d.filter(ride => ride.age != 0 && !ride.age)))
         // birth year only for subscribers, not known for customers
@@ -481,10 +482,12 @@ class LineChart {
                 return d[selectedCategory];
             })]);
 
-            // call brush component
-            vis.brushGroup
-                .attr("clip-path", "url(#clip)")
-                .call(vis.brush);
+            if(vis.eventHandler != null){
+                // call brush component
+                vis.brushGroup
+                    .attr("clip-path", "url(#clip)")
+                    .call(vis.brush);
+            }
 
             // D3 path generator
             vis.dataLine = d3.line()
@@ -669,12 +672,6 @@ class LineChart {
 
         vis.wrangleData();
 
-        // filter displayData on date? loop through display data and filter on d.date
-        // console.log("orig", vis.displayData)
-        // vis.displayData.filter(ride => ride.date >= timeFormat(selectionStart) && ride.date <= timeFormat(selectionEnd))
-        // vis.displayData = (vis.displayData.sort((a,b)=> a.date - b.date));
-        // console.log("brush", vis.displayData)
-        // vis.updateVis();
     }
 
     onUpdateLabels(selectionStart, selectionEnd) {
