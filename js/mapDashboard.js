@@ -116,11 +116,12 @@ class BlueBikeMapDashboard {
             tmp[2] = vis.arrivalSums[i][2] - vis.departureSums[i][2]
             vis.netBikes.push(tmp)
         }
+        vis.netBikes.sort((a, b) => Math.abs(b[2]) - Math.abs(a[2]))
         console.log("FLUX", vis.netBikes)
 
         let netBikeTotals = []
         vis.netBikes.forEach(d => {
-            netBikeTotals.push(d[2])
+            netBikeTotals.push(Math.abs(d[2]))
         })
 
         vis.netScale = d3.scaleLinear()
@@ -142,25 +143,57 @@ class BlueBikeMapDashboard {
         else if (selectedDashboardView === "departureSums") {
             popupBlurb = "Total departures:"
         }
-        else {
+        else if (selectedDashboardView === "arrivalSums") {
             popupBlurb = "Total arrivals:"
+        }
+        else {
+            popupBlurb = "Net bikes:"
         }
 
         vis[selectedDashboardView].forEach(station => {
-            let stationName = ""
-            vis.stationData.forEach(d => {
-                if (d.Id === station[0]) {
-                    stationName = d.Name
+            if (selectedDashboardView === "netBikes") {
+                let stationName = ""
+                vis.stationData.forEach(d => {
+                    if (d.Id === station[0]) {
+                        stationName = d.Name
+                    }
+                })
+                if (station[2] < 0) {
+                    vis.circles[vis.circleCounter] = L.circle(station[1], vis.netScale(Math.abs(station[2])), {
+                        color: 'red',
+                        fillColor: '#ddd',
+                        fillOpacity: 0.5
+                    })
+                        .bindPopup(`Station: ${stationName} <br>${popupBlurb} ${station[2]}`)
+                        .addTo(vis.map);
                 }
-            })
-            vis.circles[vis.circleCounter] = L.circle(station[1], vis.radiusScale(station[2]), {
-                color: 'blue',
-                fillColor: '#ddd',
-                fillOpacity: 0.5
-            })
-                .bindPopup(`Station: ${stationName} <br>${popupBlurb} ${station[2]}`)
-                .addTo(vis.map);
-            vis.circleCounter += 1
+                else {
+                    vis.circles[vis.circleCounter] = L.circle(station[1], vis.netScale(station[2]), {
+                        color: 'green',
+                        fillColor: '#ddd',
+                        fillOpacity: 0.5
+                    })
+                        .bindPopup(`Station: ${stationName} <br>${popupBlurb} ${station[2]}`)
+                        .addTo(vis.map);
+                }
+                vis.circleCounter += 1
+            }
+            else {
+                let stationName = ""
+                vis.stationData.forEach(d => {
+                    if (d.Id === station[0]) {
+                        stationName = d.Name
+                    }
+                })
+                vis.circles[vis.circleCounter] = L.circle(station[1], vis.radiusScale(station[2]), {
+                    color: 'blue',
+                    fillColor: '#ddd',
+                    fillOpacity: 0.5
+                })
+                    .bindPopup(`Station: ${stationName} <br>${popupBlurb} ${station[2]}`)
+                    .addTo(vis.map);
+                vis.circleCounter += 1
+            }
         })
 
         vis.dropdownListener = d3.select("#map-dashboard-dropdown").on("change", changeView)
