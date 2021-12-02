@@ -173,7 +173,7 @@ class BlueBikeMapDashboard {
                         fillColor: '#ddd',
                         fillOpacity: 0.5
                     })
-                        .bindPopup(`Station: ${stationName} <br>${popupBlurb} ${station[2]}`)
+                        .bindPopup(`Station: ${stationName} <br>${popupBlurb} +${station[2]}`)
                         .addTo(vis.map);
                 }
                 vis.circleCounter += 1
