@@ -46,8 +46,8 @@ class StationBarChart {
         vis.yLabel = vis.svg.append("text")
             .attr("class", "axis-label")
             .attr("transform", "rotate(-90)")
-            .attr("x", -20)
-            .attr("y", -vis.margin.left + 10)
+            .attr("x", -vis.height / 2)
+            .attr("y", -40)
             .style("text-anchor", "middle");
 
         vis.yLabel.text("# rides");
