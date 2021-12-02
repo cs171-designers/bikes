@@ -65,7 +65,9 @@ class BlueBikeMapDashboard {
             }
             vis.arrivalSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
+        // console.log("before sort", vis.arrivalSums.map(item => [...item]))
         vis.arrivalSums.sort((a, b) => b[2] - a[2])
+        // console.log("after sort", vis.arrivalSums.map(item => [...item]))
         console.log(vis.arrivalData)
         console.log(vis.arrivalSums)
 
@@ -110,7 +112,7 @@ class BlueBikeMapDashboard {
         // Wrangle data to get net bike flow
         vis.netBikes = []
         for (let i=0; i<vis.arrivalSums.length; i++) {
-            let tmp = vis.arrivalSums[i]
+            let tmp = vis.arrivalSums[i].slice(); // duplicate so that we edit copy not reference
             tmp[2] = vis.arrivalSums[i][2] - vis.departureSums[i][2]
             vis.netBikes.push(tmp)
         }
