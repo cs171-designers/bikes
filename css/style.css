@@ -44,6 +44,10 @@
     font-family: 'Neuton', serif;
 }
 
+.endingParagraph {
+    padding-bottom: 3vh;
+}
+
 #time-period-min-box, #time-period-max-box{
     fill: lightgrey;
 }
