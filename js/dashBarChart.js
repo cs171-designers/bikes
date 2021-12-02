@@ -2,12 +2,12 @@
 
 class DashBarChart {
 
-    constructor(parentElement, data, _eventHandler, _dateParser) {
+    constructor(parentElement, data, variable, _dateParser) {
         this.parentElement = parentElement;
         this.data = data;
         this.filteredData = this.data;
         this.displayData = [];
-        this.eventHandler = _eventHandler;
+        this.variable = variable;
         this.dateParser = _dateParser;
 
         this.initVis();
@@ -146,10 +146,10 @@ class DashBarChart {
 
         // Update domain
         vis.x.domain(vis.displayData.map(d => d.hour));
-        vis.y.domain([0, d3.max(vis.displayData.map(d => d[selectedCategory]))]);
+        vis.y.domain([0, d3.max(vis.displayData.map(d => d[vis.variable]))]);
 
         // update y axis label
-        if (selectedCategory === "num_rides") {
+        if (vis.variable === "num_rides") {
             vis.yLabel.text("# rides");
         }
         else {
@@ -177,9 +177,9 @@ class DashBarChart {
             .attr("width", vis.x.bandwidth())
             .attr("y", d => {
                 //console.log("y", vis.y(d[selectedCategory]), d);
-                return vis.y(d[selectedCategory])
+                return vis.y(d[vis.variable])
             })
-            .attr("height", d => vis.height - (vis.y(d[selectedCategory])));
+            .attr("height", d => vis.height - (vis.y(d[vis.variable])));
 
         // Update axes
         vis.svg.select(".y-axis").transition().duration(800).call(vis.yAxis);

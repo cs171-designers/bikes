@@ -68,7 +68,7 @@
 			</div>
 			<div class="row title-row text-row">
 				<div class="col">
-					<h1>Blue Bike Visualization</h1>
+					<h1>Meet Blue Bikes!</h1>
 					<p>Status: <span id="load-status">Loading...</span></p>
 				</div>
 			</div>
@@ -77,7 +77,11 @@
 		<!-- Intro on motivation -->
 		<div class="container-fluid section pp-scrollable" style="height: 100vh">
 			<div class="row text-row">
-				<h5>Intro on our motivations</h5>
+				<h5>Welcome to the Visualization!</h5>
+				<p>
+					Here is a study were we can explore data around Blue Bikes rides and demographics. <b>We have some insights as you explore but we welcome you to draw your own insights. Let your curiousity guide you! Ask yourself questions and interrogate the data! </b>
+				</p>
+
 				<p>
 					Both interest and need for sustainable and usable public transportation systems are growing.
 					Transportation is a key part of student life, as well as city and campus planning. Walk times,
@@ -86,49 +90,12 @@
 				</p>
 
 				<p>
-					We chose to explore biking, since the city bike organization for Boston, Bluebikes, publishes its
-					data and encourages analysis of the data and creation of data visualizations. We chose Bluebikes
-					specifically, because the data and analysis is relevant to us students; in fact, two of the members
-					of this team actively use Bluebikes. Cambridge is a particularly bike-friendly city in terms of
-					terrain and climate, which should yield interesting data that can inform the implementation of bike
-					sharing programs in other cities.
-				</p>
-				<p>
-					In our analysis of BLUEbike usage, we have focused on identifying trends in usage on Harvard campus
-					specifically. We are interested in exploring where on campus, including both the undergraduate and graduate
-					schools, are most frequently visited using BlueBikes and what the typical user profile is like.
-					We also analyze only 2018-2019 data, which includes more detailed demographic information along with
-					the rides data.
+					Cambridge is a particularly bike-friendly city in terms ofterrain and climate. <b>Here we present 2018-2019 data centered on Harvard campuses. Explore where on campus, including both the undergraduate and graduate schools, are most frequently visited using BlueBikes and what the typical user profile is like.</b>
 				</p>
 			</div>
 		</div>
 
 		<!--	Follow a bike text intro -->
-		<div class="container-fluid section ">
-			<div class="col">
-
-				<h5>Let's follow a bike! Understanding BLUEbikes</h5>
-				<p>
-					Welcome to Boston!
-					Here is a map that follows a bike around the city. We will go on a virtual ride
-					so that even if you have never borrowed a Bluebike, you can understand the process of how
-					a bike may be checked out from one station, ridden for a certain amount of time,
-					and then returned to another station;
-					then another user may borrow the bike from that station,
-					and the cycle continues.
-
-					</br>
-					BlueBike users may be subscription members or customers who pay for each trip.
-
-					</br>
-					Click <b>"next"</b> to move from one station along the trip to another. You can also select a
-					different
-					bike
-					to follow!
-				</p>
-			</div>
-		</div>
-
 		<div class="container-fluid section section pp-scrollable">
 			<div class="row justify-content-center ">
 				<div class="col-md-6">
@@ -211,7 +178,34 @@
 				</div>
 			</div>
 		</div>
-		
+
+		<div class="container-fluid section pp-scrollable">
+			<div class="row text-row ">
+				<div class="col">
+					When do most rides occur? Below is a barchart showing the number of rides that start during different
+					times of the day.
+				</div>
+			</div>
+			<div class="row justify-content-center ">
+				<div class="col-md-6">
+					<div class="align-self-center" id="hour-bar-chart"></div>
+				</div>
+			</div>
+
+			<div class="row text-row ">
+				<div class="col">
+					Does average trip duration change depending on when during the day the ride started?
+				</div>
+			</div>
+
+			<div class="row justify-content-center ">
+				<div class="col-md-6">
+					<div class="align-self-center" id="hour-bar-chart-duration"></div>
+				</div>
+			</div>
+
+		</div>
+
 		<!-- Transition to demographic stats -->
 		<div class="container-fluid section pp-scrollable">
 			<div class="row text-row ">
@@ -452,9 +446,6 @@
 						<div class="align-self-center border-top" id="age-line-chart"></div>
 					</div>
 
-					<div class="row justify-content-center linkedContainer">
-						<div class="align-self-center border-top" id="hour-bar-chart"></div>
-					</div>
 				</div>
 			</div>
 		</div>

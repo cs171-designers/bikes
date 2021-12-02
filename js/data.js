@@ -251,7 +251,7 @@ class DataHandler {
         let groupedWeek = {};
 
         dataHandler._rides.forEach(d => {
-            let weekFormat = d3.timeFormat("%U-%Y"); // Sunday-based week of the year as a decimal number [00, 53]
+            let weekFormat = d3.timeFormat("%Y-%U"); // Sunday-based week of the year as a decimal number [00, 53]
             let week = weekFormat(d.starttime);
 
             if (groupedWeek[week]) {
