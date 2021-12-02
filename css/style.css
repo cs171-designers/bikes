@@ -2,7 +2,10 @@
     height: 40vh;
     width: 50%;
 }
-
+#memberDurationTrend, #genderDurationTrend, #ageDurationTrend {
+    height: 40vh;
+    width: 50%;
+}
 .container-fluid {
     padding-right: 5vw;
     padding-left: 5vw;

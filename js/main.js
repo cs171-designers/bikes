@@ -6,6 +6,7 @@ let barChartsMost;
 let barChartsLeast;
 let selectedDashboardView;
 let riderTrendLine, memberTrend, genderTrend, ageTrend;
+let memberDuration, genderDuration, ageDuration;
 
 function init() {
     // console.log("instantiating Data");
@@ -52,7 +53,7 @@ function init() {
         let dayData = dataHandler.groupDate();
         // console.log(lineData);
         
-        let weekParser = "%U-%Y";
+        let weekParser = "%Y-%U";
         let weekData = dataHandler.groupWeek();
         // console.log("aggregated", weekData);
 
@@ -98,11 +99,19 @@ function init() {
         });
 
 
-        // ridershipTrend line
-        riderTrendLine = new LineChart("riderTrend", lineData, "overview", eventHandler, dateParser); // get rid of brush capability??
-        memberTrend = new LineChart("memberTrend", lineData, "member", null, dateParser);
-        genderTrend = new LineChart("genderTrend", lineData, "gender", null, dateParser);
-        ageTrend = new LineChart("ageTrend", lineData, "age", null, dateParser);
+        // // ridershipTrend line
+        // selectedCategory = "num_rides";
+        // riderTrendLine = new LineChart("riderTrend", lineData, "overview", eventHandler, dateParser); // get rid of brush capability??
+        // memberTrend = new LineChart("memberTrend", lineData, "member", null, dateParser);
+        // genderTrend = new LineChart("genderTrend", lineData, "gender", null, dateParser);
+        // ageTrend = new LineChart("ageTrend", lineData, "age", null, dateParser);
+        //
+        // // duration trends
+        // selectedCategory = "avg_trip_dur";
+        // memberDuration = new LineChart("memberDurationTrend", lineData, "member", null, dateParser);
+        // genderDuration = new LineChart("genderDurationTrend", lineData, "gender", null, dateParser);
+        // ageDuration = new LineChart("ageDurationTrend", lineData, "age", null, dateParser);
+
 
     });
 
