@@ -122,6 +122,8 @@ class StationBarChart {
         //     // vis.stationData[d]
         // });
         // console.log(sorted)
+        vis.sortedByMost = sorted.sort((a,b)=> b.numTrips - a.numTrips);
+
         if (vis.sortByMost) {
             vis.newsorted = sorted.sort((a,b)=> b.numTrips - a.numTrips);
         }
@@ -157,7 +159,7 @@ class StationBarChart {
             .attr("transform", "translate(-10,0)rotate(-30)")
             .style("text-anchor", "end");
 
-        vis.y.domain([0, d3.max(vis.topFiveStations, function (d) {
+        vis.y.domain([0, d3.max(vis.sortedByMost, function (d) {
             return d['numTrips']})]);
 
         vis.svg.append("g")
