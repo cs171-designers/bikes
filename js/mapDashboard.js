@@ -161,8 +161,9 @@ class BlueBikeMapDashboard {
                 if (station[2] < 0) {
                     vis.circles[vis.circleCounter] = L.circle(station[1], vis.netScale(Math.abs(station[2])), {
                         color: 'red',
-                        fillColor: '#ddd',
-                        fillOpacity: 0.5
+                        fillColor: 'red',
+                        fillOpacity: 0.3,
+                        stroke: false
                     })
                         .bindPopup(`Station: ${stationName} <br>${popupBlurb} ${station[2]}`)
                         .addTo(vis.map);
@@ -170,8 +171,9 @@ class BlueBikeMapDashboard {
                 else {
                     vis.circles[vis.circleCounter] = L.circle(station[1], vis.netScale(station[2]), {
                         color: 'green',
-                        fillColor: '#ddd',
-                        fillOpacity: 0.5
+                        fillColor: 'green',
+                        fillOpacity: 0.3,
+                        stroke: false
                     })
                         .bindPopup(`Station: ${stationName} <br>${popupBlurb} +${station[2]}`)
                         .addTo(vis.map);
@@ -187,8 +189,9 @@ class BlueBikeMapDashboard {
                 })
                 vis.circles[vis.circleCounter] = L.circle(station[1], vis.radiusScale(station[2]), {
                     color: 'blue',
-                    fillColor: '#ddd',
-                    fillOpacity: 0.5
+                    fillColor: 'blue',
+                    fillOpacity: 0.3,
+                    stroke: false
                 })
                     .bindPopup(`Station: ${stationName} <br>${popupBlurb} ${station[2]}`)
                     .addTo(vis.map);
