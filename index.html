@@ -33,10 +33,10 @@
 				direction: 'horizontal',
 				menu: '#menu',
 				anchors: ['page1', 'page2', 'page3', 'page4'],
-				sectionsColor: ['white', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7'],
+				sectionsColor: ['white', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7','#e1ecf7','#e1ecf7'],
 				navigation: {
 					'position': 'right',
-					'tooltips': ['Page 1', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 6', 'Page 7', 'Page 8', 'Page 9', 'Page 10', 'Page 11', 'Page 12', 'Page 13', 'Page 14']
+					'tooltips': ['Page 1', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 6', 'Page 7', 'Page 8', 'Page 9', 'Page 10', 'Page 11', 'Page 12', 'Page 13', 'Page 14','Page 15','Page 16']
 				},
 				afterRender: function () {
 					$('#pp-nav').addClass('custom');
@@ -57,7 +57,7 @@
 	<div id="pagepiling">
 
 		<!--	 title page -->
-		<div class="container-fluid section" style="height: 100vh">
+		<div class="container-fluid section pp-scrollable" style="height: 100vh">
 			<div class="row ">
 				<div class="col">
 					<figure>
@@ -110,34 +110,26 @@
 						and the cycle continues.
 
 						</br>
-						BlueBike users may be subscription members or customers who pay for each trip.
-
 						</br>
-						Click <b>"next"</b> to move from one station along the trip to another. You can also select a
-						different
-						bike
-						to follow!
+						Click <b>"next"</b> to move from one station along the trip to another. Click on the icons to view
+						trip information. You can also select a different bike to follow!
 					</p>
 					<div id="bike-map"></div>
 					<input class="btn btn-primary" id="previous-button" type="button" value="Previous Stop">
 					<input class="btn btn-primary" id="next-button" type="button" value="Next Stop">
 					<input class="btn btn-primary" id="generator-button" type="button" value="Look at a different bike">
-					<p>
-						</br>
-						</br>
-						</br>
-					</p>
 				</div>
 			</div>
-		</div>
-		<!-- station sizes: Map -->
-		<div class="container-fluid section pp-scrollable">
-			<div class="row text-row ">
-				<div class="col">
+			<div class="row justify-content-center">
+				<div class="col-md-6">
 					<h5>Now let's look at a map with station info</h5>
 					<p>
 						In this map, we explore what stations on Harvard's campus are most popular. Popularity is
-						based on total traffic or solely on departures from or arrivals to each station.
+						based on total traffic or solely on departures from or arrivals to each station. The
+						difference between arrivals and departures can show us which stations are net positive, net negative, and net zero bikes.
+						<br>
+						<br>
+						Take a look at some of the stations and see if you can make any interesting comparisons!
 					</p>
 				</div>
 			</div>
@@ -153,14 +145,20 @@
 					<div id="station-dashboard"></div>
 				</div>
 			</div>
-		</div>
 
-		<!--	summary of map -->
-		<div class="container-fluid section ">
-			<div class="row text-row ">
-				<div class="col">
+			<!--	summary of map -->
+			<div class="row justify-content-center">
+				<div class="col-md-6 endingParagraph">
 					<p>
-						From this map, we see ... stations are most popular.
+						From this map, we can see that most stations have roughly the same number of departures and
+						arrivals. The Bluebike station in Central Square was the most popular station by far,
+						which makes sense given that it is conveniently located between Harvard's and MIT's campuses.
+						<br>
+						<br>
+						When making this dashboard we were interested to see if we could tell whether
+						Quad students or Mather/Dunster students made more Bluebike trips. Looking at the Garden St station
+						near the Quad and the DeWolfe St station near Mather/Dunster, Quad students and Mather/Dunster
+						students took roughly the same number of trips.
 					</p>
 				</div>
 			</div>

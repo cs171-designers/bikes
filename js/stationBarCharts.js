@@ -17,7 +17,7 @@ class StationBarChart {
         let vis = this;
 
         // margin conventions
-        vis.margin = { top: 10, right: 50, bottom: 100, left: 70 };
+        vis.margin = { top: 10, right: 50, bottom: 250, left: 180 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.top - vis.margin.bottom;
 
@@ -42,6 +42,15 @@ class StationBarChart {
 
         vis.yAxis = d3.axisLeft()
             .scale(vis.y);
+
+        vis.yLabel = vis.svg.append("text")
+            .attr("class", "axis-label")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -vis.height / 2)
+            .attr("y", -40)
+            .style("text-anchor", "middle");
+
+        vis.yLabel.text("# rides");
 
         vis.svg.append("g")
             .attr("class", "y-axis axis");
@@ -122,8 +131,10 @@ class StationBarChart {
         //     // vis.stationData[d]
         // });
         // console.log(sorted)
+        vis.sortedByMost = sorted.sort((a,b)=> b.numTrips - a.numTrips);
+
         if (vis.sortByMost) {
-            vis.newsorted = sorted.sort((a,b)=> b.numTrips - a.numTrips);
+            vis.newsorted = vis.sortedByMost;
         }
         else {
             vis.newsorted = sorted.sort((a,b)=> a.numTrips - b.numTrips);
@@ -157,7 +168,7 @@ class StationBarChart {
             .attr("transform", "translate(-10,0)rotate(-30)")
             .style("text-anchor", "end");
 
-        vis.y.domain([0, d3.max(vis.topFiveStations, function (d) {
+        vis.y.domain([0, d3.max(vis.sortedByMost, function (d) {
             return d['numTrips']})]);
 
         vis.svg.append("g")
@@ -168,10 +179,13 @@ class StationBarChart {
         //console.log("x scale domain", vis.x.domain())
         //console.log("height", vis.height)
 
+
+
         vis.svg.selectAll("mybar")
             .data(vis.topFiveStations)
             .enter()
             .append("rect")
+            .style("fill", "grey")
             .attr("x", function(d) { return vis.x(d.name); })
             .attr("width", vis.x.bandwidth())
             .attr("fill", "#69b3a2")
