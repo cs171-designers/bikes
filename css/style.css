@@ -1,11 +1,3 @@
-#riderTrend, #memberTrend, #genderTrend, #ageTrend {
-    height: 40vh;
-    width: 50%;
-}
-#memberDurationTrend, #genderDurationTrend, #ageDurationTrend {
-    height: 40vh;
-    width: 50%;
-}
 #hour-bar-chart, #hour-bar-chart-duration{
     height: 40vh;
     width: 100%;
