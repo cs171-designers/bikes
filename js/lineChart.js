@@ -15,7 +15,7 @@ class LineChart {
     initVis() {
         let vis = this;
 
-        vis.margin = { top: 20, right: 10, bottom: 20, left: 60 };
+        vis.margin = { top: 30, right: 10, bottom: 20, left: 60 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
@@ -59,7 +59,7 @@ class LineChart {
         // add chart title placeholder
         vis.svg.append("text")
             .attr("x", -vis.margin.left + vis.width / 2)
-            .attr("y", 0)
+            .attr("y", -25)
             .attr("class", "lineTitle");
 
         // y-axis label
@@ -145,7 +145,8 @@ class LineChart {
             // draw legend for colored lines
             vis.legend = vis.svg.append("g")
                 .attr("class", "legend")
-                .attr("transform", "translate(" + (vis.width - 60) + ",0)");
+                .attr("transform", "translate(" + vis.margin.left+ ",0)");
+                //.attr("transform", "translate(" + (vis.width - 60) + ",0)");
 
             vis.legend_width = 5;
             vis.legend_height = 5;
@@ -163,7 +164,7 @@ class LineChart {
             // draw legend
             vis.legend.append("rect")
                 .attr("x", 0)
-                .attr("y", -15)
+                .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "red");
@@ -171,19 +172,19 @@ class LineChart {
             vis.legend.append("text")
                 .text("Subscriber")
                 .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", -15 + 5); // add 5, half of font size -- centered with rect
+                .attr("y", -10 + 5); // add 5, half of font size -- centered with rect
 
             vis.legend.append("rect")
-                .attr("x", 0)
-                .attr("y", -5) // -15 + 10 = -5. 10 = height of rect + 5 for vertical padding
+                .attr("x", 80)
+                .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "blue")
 
             vis.legend.append("text")
                 .text("Non-subscriber")
-                .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", -5 + 5);
+                .attr("x", 80 + vis.legend_width + vis.legend_padding)
+                .attr("y", -10 + 5);
         }
 
         if (vis.variable === "gender") {
@@ -199,7 +200,7 @@ class LineChart {
             // draw legend
             vis.legend.append("rect")
                 .attr("x", 0)
-                .attr("y", -15)
+                .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "grey")
@@ -207,31 +208,31 @@ class LineChart {
             vis.legend.append("text")
                 .text("Unknown")
                 .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", -15 + 5);
+                .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 0)
-                .attr("y", -5)
+                .attr("x", 80)
+                .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "pink")
 
             vis.legend.append("text")
                 .text("Female")
-                .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", -5 + 5);
+                .attr("x", 80 + vis.legend_width + vis.legend_padding)
+                .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 0)
-                .attr("y", 5)
+                .attr("x", 160)
+                .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "green")
 
             vis.legend.append("text")
                 .text("Male")
-                .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", 5 + 5);
+                .attr("x", 160 + vis.legend_width + vis.legend_padding)
+                .attr("y", -10 + 5);
         }
 
         if (vis.variable === "age") {
@@ -252,7 +253,7 @@ class LineChart {
 
             vis.legend.append("rect")
                 .attr("x", 0)
-                .attr("y", -15)
+                .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "grey")
@@ -260,43 +261,43 @@ class LineChart {
             vis.legend.append("text")
                 .text("Unknown")
                 .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", -15 + 5);
+                .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 0)
-                .attr("y", -5)
+                .attr("x", 80)
+                .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "yellow")
 
             vis.legend.append("text")
                 .text("Youth (<18)")
-                .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", -5 + 5);
+                .attr("x", 80 + vis.legend_width + vis.legend_padding)
+                .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 0)
-                .attr("y", 5)
+                .attr("x", 160)
+                .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "orange")
 
             vis.legend.append("text")
                 .text("Young Adult (18-24)")
-                .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", 5 + 5);
+                .attr("x", 160 + vis.legend_width + vis.legend_padding)
+                .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 0)
-                .attr("y", 15)
+                .attr("x", 240)
+                .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "purple")
 
             vis.legend.append("text")
                 .text("Adult (>24)")
-                .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", 15 + 5);
+                .attr("x", 240 + vis.legend_width + vis.legend_padding)
+                .attr("y", -10 + 5);
         }
 
         // (Filter, aggregate, modify data)
@@ -466,16 +467,23 @@ class LineChart {
             return d.date;
         }));
 
-        // update y axis label
+        // update y axis label AND include insights on dashboard
         if (selectedCategory === "num_rides") {
             vis.yLabel.text("# rides");
+            document.getElementById("mainInsight").innerHTML = "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter.</p>";
+            document.getElementById("memberInsight").innerHTML = "<p> INSIGHT</p>";
+            document.getElementById("genderInsight").innerHTML = "<p> INSIGHT</p>";
+            document.getElementById("ageInsight").innerHTML = "<p> INSIGHT</p>";
         }
         else {
             vis.yLabel.text("average trip duration (min)");
+            document.getElementById("mainInsight").innerHTML = "<p> INSIGHT</p>";
+            document.getElementById("memberInsight").innerHTML = "<p> INSIGHT</p>";
+            document.getElementById("genderInsight").innerHTML = "<p> INSIGHT</p>";
+            document.getElementById("ageInsight").innerHTML = "<p> INSIGHT</p>";
         }
 
         // draw data lines
-
         if (vis.variable === "overview") {
             // update y axis
             vis.y.domain([0, d3.max(vis.displayData, function (d) {
