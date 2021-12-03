@@ -59,7 +59,7 @@ class LineChart {
         // add chart title placeholder
         vis.svg.append("text")
             .attr("x", -vis.margin.left + vis.width / 2)
-            .attr("y", -25)
+            .attr("y", -15)
             .attr("class", "lineTitle");
 
         // y-axis label
@@ -249,7 +249,7 @@ class LineChart {
                 .attr("class", "line");
 
             // draw legend
-            vis.legend.attr("transform", "translate(" + (vis.width - 100) + ",0)");
+            vis.legend.attr("transform", "translate(0,0)"); // more age categories, need to move legend further left
 
             vis.legend.append("rect")
                 .attr("x", 0)
@@ -283,12 +283,12 @@ class LineChart {
                 .style("fill", "orange")
 
             vis.legend.append("text")
-                .text("Young Adult (18-24)")
+                .text("Adult (18-24)")
                 .attr("x", 160 + vis.legend_width + vis.legend_padding)
                 .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 240)
+                .attr("x", 260) //240)
                 .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
@@ -296,7 +296,7 @@ class LineChart {
 
             vis.legend.append("text")
                 .text("Adult (>24)")
-                .attr("x", 240 + vis.legend_width + vis.legend_padding)
+                .attr("x", 260 + vis.legend_width + vis.legend_padding)
                 .attr("y", -10 + 5);
         }
 
@@ -467,28 +467,45 @@ class LineChart {
             return d.date;
         }));
 
+        vis.y.domain([0, d3.max(vis.displayData, function (d) {
+            return d[selectedCategory];
+        })]);
+
         // update y axis label AND include insights on dashboard
         if (selectedCategory === "num_rides") {
             vis.yLabel.text("# rides");
-            document.getElementById("mainInsight").innerHTML = "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter.</p>";
-            document.getElementById("memberInsight").innerHTML = "<p> INSIGHT</p>";
+            document.getElementById("mainInsight").innerHTML =
+                "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter.</p>";
+            document.getElementById("memberInsight").innerHTML =
+                "<p> INSIGHT</p>";
             document.getElementById("genderInsight").innerHTML = "<p> INSIGHT</p>";
             document.getElementById("ageInsight").innerHTML = "<p> INSIGHT</p>";
         }
         else {
             vis.yLabel.text("average trip duration (min)");
             document.getElementById("mainInsight").innerHTML = "<p> INSIGHT</p>";
-            document.getElementById("memberInsight").innerHTML = "<p> INSIGHT</p>";
-            document.getElementById("genderInsight").innerHTML = "<p> INSIGHT</p>";
-            document.getElementById("ageInsight").innerHTML = "<p> INSIGHT</p>";
+            document.getElementById("memberInsight").innerHTML =
+                "<p>Although subscribers take more rides than non-subscribers, these rides are actually shorter\n" +
+                "(by about 15 minutes) on average than rides by non-subscribing customers! This could be because\n" +
+                "subscribers are already paying for unlimited rides and feel that it is worth the money to\n" +
+                "indulge in shorter rides.\n</p>";
+            document.getElementById("genderInsight").innerHTML =
+                "<p>Following the same trend, users with unknown gender are likely non-subscribing customers where\n" +
+                "their demographic data is not entered. So, they also tend to take longer rides along the same\n" +
+                "trend as the customers line in the previous graph. However, we also see that Male and Female\n" +
+                "riders tend to take trips that are about the same duration, although trips by Females are slightly longer.\n</p>";
+            document.getElementById("ageInsight").innerHTML =
+                "<p>When examining trip duration by age, we see that Young adult and adult users take trips of very\n" +
+                "similar average duration, around 15 minutes long.\n" +
+                "However, young riders under 18 have a much more variation in trip duration.\n</p>";
         }
 
         // draw data lines
         if (vis.variable === "overview") {
             // update y axis
-            vis.y.domain([0, d3.max(vis.displayData, function (d) {
-                return d[selectedCategory];
-            })]);
+            // vis.y.domain([0, d3.max(vis.displayData, function (d) {
+            //     return d[selectedCategory];
+            // })]);
 
             if(vis.eventHandler != null){
                 // call brush component
@@ -518,10 +535,10 @@ class LineChart {
             vis.svg.select(".lineTitle").text("By User Type")
 
             // update y axis
-            let sub_displayData = vis.displayData.map(d => d[selectedCategory + "_user_subscriber"]);
-            let cus_displayData = vis.displayData.map(d => d[selectedCategory + "_user_customer"]);
-            let member_displayData = sub_displayData.concat(cus_displayData);
-            vis.y.domain([0, d3.max(member_displayData)]);
+            // let sub_displayData = vis.displayData.map(d => d[selectedCategory + "_user_subscriber"]);
+            // let cus_displayData = vis.displayData.map(d => d[selectedCategory + "_user_customer"]);
+            // let member_displayData = sub_displayData.concat(cus_displayData);
+            // vis.y.domain([0, d3.max(member_displayData)]);
 
             // draw data lines
             vis.dataLine_sub = d3.line()
@@ -554,11 +571,11 @@ class LineChart {
             vis.svg.select(".lineTitle").text("By User Gender")
 
             // update y axis
-            let unknown_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_unknown"]);
-            let male_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_male"]);
-            let female_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_female"]);
-            let gen_displayData = unknown_displayData.concat(male_displayData).concat(female_displayData);
-            vis.y.domain([0, d3.max(gen_displayData)]);
+            // let unknown_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_unknown"]);
+            // let male_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_male"]);
+            // let female_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_female"]);
+            // let gen_displayData = unknown_displayData.concat(male_displayData).concat(female_displayData);
+            // vis.y.domain([0, d3.max(gen_displayData)]);
 
             // draw data lines
             vis.dataLine_un = d3.line()
@@ -600,12 +617,12 @@ class LineChart {
             vis.svg.select(".lineTitle").text("By User Age")
 
             // update y axis
-            let youth_displayData = vis.displayData.map(d => d[selectedCategory + "_age_youth"]);
-            let ya_displayData = vis.displayData.map(d => d[selectedCategory + "_age_young_adult"]);
-            let adult_displayData = vis.displayData.map(d => d[selectedCategory + "_age_adult"]);
-            let unknown_displayData = vis.displayData.map(d => d[selectedCategory + "_age_missing"]);
-            let age_displayData = youth_displayData.concat(ya_displayData).concat(adult_displayData).concat(unknown_displayData);
-            vis.y.domain([0, d3.max(age_displayData)]);
+            // let youth_displayData = vis.displayData.map(d => d[selectedCategory + "_age_youth"]);
+            // let ya_displayData = vis.displayData.map(d => d[selectedCategory + "_age_young_adult"]);
+            // let adult_displayData = vis.displayData.map(d => d[selectedCategory + "_age_adult"]);
+            // let unknown_displayData = vis.displayData.map(d => d[selectedCategory + "_age_missing"]);
+            // let age_displayData = youth_displayData.concat(ya_displayData).concat(adult_displayData).concat(unknown_displayData);
+            // vis.y.domain([0, d3.max(age_displayData)]);
 
             vis.dataLine_youth = d3.line()
                 .x(d => vis.x(d.date))

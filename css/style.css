@@ -15,7 +15,8 @@
 }
 #memberInsight, #genderInsight, #ageInsight{
     margin-top: 5vh;
-    margin-left: 60px;
+    margin-left: 30px;
+    margin-right: 10px;
 }
 .linkedContainer{
     height: 40vh;
