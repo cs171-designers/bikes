@@ -6,14 +6,22 @@
     padding-right: 5vw;
     padding-left: 5vw;
 }
-.leftContainer{
-    height: 60vh;
-    margin-top: 15vh;
-    margin-right: 5vh;
+.mainContainer{
+    height: 40vh;
+    margin: 5vh;
+}
+#mainInsight{
+    margin-top: 5vh;
+}
+#memberInsight, #genderInsight, #ageInsight{
+    margin-top: 5vh;
+    margin-left: 30px;
+    margin-right: 10px;
 }
 .linkedContainer{
-    height: 30vh;
-    padding-bottom: 5px;
+    height: 40vh;
+    margin-top: 5vh;
+    margin-bottom: 5px;
     font-family: Verdana, sans-serif;
     font-size: 12px;
 }
