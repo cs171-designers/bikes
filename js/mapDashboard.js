@@ -48,7 +48,24 @@ class BlueBikeMapDashboard {
         }).addTo(vis.map);
 
  */
+        // Add markers for the Quad and Mather/Dunster Stations
+        vis.pinIconClass = L.Icon.extend({
+            options: {
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+                popupAnchor: [0, -28]
+            }
+        })
 
+        vis.pinIcon = new vis.pinIconClass({iconUrl: 'img/red-pin-icon.jpg'})
+
+        vis.quadMarker = L.marker([42.380287,-71.125107], {icon: vis.pinIcon})
+            .bindPopup(`Quad`)
+            .addTo(vis.map);
+
+        vis.mdMarker = L.marker([42.36920617,-71.11710638], {icon: vis.pinIcon})
+            .bindPopup(`Mather/Dunster`)
+            .addTo(vis.map);
 
 
         vis.wrangleData()
