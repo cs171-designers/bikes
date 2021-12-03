@@ -5,8 +5,6 @@ let stationDashboard;
 let barChartsMost;
 let barChartsLeast;
 let selectedDashboardView;
-let riderTrendLine, memberTrend, genderTrend, ageTrend;
-let memberDuration, genderDuration, ageDuration;
 let hourBar, hourBarDuration;
 
 function init() {
@@ -66,19 +64,6 @@ function init() {
         // bar charts of distribution of rides start time
         hourBar = new DashBarChart("hour-bar-chart", lineData, "num_rides", dateParser);
         hourBarDuration = new DashBarChart("hour-bar-chart-duration", lineData, "avg_trip_dur", dateParser);
-
-        // ridershipTrend line
-        selectedCategory = "num_rides";
-        riderTrendLine = new LineChart("riderTrend", lineData, "overview", null, dateParser); // get rid of brush capability??
-        memberTrend = new LineChart("memberTrend", lineData, "member", null, dateParser);
-        genderTrend = new LineChart("genderTrend", lineData, "gender", null, dateParser);
-        ageTrend = new LineChart("ageTrend", lineData, "age", null, dateParser);
-
-        // duration trends
-        selectedCategory = "avg_trip_dur";
-        memberDuration = new LineChart("memberDurationTrend", lineData, "member", null, dateParser);
-        genderDuration = new LineChart("genderDurationTrend", lineData, "gender", null, dateParser);
-        ageDuration = new LineChart("ageDurationTrend", lineData, "age", null, dateParser);
 
         // Create Dashboard
 
