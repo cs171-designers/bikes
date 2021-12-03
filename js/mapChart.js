@@ -34,14 +34,13 @@ class BlueBikeMap {
         // Create bike icon class and generic class
         vis.genericIconClass = L.Icon.extend({
             options: {
-                shadowUrl: 'img/marker-shadow.png',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [0, -28]
             }
         })
 
-        vis.genericIcon = new vis.genericIconClass({iconUrl: 'img/marker-icon-2x.png'})
+        vis.genericIcon = new vis.genericIconClass({iconUrl: 'img/blue-dot-icon.png'})
 
         vis.bikeIconClass = L.Icon.extend({
             options: {
