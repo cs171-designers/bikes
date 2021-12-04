@@ -2,6 +2,7 @@ let selectedCategory; // global variable holding form selection - num_Rides or a
 let generalLine, memberLine, genderLine, ageLine; // visuals for dashboard -- defined globally so that categoryChange function can be called
 let bikeMap;
 let stationDashboard;
+let nightingale;
 let barChartsMost;
 let barChartsLeast;
 let selectedDashboardView;
@@ -64,6 +65,9 @@ function init() {
         // bar charts of distribution of rides start time
         hourBar = new DashBarChart("hour-bar-chart", lineData, "num_rides", dateParser);
         hourBarDuration = new DashBarChart("hour-bar-chart-duration", lineData, "avg_trip_dur", dateParser);
+
+        // Create Nightingale Chart
+        nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser)
 
         // Create Dashboard
 
