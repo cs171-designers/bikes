@@ -85,8 +85,8 @@ class BlueBikeMapDashboard {
         // console.log("before sort", vis.arrivalSums.map(item => [...item]))
         vis.arrivalSums.sort((a, b) => b[2] - a[2])
         // console.log("after sort", vis.arrivalSums.map(item => [...item]))
-        console.log(vis.arrivalData)
-        console.log(vis.arrivalSums)
+        // console.log(vis.arrivalData)
+        // console.log(vis.arrivalSums)
 
         vis.departureSums = []
         vis.stationData.forEach(station => {
@@ -97,7 +97,7 @@ class BlueBikeMapDashboard {
             vis.departureSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
         vis.departureSums.sort((a, b) => b[2] - a[2])
-        console.log(vis.departureSums)
+        // console.log(vis.departureSums)
 
         vis.totalSums = []
         vis.stationData.forEach(station => {
@@ -112,7 +112,7 @@ class BlueBikeMapDashboard {
             vis.totalSums.push([station.Id, [station.Latitude, station.Longitude], count])
         })
         vis.totalSums.sort((a, b) => b[2] - a[2])
-        console.log(vis.totalSums)
+        // console.log(vis.totalSums)
 
         // Create scale for radius of circles
         let totals = []
@@ -124,7 +124,7 @@ class BlueBikeMapDashboard {
         vis.radiusScale = d3.scaleLinear()
             .domain([0, d3.max(totals)])
             .range([0, 500])
-        console.log("station data", vis.stationData)
+        // console.log("station data", vis.stationData)
 
         // Wrangle data to get net bike flow
         vis.netBikes = []
@@ -134,7 +134,7 @@ class BlueBikeMapDashboard {
             vis.netBikes.push(tmp)
         }
         vis.netBikes.sort((a, b) => Math.abs(b[2]) - Math.abs(a[2]))
-        console.log("FLUX", vis.netBikes)
+        // console.log("FLUX", vis.netBikes)
 
         let netBikeTotals = []
         vis.netBikes.forEach(d => {

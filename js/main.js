@@ -83,7 +83,7 @@ const slides = [
         // hourBarDuration = new DashBarChart("hour-bar-chart-duration", lineData, "avg_trip_dur", dateParser);
 
         // Create Nightingale Chart
-        nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser);
+        // nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser);
     }),
     new Slide(7, function () {
         // pieChart
@@ -155,16 +155,13 @@ const slides = [
     }),
 ];
 slides.sort((a, b) => a.page - b.page);
-function renderSlide(slideIndex) {
+const renderOffset = +1;
+prepareSlide = (_nextSlide) => {
+    const slideIndex = _nextSlide + renderOffset;
     slides.forEach((slide) => {
         if (slide.page <= slideIndex) {
             slide.render();
         }
     })
-}
-prepareSlide = (_nextSlide) => {
-    for (let i = 1; i <= _nextSlide; i++) {
-        renderSlide(i);
-    }
 }
 
