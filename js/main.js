@@ -67,7 +67,7 @@ function init() {
         hourBarDuration = new DashBarChart("hour-bar-chart-duration", lineData, "avg_trip_dur", dateParser);
 
         // Create Nightingale Chart
-        nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser)
+        nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser);
 
         // Create Dashboard
 
