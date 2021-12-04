@@ -39,7 +39,7 @@ class NightingaleChart {
             .range(["red", "blue"])
 
         vis.radiusScale = d3.scaleLinear()
-            .range([0, 50])
+            .range([0, d3.min([vis.width/2, vis.height/2])])
 
         vis.startAngleScale = d3.scaleLinear()
             .domain([0, 7]) // number of bins
@@ -49,11 +49,6 @@ class NightingaleChart {
             .domain([0, 7])
             .range([-Math.PI/4, 3*Math.PI/2])
 
-        vis.arc = d3.arc()
-            .innerRadius(0)
-            .outerRadius(d => vis.radiusScale(d.num_rides))
-            .startAngle(d => vis.startAngleScale(d.index))
-            .endAngle(d => vis.endAngleScale(d.index))
 
         // format ticks to convey hour categories. Categories do not update
         let tickStrings = ["12-3 am", "3-6 am", "6-9 am", "9-12 pm", "12-3 pm", "3-6 pm", "6-9 pm", "9-12 am"];
@@ -147,6 +142,21 @@ class NightingaleChart {
     updateVis() {
         let vis = this;
 
+        let arcs = vis.nightingaleChartGroup.selectAll(".nightArc")
+            .data(vis.displayData)
+
+        arcs.enter()
+            .append("path")
+            .attr("class", "nightArc")
+            .attr("d", d3.arc()
+                .innerRadius(0)
+                .outerRadius(d => vis.radiusScale(d.num_rides))
+                .startAngle(d => vis.startAngleScale(d.index))
+                .endAngle(d => vis.endAngleScale(d.index))
+            )
+            .attr("fill", "blue")
+            .attr("stroke", "black")
+            .style("stroke-width", "1px")
 
     }
 }
