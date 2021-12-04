@@ -177,8 +177,8 @@ class BlueBikeMapDashboard {
                 })
                 if (station[2] < 0) {
                     vis.circles[vis.circleCounter] = L.circle(station[1], vis.netScale(Math.abs(station[2])), {
-                        color: 'orange',
-                        fillColor: 'orange',
+                        color: 'red',
+                        fillColor: 'red',
                         fillOpacity: 0.3,
                         weight: 1
                     })
