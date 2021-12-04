@@ -215,7 +215,7 @@ class LineChart {
                 .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
-                .style("fill", "pink")
+                .style("fill", "deeppink")
 
             vis.legend.append("text")
                 .text("Female")
@@ -510,17 +510,19 @@ class LineChart {
 
             document.getElementById("mainInsight").innerHTML = "<p> INSIGHT</p>";
             document.getElementById("memberInsight").innerHTML =
-                "<p>Although subscribers take more rides than non-subscribers, these rides are actually shorter\n" +
+                "<p>Although more rides are completed by subscribers than non-subscribers, these rides are actually shorter\n" +
                 "(by about 15 minutes) on average than rides by non-subscribing customers! This could be because\n" +
                 "subscribers are already paying for unlimited rides and feel that it is worth the money to\n" +
-                "indulge in shorter rides.\n</p>";
+                "indulge in shorter rides.\n</p>" +
+                "<p> Rides by subscribers tend to be around 30 minutes on average. Rides by non-subscribers are around 13 minutes on average.</p>";
             document.getElementById("genderInsight").innerHTML =
                 "<p>Following the same trend, users with unknown gender are likely non-subscribing customers where\n" +
                 "their demographic data is not entered. So, they also tend to take longer rides along the same\n" +
-                "trend as the customers line in the previous graph. However, we also see that Male and Female\n" +
-                "riders tend to take trips that are about the same duration, although trips by Females are slightly longer.\n</p>";
+                "trend as the customers line in the previous graph. However, we also see that rides by Male and Female\n" +
+                "users tend to take trips that are about the same duration, although trips by Females are slightly longer.\n</p>" +
+                "<p> Rides by Females are around 15 minutes on average, whereas rides by Males are around 13 minutes on average.</p>";
             document.getElementById("ageInsight").innerHTML =
-                "<p>When examining trip duration by age, we see that Young adult and adult users take trips of very\n" +
+                "<p>When examining trip duration by age, we see that rides by adults aged 18-24 and adults aged >24 have \n" +
                 "similar average duration, around 15 minutes long.\n" +
                 "However, young riders under 18 have a much more variation in trip duration.\n</p>";
         }
@@ -623,7 +625,7 @@ class LineChart {
                 .style("opacity", 0)
                 .attr("d", vis.dataLine_f)
                 .style("opacity", 1)
-                .style("stroke", "pink");
+                .style("stroke", "deeppink");
 
             vis.dataLine_m = d3.line()
                 .x(d => vis.x(d.date))
@@ -658,7 +660,7 @@ class LineChart {
                 .style("opacity", 0)
                 .attr("d", vis.dataLine_youth) //pass in data for line generation
                 .style("opacity", 1)
-                .style("stroke", "yellow");
+                .style("stroke", "white");
 
             vis.dataLine_ya = d3.line()
                 .x(d => vis.x(d.date))
