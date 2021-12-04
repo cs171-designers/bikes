@@ -43,11 +43,11 @@ class NightingaleChart {
 
         vis.startAngleScale = d3.scaleLinear()
             .domain([0, 7]) // number of bins
-            .range([-Math.PI/2, 5*Math.PI/4])
+            .range([0, 7*Math.PI/4])
 
         vis.endAngleScale = d3.scaleLinear()
             .domain([0, 7])
-            .range([-Math.PI/4, 3*Math.PI/2])
+            .range([Math.PI/4, 2*Math.PI])
 
 
         // format ticks to convey hour categories. Categories do not update
@@ -125,7 +125,7 @@ class NightingaleChart {
         let numRidesArray = []
         let avgTripDurArray = []
         vis.displayData.forEach(bin => {
-            numRidesArray.push(bin.num_rides);
+            numRidesArray.push(Math.sqrt(8*bin.num_rides/Math.PI));
             avgTripDurArray.push(bin.avg_trip_dur);
         })
         console.log(numRidesArray)
@@ -134,6 +134,7 @@ class NightingaleChart {
         // Finish creating domains using wrangled data
         vis.radiusScale.domain([0, d3.max(numRidesArray)])
         vis.colorScale.domain([d3.min(avgTripDurArray), d3.max(avgTripDurArray)])
+
 
         vis.updateVis();
 
@@ -150,11 +151,13 @@ class NightingaleChart {
             .attr("class", "nightArc")
             .attr("d", d3.arc()
                 .innerRadius(0)
-                .outerRadius(d => vis.radiusScale(d.num_rides))
+                .outerRadius(d => vis.radiusScale(Math.sqrt(8*d.num_rides/Math.PI)))
                 .startAngle(d => vis.startAngleScale(d.index))
                 .endAngle(d => vis.endAngleScale(d.index))
             )
-            .attr("fill", "blue")
+            .attr("fill", function (d) {
+                return vis.colorScale(d.index)
+            })
             .attr("stroke", "black")
             .style("stroke-width", "1px")
 
