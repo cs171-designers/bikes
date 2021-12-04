@@ -99,19 +99,13 @@ const slides = [
         })
     }),
     new Slide(8, function () {
-        // Data for Line Charts
         let dayParser = "%Y-%m-%d";
-        let dayData = dataHandler.groupDate();
-        // console.log(lineData);
-
         let weekParser = "%Y-%U";
-        let weekData = dataHandler.groupWeek();
-        // console.log("aggregated", weekData);
 
         // switch data between lineData and weekData?
         const USE_WEEKS = true;
         let dateParser = (USE_WEEKS) ? weekParser : dayParser;
-        let lineData = (USE_WEEKS) ? weekData : dayData;
+        let lineData = (USE_WEEKS) ? dataHandler.groupWeek() : dataHandler.groupDate();
 
         // Create Dashboard
 
@@ -155,7 +149,8 @@ const slides = [
     }),
 ];
 slides.sort((a, b) => a.page - b.page);
-const renderOffset = +1;
+// const renderOffset = +1;
+const renderOffset = 0;
 prepareSlide = (_nextSlide) => {
     const slideIndex = _nextSlide + renderOffset;
     slides.forEach((slide) => {
