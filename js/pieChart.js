@@ -6,9 +6,9 @@
 class PieChart {
 
     // constructor method to initialize Timeline object
-    constructor(parentElement, title, data) {
+    constructor(parentElement, title, data, circleColors = d3.schemeSet1) {
         this.parentElement = parentElement;
-        this.circleColors = d3.schemeSet1;
+        this.circleColors = circleColors;
         this.secondaryColors = d3.schemeSet3;
         // console.log("coloirs", this.circleColors, this.secondaryColors)
         this.title = title;

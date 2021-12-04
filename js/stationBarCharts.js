@@ -79,8 +79,8 @@ class StationBarChart {
     }
     wrangleData() {
         let vis = this;
-        console.log("LARA STATION DATA", vis.stationData)
-        console.log("LARA RIDES DATA", vis.ridesData)
+        // console.log("LARA STATION DATA", vis.stationData)
+        // console.log("LARA RIDES DATA", vis.ridesData)
         let sorted = []
         let rideLengths = {}
 
@@ -94,12 +94,12 @@ class StationBarChart {
             // console.log(stationID)
             rideLengths[stationID] = numTrips
         })
-        console.log(rideLengths)
+        // console.log(rideLengths)
 
         for (let stationID in vis.stationData) {
             // console.log(stationID) // gives you 10 or 17 or whatever
             let numTrips = rideLengths[stationID]
-            console.log(numTrips)
+            // console.log(numTrips)
             if (numTrips !== undefined) {
                 sorted.push({id: stationID,
                     name: vis.stationData[stationID][0]['Name'],
