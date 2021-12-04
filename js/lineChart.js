@@ -47,7 +47,8 @@ class LineChart {
             .scale(vis.y);
 
         vis.xAxis = d3.axisBottom()
-            .scale(vis.x);
+            .scale(vis.x)
+            .ticks(10);
 
         vis.svg.append("g")
             .attr("class", "y-axis axis");
