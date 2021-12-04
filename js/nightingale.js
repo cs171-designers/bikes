@@ -35,6 +35,9 @@ class NightingaleChart {
 
 
         // Scales and axes
+        vis.colorScale = d3.scaleLinear()
+            .range(["red", "blue"])
+
         vis.radiusScale = d3.scaleLinear()
             .range([0, 50])
 
@@ -123,6 +126,20 @@ class NightingaleChart {
         }
         console.log("BAR displayData", vis.displayData);
 
+        // Create arrays of just num_rides and avg trip duration
+        let numRidesArray = []
+        let avgTripDurArray = []
+        vis.displayData.forEach(bin => {
+            numRidesArray.push(bin.num_rides);
+            avgTripDurArray.push(bin.avg_trip_dur);
+        })
+        console.log(numRidesArray)
+        console.log(avgTripDurArray)
+
+        // Finish creating domains using wrangled data
+        vis.radiusScale.domain([0, d3.max(numRidesArray)])
+        vis.colorScale.domain([d3.min(avgTripDurArray), d3.max(avgTripDurArray)])
+
         vis.updateVis();
 
     }
@@ -130,7 +147,6 @@ class NightingaleChart {
     updateVis() {
         let vis = this;
 
-        //vis.radiusScale.domain() //TODO finish this
 
     }
 }
