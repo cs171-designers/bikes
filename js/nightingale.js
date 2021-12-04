@@ -27,14 +27,30 @@ class NightingaleChart {
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
+        // Append Nightingale Group
+        vis.nightingaleChartGroup = vis.svg
+            .append('g')
+            .attr('class', 'nightingale-chart')
+            .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")");
+
 
         // Scales and axes
         vis.radiusScale = d3.scaleLinear()
+            .range([0, 50])
+
+        vis.startAngleScale = d3.scaleLinear()
+            .domain([0, 7]) // number of bins
+            .range([-Math.PI/2, 5*Math.PI/4])
+
+        vis.endAngleScale = d3.scaleLinear()
+            .domain([0, 7])
+            .range([-Math.PI/4, 3*Math.PI/2])
 
         vis.arc = d3.arc()
             .innerRadius(0)
-            .outerRadius(d => {vis.radiusScale(d.radius)})
-            .startAngle( function(d,i) { return angleScale( d.angle ); } );
+            .outerRadius(d => vis.radiusScale(d.num_rides))
+            .startAngle(d => vis.startAngleScale(d.index))
+            .endAngle(d => vis.endAngleScale(d.index))
 
         // format ticks to convey hour categories. Categories do not update
         let tickStrings = ["12-3 am", "3-6 am", "6-9 am", "9-12 pm", "12-3 pm", "3-6 pm", "6-9 pm", "9-12 am"];
@@ -62,6 +78,7 @@ class NightingaleChart {
 
         for (let i = 0; i < hour.length; i++) {
             dataHolder.push({
+                index: i,
                 hour: hour[i],
                 num_rides: categorize(data)[0][i],
                 avg_trip_dur: categorize(data)[1][i]
@@ -104,7 +121,7 @@ class NightingaleChart {
             }
             return [num_rides, avg_trip_duration];
         }
-        //console.log("BAR displayData", vis.displayData);
+        console.log("BAR displayData", vis.displayData);
 
         vis.updateVis();
 
@@ -113,6 +130,7 @@ class NightingaleChart {
     updateVis() {
         let vis = this;
 
+        //vis.radiusScale.domain() //TODO finish this
 
     }
 }
