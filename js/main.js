@@ -1,4 +1,4 @@
-const sectionSelector = "#pagepiling > .section";
+const sectionSelector = "[data-lazy-section]";
 let selectedCategory; // global variable holding form selection - num_Rides or avg_trip_dur
 let generalLine, memberLine, genderLine, ageLine; // visuals for dashboard -- defined globally so that categoryChange function can be called
 let bikeMap;
@@ -25,7 +25,7 @@ class Slide {
         this.renderFn = renderFn;
     }
     setAsLoading() {
-        document.querySelectorAll(sectionSelector).forEach((section, index) => {
+        document.querySelectorAll(`[data-lazy-section=${this.page}]`).forEach((section, index) => {
             if ((index + 1) > this.page) {
                 return;
             }
@@ -38,7 +38,7 @@ class Slide {
         })
     }
     setAsRendered() {
-        document.querySelectorAll(sectionSelector).forEach((section, index) => {
+        document.querySelectorAll(`[data-lazy-section=${this.page}]`).forEach((section, index) => {
             if ((index + 1) > this.page) {
                 return;
             }
@@ -65,27 +65,33 @@ class Slide {
         // console.log("slide rendered", this.page)
     }
 }
+function start() {
+    let s = new Slide(null, function () { });
+    s.render();
+}
+start();
 // CHANGE HERE IS SLIDES CHANGE
-const slides = [
-    new Slide(1, function () { }),
-    new Slide(3, function () {
+let slides = [
+    // new Slide("", function () { }),
+    new Slide("bike-map", function () {
         let bikeData = dataHandler.groupBikeID()
         bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
-
+    }),
+    new Slide("station-map", function () {
         let arrivalData = dataHandler.groupStationArrivals()
         let departureData = dataHandler.groupStationDepartures()
         selectedDashboardView = document.getElementById("map-dashboard-dropdown").value
 
         stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.374443, -71.116943])
     }),
-    new Slide(4, function () {
+    new Slide("trip-bar", function () {
         // barCharts
         let ridesData = dataHandler.groupStation();
         let stationData = dataHandler.getStationCoords();
         barChartsMost = new StationBarChart("trip-length-barchart-most", ridesData, stationData, true); // , variable)
         barChartsLeast = new StationBarChart("trip-length-barchart-least", ridesData, stationData, false);
     }),
-    new Slide(5, function () {
+    new Slide("nightingale-chart", function () {
         // Data for Line Charts
         let dayParser = "%Y-%m-%d";
         let weekParser = "%Y-%U";
@@ -102,7 +108,7 @@ const slides = [
         // Create Nightingale Chart
         // nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser);
     }),
-    new Slide(7, function () {
+    new Slide("pie-charts", function () {
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
         // console.log("multi counts", counts)
@@ -115,7 +121,7 @@ const slides = [
             let pieChart = new PieChart(chart + "-pie-chart", title, counts[chart], colors);
         })
     }),
-    new Slide(8, function () {
+    new Slide("line-charts", function () {
         let dayParser = "%Y-%m-%d";
         let weekParser = "%Y-%U";
 
@@ -166,18 +172,17 @@ const slides = [
     }),
 ];
 slides.sort((a, b) => a.page - b.page);
-// const renderOffset = +1;
-const renderOffset = 0;
+// slides = slides.slice(0,1);
 prepareSlide = (_nextSlide) => {
-    const slideIndex = _nextSlide + renderOffset;
+    const slideIndex = _nextSlide;
     slides.forEach((slide) => {
-        if (slide.page <= slideIndex) {
+        if (slide.page == slideIndex) {
             slide.render();
         }
     })
 }
 // prepareSlide(1000);
-prepareSlide(1);
+// prepareSlide(1);
 const scrollLoadOffset = 200;
 document.addEventListener("DOMContentLoaded", function () {
     let lazySections = [].slice.call(document.querySelectorAll(sectionSelector)).map((el, index) => {
@@ -198,8 +203,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     let index = obj.index;
                     let section = obj.el;
                     if ((section.getBoundingClientRect().top <= window.innerHeight + scrollLoadOffset && section.getBoundingClientRect().bottom >= 0 - scrollLoadOffset) && getComputedStyle(section).display !== "none") {
-                        prepareSlide(index + 1);
-                        console.log("preparing slide", index + 1, section)
+                        prepareSlide(section.dataset.lazySection);
+                        console.log("preparing slide", section.dataset.lazySection, section)
 
                         lazySections = lazySections.filter(function (sec) {
                             return sec !== section;
@@ -221,4 +226,5 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("scroll", lazyLoad);
     window.addEventListener("resize", lazyLoad);
     window.addEventListener("orientationchange", lazyLoad);
+    lazyLoad();
 });
