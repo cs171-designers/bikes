@@ -130,6 +130,7 @@ class NightingaleChart {
     updateVis() {
         let vis = this;
 
+        //vis.radiusScale.domain() //TODO finish this
 
     }
 }
