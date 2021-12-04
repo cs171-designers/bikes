@@ -1,3 +1,4 @@
+const sectionSelector = "#pagepiling > .section";
 let selectedCategory; // global variable holding form selection - num_Rides or avg_trip_dur
 let generalLine, memberLine, genderLine, ageLine; // visuals for dashboard -- defined globally so that categoryChange function can be called
 let bikeMap;
@@ -23,8 +24,21 @@ class Slide {
         this.page = page;
         this.renderFn = renderFn;
     }
+    setAsLoading() {
+        document.querySelectorAll(sectionSelector).forEach((section, index) => {
+            if ((index + 1) > this.page) {
+                return;
+            }
+            // console.log("section", section, this.page, index);
+            const statuses = section.querySelectorAll(".load-status");
+            // console.log("statuses", statuses, this.page, index);
+            statuses.forEach(stat => {
+                stat.innerHTML = "Loading..."
+            })
+        })
+    }
     setAsRendered() {
-        document.querySelectorAll(".pp-section").forEach((section, index) => {
+        document.querySelectorAll(sectionSelector).forEach((section, index) => {
             if ((index + 1) > this.page) {
                 return;
             }
@@ -39,11 +53,14 @@ class Slide {
     render() {
         if (!this.rendered) {
             this.rendered = true;
+            this.setAsLoading();
             // console.log("rendering slide", this.page)
-            dataHandler.load().then(() => {
-                this.renderFn();
-                this.setAsRendered();
-            });
+            window.setTimeout(() => {
+                dataHandler.load().then(() => {
+                    this.renderFn();
+                    this.setAsRendered();
+                });
+            }, 20);
         }
         // console.log("slide rendered", this.page)
     }
@@ -159,4 +176,49 @@ prepareSlide = (_nextSlide) => {
         }
     })
 }
+// prepareSlide(1000);
+prepareSlide(1);
 
+document.addEventListener("DOMContentLoaded", function () {
+    let lazySections = [].slice.call(document.querySelectorAll(sectionSelector)).map((el, index) => {
+        return {
+            el: el,
+            index: index
+        }
+    });
+    console.log("lazy slides", lazySections);
+    let active = false;
+
+    const lazyLoad = function () {
+        if (active === false) {
+            active = true;
+
+            setTimeout(function () {
+                lazySections.forEach(function (obj) {
+                    let index = obj.index;
+                    let section = obj.el;
+                    if ((section.getBoundingClientRect().top <= window.innerHeight && section.getBoundingClientRect().bottom >= 0) && getComputedStyle(section).display !== "none") {
+                        prepareSlide(index + 1);
+                        console.log("preparing slide", index + 1, section)
+
+                        lazySections = lazySections.filter(function (sec) {
+                            return sec !== section;
+                        });
+
+                        if (lazySections.length === 0) {
+                            document.removeEventListener("scroll", lazyLoad);
+                            window.removeEventListener("resize", lazyLoad);
+                            window.removeEventListener("orientationchange", lazyLoad);
+                        }
+                    }
+                });
+
+                active = false;
+            }, 200);
+        }
+    };
+
+    document.addEventListener("scroll", lazyLoad);
+    window.addEventListener("resize", lazyLoad);
+    window.addEventListener("orientationchange", lazyLoad);
+});

@@ -39,6 +39,8 @@ function calcCrow(lat1, lon1, lat2, lon2) {
     var d = R * c
     return d * 0.621371 // km to miles
 }
+let weekParser = "%Y-%U";
+let weekFormat = d3.timeFormat(weekParser);
 class DataHandler {
     station_files = [
         "stations.csv",
@@ -161,49 +163,52 @@ class DataHandler {
         this.statusMessage = `Loading (${this.ridesLoaded}/${this.files.length} files loaded)...`
         this.updateStatus();
     }
+    parseRideData(data) {
+        let rides = data;
+
+        // convert times to date objects
+        let dateParser = d3.timeParse("%Y-%m-%d %H:%M:%S");
+
+        rides.forEach(d => {
+            if (d.starttime) {
+                // add age attribute to data
+                d.age = Number(d.starttime.slice(0, 4)) - d["birth year"];
+                d.startDateString = d.starttime.slice(0, 10)
+                if (d.starttime.length > 20) {
+                    d.starttime = dateParser(d.starttime.slice(0, 19)); //slice off the milliseconds... ?
+                }
+                else {
+                    d.starttime = dateParser(d.starttime);
+                }
+                d.startYearWeekString = weekFormat(d.starttime);
+
+            }
+            if (d.stoptime) {
+                d.stopDateString = d.stoptime.slice(0, 10);
+                if (d.stoptime.length > 20) {
+                    d.stoptime = dateParser(d.stoptime.slice(0, 19)); //slice off the milliseconds... ?
+                }
+                else {
+                    d.stoptime = dateParser(d.stoptime);
+                }
+                d.stopYearWeekString = weekFormat(d.starttime);
+            }
+        });
+
+        return data;
+    }
     loadRides() {
         let dataHandler = this;
-        let weekParser = "%Y-%U";
-        let weekFormat = d3.timeFormat(weekParser);
         // console.log("loading bikes")
         return Promise.all([...this.files.map(f => d3.csv(directory + f, d3.autoType).then(res => {
+            // process ride data
+            res = this.parseRideData(res)
             this.ridesLoaded++;
             this.updateRideStatus()
             return res;
         }))])
             .then(function (data) {
-                // process ride data
                 dataHandler._rides = data.flat(1);
-
-                // convert times to date objects
-                let dateParser = d3.timeParse("%Y-%m-%d %H:%M:%S");
-
-                dataHandler._rides.forEach(d => {
-                    if (d.starttime) {
-                        // add age attribute to data
-                        d.age = Number(d.starttime.slice(0, 4)) - d["birth year"];
-                        d.startDateString = d.starttime.slice(0, 10)
-                        if (d.starttime.length > 20) {
-                            d.starttime = dateParser(d.starttime.slice(0, 19)); //slice off the milliseconds... ?
-                        }
-                        else {
-                            d.starttime = dateParser(d.starttime);
-                        }
-                        d.startYearWeekString = weekFormat(d.starttime);
-                        
-                    }
-                    if (d.stoptime) {
-                        d.stopDateString = d.stoptime.slice(0, 10);
-                        if (d.stoptime.length > 20) {
-                            d.stoptime = dateParser(d.stoptime.slice(0, 19)); //slice off the milliseconds... ?
-                        }
-                        else {
-                            d.stoptime = dateParser(d.stoptime);
-                        }
-                        d.stopYearWeekString = weekFormat(d.starttime);
-                    }
-                });
-
                 // console.log("rides", dataHandler._rides);
                 console.log("one ride");
                 console.table(dataHandler._rides[0])
