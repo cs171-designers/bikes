@@ -57,21 +57,21 @@ class DataHandler {
         // "2018/201810-bluebikes-tripdata.csv",
         // "2018/201811-bluebikes-tripdata.csv",
         // "2018/201812-bluebikes-tripdata.csv",
-        // "2019/201901-bluebikes-tripdata.csv",
-        // "2019/201902-bluebikes-tripdata.csv",
-        // "2019/201903-bluebikes-tripdata.csv",
-        // "2019/201904-bluebikes-tripdata.csv",
-        // "2019/201905-bluebikes-tripdata.csv",
-        // "2019/201906-bluebikes-tripdata.csv",
-        // "2019/201907-bluebikes-tripdata.csv",
-        // "2019/201908-bluebikes-tripdata.csv",
-        // "2019/201909-bluebikes-tripdata.csv",
+        "2019/201901-bluebikes-tripdata.csv",
+        "2019/201902-bluebikes-tripdata.csv",
+        "2019/201903-bluebikes-tripdata.csv",
+        "2019/201904-bluebikes-tripdata.csv",
+        "2019/201905-bluebikes-tripdata.csv",
+        "2019/201906-bluebikes-tripdata.csv",
+        "2019/201907-bluebikes-tripdata.csv",
+        "2019/201908-bluebikes-tripdata.csv",
+        "2019/201909-bluebikes-tripdata.csv",
         "2019/201910-bluebikes-tripdata.csv",
         "2019/201911-bluebikes-tripdata.csv",
         "2019/201912-bluebikes-tripdata.csv",
     ];
     constructor(status_label_id = null) {
-        console.log("Data constructor");
+        // console.log("Data constructor");
         this.status_label_id = status_label_id;
     }
     statusType = null;
@@ -313,7 +313,7 @@ class DataHandler {
         // filter out undefined values
         let groupedBikesFinal = groupedBikesSorted.filter((a) => a)
 
-        console.log("TRIPS GROUPED BY BIKE ID, CHRONOLOGICAL ORDER", groupedBikesFinal)
+        // console.log("TRIPS GROUPED BY BIKE ID, CHRONOLOGICAL ORDER", groupedBikesFinal)
         return groupedBikesFinal
     }
 
@@ -341,7 +341,7 @@ class DataHandler {
             groupedArrivalsSorted[d[0]["start station id"]] = sortedStation
         })
 
-        console.log("grouped arrivals", groupedArrivalsSorted)
+        // console.log("grouped arrivals", groupedArrivalsSorted)
 
         return groupedArrivalsSorted
     }
@@ -370,7 +370,7 @@ class DataHandler {
             groupedDeparturesSorted[d[0]["end station id"]] = sortedStation
         })
 
-        console.log("grouped departures", groupedDeparturesSorted)
+        // console.log("grouped departures", groupedDeparturesSorted)
 
         return groupedDeparturesSorted
     }
@@ -415,7 +415,7 @@ class DataHandler {
                 })
             })
         });
-        console.log("counts", counts)
+        // console.log("counts", counts)
         return counts;
     }
     getMultiLevelCounts() {

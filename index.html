@@ -45,10 +45,10 @@
 				},
 				onLeave: function (index, nextIndex, direction) {
 					//after leaving section 2
-					console.log("onLeave", index, nextIndex, direction)
+					// console.log("onLeave", index, nextIndex, direction)
 				},
 				afterLoad: function (anchorLink, index) {
-					console.log("afterload", anchorLink, index)
+					// console.log("afterload", anchorLink, index)
 					prepareSlide(index);
 					if (index > 1) {
 						$('#pp-nav').removeClass('custom');

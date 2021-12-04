@@ -28,9 +28,9 @@ class Slide {
             if ((index + 1) > this.page) {
                 return;
             }
-            console.log("section", section, this.page, index);
+            // console.log("section", section, this.page, index);
             const statuses = section.querySelectorAll(".load-status");
-            console.log("statuses", statuses, this.page, index);
+            // console.log("statuses", statuses, this.page, index);
             statuses.forEach(stat => {
                 stat.style.display = 'none';
             })
@@ -39,13 +39,13 @@ class Slide {
     render() {
         if (!this.rendered) {
             this.rendered = true;
-            console.log("rendering slide", this.page)
+            // console.log("rendering slide", this.page)
             dataHandler.load().then(() => {
                 this.renderFn();
                 this.setAsRendered();
             });
         }
-        console.log("slide rendered", this.page)
+        // console.log("slide rendered", this.page)
     }
 }
 // CHANGE HERE IS SLIDES CHANGE
@@ -68,24 +68,19 @@ const slides = [
         barChartsMost = new StationBarChart("trip-length-barchart-most", ridesData, stationData, true); // , variable)
         barChartsLeast = new StationBarChart("trip-length-barchart-least", ridesData, stationData, false);
     }),
-    new Slide(4, function () {
+    new Slide(5, function () {
         // Data for Line Charts
         let dayParser = "%Y-%m-%d";
-        let dayData = dataHandler.groupDate();
-        // console.log(lineData);
-
         let weekParser = "%Y-%U";
-        let weekData = dataHandler.groupWeek();
-        // console.log("aggregated", weekData);
 
         // switch data between lineData and weekData?
         const USE_WEEKS = true;
         let dateParser = (USE_WEEKS) ? weekParser : dayParser;
-        let lineData = (USE_WEEKS) ? weekData : dayData;
+        let lineData = (USE_WEEKS) ? dataHandler.groupWeek() : dataHandler.groupDate();
 
         // bar charts of distribution of rides start time
-        hourBar = new DashBarChart("hour-bar-chart", lineData, "num_rides", dateParser);
-        hourBarDuration = new DashBarChart("hour-bar-chart-duration", lineData, "avg_trip_dur", dateParser);
+        // hourBar = new DashBarChart("hour-bar-chart", lineData, "num_rides", dateParser);
+        // hourBarDuration = new DashBarChart("hour-bar-chart-duration", lineData, "avg_trip_dur", dateParser);
 
         // Create Nightingale Chart
         nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser);
@@ -93,7 +88,7 @@ const slides = [
     new Slide(7, function () {
         // pieChart
         let counts = dataHandler.getMultiLevelCounts();
-        console.log("multi counts", counts)
+        // console.log("multi counts", counts)
         const pie_charts = {
             "gender-age": ["Gender Pie Chart (Hover for Age)", d3.schemeSet1],
             "user-age": ["User Pie Chart (Hover for Age)", d3.schemeDark2],
