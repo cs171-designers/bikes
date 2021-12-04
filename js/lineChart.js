@@ -67,7 +67,7 @@ class LineChart {
             .attr("class", "axis-label")
             .attr("transform", "rotate(-90)")
             .attr("x", -vis.height / 2)
-            .attr("y", -vis.margin.left + 10)
+            //.attr("y", -vis.margin.left + 10)
             .style("text-anchor", "middle");
 
         // ONLY Brush on the Overview chart
@@ -467,13 +467,36 @@ class LineChart {
             return d.date;
         }));
 
-        vis.y.domain([0, d3.max(vis.displayData, function (d) {
-            return d[selectedCategory];
-        })]);
+        if (selectedCategory === "num_rides"){
+            vis.y.domain([0, d3.max(vis.displayData, function (d) {
+                return d[selectedCategory];
+            })]);
+        }
+        else{
+            // get max from the highest average from all the categories
+
+            let sub_displayData = vis.displayData.map(d => d[selectedCategory + "_user_subscriber"]);
+            let cus_displayData = vis.displayData.map(d => d[selectedCategory + "_user_customer"]);
+            let unknown_gen_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_unknown"]);
+            let male_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_male"]);
+            let female_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_female"]);
+            let youth_displayData = vis.displayData.map(d => d[selectedCategory + "_age_youth"]);
+            let ya_displayData = vis.displayData.map(d => d[selectedCategory + "_age_young_adult"]);
+            let adult_displayData = vis.displayData.map(d => d[selectedCategory + "_age_adult"]);
+            let unknown_age_displayData = vis.displayData.map(d => d[selectedCategory + "_age_missing"]);
+
+            let data = sub_displayData.concat(cus_displayData)
+                .concat(unknown_gen_displayData).concat(male_displayData).concat(female_displayData)
+                .concat(youth_displayData).concat(ya_displayData).concat(adult_displayData).concat(unknown_age_displayData);
+
+            vis.y.domain([0, d3.max(data)]);
+        }
 
         // update y axis label AND include insights on dashboard
         if (selectedCategory === "num_rides") {
-            vis.yLabel.text("# rides");
+            vis.yLabel.text("# rides")
+                .attr("y", -vis.margin.left + 10);
+
             document.getElementById("mainInsight").innerHTML =
                 "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter.</p>";
             document.getElementById("memberInsight").innerHTML =
@@ -482,7 +505,9 @@ class LineChart {
             document.getElementById("ageInsight").innerHTML = "<p> INSIGHT</p>";
         }
         else {
-            vis.yLabel.text("average trip duration (min)");
+            vis.yLabel.text("average trip duration (min)")
+                .attr("y", -vis.margin.left + 30);
+
             document.getElementById("mainInsight").innerHTML = "<p> INSIGHT</p>";
             document.getElementById("memberInsight").innerHTML =
                 "<p>Although subscribers take more rides than non-subscribers, these rides are actually shorter\n" +
