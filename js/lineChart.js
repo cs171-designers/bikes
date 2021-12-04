@@ -47,8 +47,7 @@ class LineChart {
             .scale(vis.y);
 
         vis.xAxis = d3.axisBottom()
-            .scale(vis.x)
-            .ticks(10);
+            .scale(vis.x);
 
         vis.svg.append("g")
             .attr("class", "y-axis axis");
@@ -486,6 +485,8 @@ class LineChart {
 
     updateVis() {
         let vis = this;
+
+        //vis.xAxis.ticks(10);
 
         // Update domain - x axis same for all charts
         vis.x.domain(d3.extent(vis.displayData, function (d) {
