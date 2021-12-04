@@ -111,32 +111,32 @@ class LineChart {
                     .attr("id", "time-period-min-box")
                     .attr("x", -55)
                     .attr("y", 0)
-                    .attr("width", 80)
+                    .attr("width", 95)
                     .attr("height", 20);
 
                 vis.timeSvg.append("text")
                     .attr("id", "time-period-min")
                     .text("2018-01-01")
-                    .attr("x", -50)
+                    .attr("x", -52)
                     .attr("y", 15);
 
                 vis.timeSvg.append("text")
                     .attr("id", "time-dash")
                     .text("-")
-                    .attr("x", 30)
+                    .attr("x", 42)
                     .attr("y", 15);
 
                 vis.timeSvg.append("rect")
                     .attr("id", "time-period-max-box")
-                    .attr("x", 45)
+                    .attr("x", 52)
                     .attr("y", 0)
-                    .attr("width", 80)
+                    .attr("width", 95)
                     .attr("height", 20);
 
                 vis.timeSvg.append("text")
                     .attr("id", "time-period-max")
                     .text("2019-12-31")
-                    .attr("x", 50)
+                    .attr("x", 55)
                     .attr("y", 15);
             }
         }
@@ -252,7 +252,7 @@ class LineChart {
                 .attr("class", "line");
 
             // draw legend
-            vis.legend.attr("transform", "translate(-15,0)"); // more age categories, need to move legend further left
+            vis.legend.attr("transform", "translate(0,0)"); // more age categories, need to move legend further left
 
             vis.legend.append("rect")
                 .attr("x", 0)
@@ -279,7 +279,7 @@ class LineChart {
                 .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 140)
+                .attr("x", 130)
                 .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
@@ -287,11 +287,11 @@ class LineChart {
 
             vis.legend.append("text")
                 .text("Adult (18-28)")
-                .attr("x", 140 + vis.legend_width + vis.legend_padding)
+                .attr("x", 130 + vis.legend_width + vis.legend_padding)
                 .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 220)
+                .attr("x", 210)
                 .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
@@ -299,11 +299,11 @@ class LineChart {
 
             vis.legend.append("text")
                 .text("Adult (28-38)")
-                .attr("x", 220 + vis.legend_width + vis.legend_padding)
+                .attr("x", 210 + vis.legend_width + vis.legend_padding)
                 .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 300)
+                .attr("x", 290)
                 .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
@@ -311,7 +311,7 @@ class LineChart {
 
             vis.legend.append("text")
                 .text("Adult (38+)")
-                .attr("x", 300 + vis.legend_width + vis.legend_padding)
+                .attr("x", 290 + vis.legend_width + vis.legend_padding)
                 .attr("y", -10 + 5);
         }
 
@@ -525,26 +525,19 @@ class LineChart {
                 .attr("y", -vis.margin.left + 10);
 
             document.getElementById("mainInsight").innerHTML =
-                "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter months.</p>"
-            + "<p>In the charts below, you can dive further into the demographics of Bluebike users to see how bike " +
-                "usage varies across categories. You can brush on the chart to the left to zoom in on selected time frames " +
-                "on the charts below. Clicking out of the brush selection will reset the charts.\n</p>"
-            + "<p>It is important to note that, due to the structure of the data, rides are not associated with specific " +
-            "users. Therefore, our analysis is on the rides rather than on users. \n</p>";
+                "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter months.</p>";
             document.getElementById("memberInsight").innerHTML =
                 "<p>More rides are consistently completed by subscribers than non-subscribers. The difference in " +
                 "rides between membership types is usually at least 5,000 rides, but ridership is very low across both " +
-                "membership types in January. This trend makes sense because subscribers pay a flat rate for unlimited " +
-                "45-minute rides, so it would be more cost effective for subscribers to ride more. However, January of " +
-                "each year is not only very cold but also a holiday where people are less likely to go out, whether by " +
-                "bike or not. </p>";
+                "membership types in January, around the holiday. This trend makes sense because subscribers pay a flat rate for unlimited " +
+                "45-minute rides, so it would be more cost-effective for subscribers to ride more. </p>";
             document.getElementById("genderInsight").innerHTML =
-                "<p>Most rides are completed by Male users, then Female users, and finally by users of unknown gender." +
-                "Because rides are not associated with specific users, this trend could be because of particular male users" +
-                "who are very avid bikers, or because there are more male Bluebike users than females, or males just tend to" +
+                "<p>Most rides are completed by Male users, then Female users, and finally by users of unknown gender. " +
+                "Because rides are not associated with specific users, this trend could be because of particular male users " +
+                "who are very avid bikers, or because there are more male Bluebike users than females, or males just tend to " +
                 "ride more than females.</p>";
             document.getElementById("ageInsight").innerHTML =
-                "<p>There are a similar number of rides completed by adults aged 18-28, 28-38, and 38+, though there are" +
+                "<p>There are a similar number of rides completed by adults aged 18-28, 28-38, and 38+, though there are " +
                 "slightly more rides completed by adults aged 18-28.\n"+
                 "There are very few rides completed by youth <18 and users of unknown age.</p>";
         }
@@ -553,12 +546,7 @@ class LineChart {
                 .attr("y", -vis.margin.left + 30);
 
             document.getElementById("mainInsight").innerHTML =
-                "<p>From this graph, we see that the average trip duration is around 15 minutes. \n</p>"
-                + "<p>In the charts below, you can dive further into the demographics of Bluebike users to see how bike " +
-                "usage varies across categories. You can brush on the chart to the left to zoom in on selected time frames " +
-                "on the charts below. Clicking out of the brush selection will reset the charts.\n</p>"
-                + "<p>It is important to note that, due to the structure of the data, rides are not associated with specific " +
-                "users. Therefore, our analysis is on the rides rather than on users. \n</p>";
+                "<p>From this graph, we see that the average trip duration is around 15 minutes.</p>";
 
             document.getElementById("memberInsight").innerHTML =
                 "<p>Although more rides are completed by subscribers than non-subscribers, these rides are actually shorter\n" +
@@ -571,7 +559,7 @@ class LineChart {
                 "<p>Following the same trend, users with unknown gender are likely non-subscribing customers where\n" +
                 "their demographic data is not entered. So, they also tend to take longer rides along the same\n" +
                 "trend as the customers line in the previous graph. However, we also see that rides by Male and Female\n" +
-                "users tend to take trips that are about the same duration, although trips by Females are slightly longer.\n</p>" +
+                "users are about the same duration, although trips by Females are slightly longer.\n</p>" +
                 "<p> Rides by Females are around 15 minutes on average, whereas rides by Males are around 13 minutes on average.</p>";
 
             document.getElementById("ageInsight").innerHTML =
