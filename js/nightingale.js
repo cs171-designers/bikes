@@ -27,55 +27,23 @@ class NightingaleChart {
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-        // SVG clipping path
-        vis.svg.append("defs")
-            .append("clipPath")
-            .attr("id", "clip")
-            .append("rect")
-            .attr("width", vis.width)
-            .attr("height", vis.height);
 
         // Scales and axes
-        vis.x = d3.scaleBand()
-            .rangeRound([0, vis.width])
-            .paddingInner(0.1);
+        vis.radiusScale = d3.scaleLinear()
 
-        vis.y = d3.scaleLinear()
-            .range([vis.height, 0]);
-
-        vis.yAxis = d3.axisLeft()
-            .scale(vis.y);
-
-        vis.xAxis = d3.axisBottom()
-            .scale(vis.x);
+        vis.arc = d3.arc()
+            .innerRadius(0)
+            .outerRadius(d => {vis.radiusScale(d.radius)})
+            .startAngle( function(d,i) { return angleScale( d.angle ); } );
 
         // format ticks to convey hour categories. Categories do not update
-        let tickStrings = ["12-6 am", "6-9 am", "9-12 pm", "12-3 pm", "3-6 pm", "6-9 pm", "9-12 am"];
-        vis.xAxis.tickFormat(function (d, i) {
-            return tickStrings[i];
-        });
-
-
-        vis.svg.append("g")
-            .attr("class", "y-axis axis");
-
-        vis.svg.append("g")
-            .attr("class", "x-axis axis")
-            .attr("transform", "translate(0," + vis.height + ")");
+        let tickStrings = ["12-3 am", "3-6 am", "6-9 am", "9-12 pm", "12-3 pm", "3-6 pm", "6-9 pm", "9-12 am"];
 
         // add chart title placeholder
         vis.svg.append("text")
             .attr("x", -vis.margin.left + vis.width / 2)
             .attr("y", 0)
             .attr("class", "lineTitle");
-
-        // y-axis label
-        vis.yLabel = vis.svg.append("text")
-            .attr("class", "axis-label")
-            .attr("transform", "rotate(-90)")
-            .attr("x", -vis.height / 2)
-            .attr("y", -vis.margin.left + 10)
-            .style("text-anchor", "middle");
 
         // (Filter, aggregate, modify data)
         vis.wrangleData();
@@ -88,7 +56,7 @@ class NightingaleChart {
 
         let data = Object.values(vis.filteredData).flat();
 
-        let hour = ["overnight", "morn1", "morn2", "aft1", "aft2", "night1", "night2"];
+        let hour = ["overnight1", "overnight2", "morn1", "morn2", "aft1", "aft2", "night1", "night2"];
 
         let dataHolder = [];
 
@@ -110,7 +78,8 @@ class NightingaleChart {
             let avg_trip_duration = [];
 
             // filtered data by start hour categories
-            let overnight_trips = d.filter(ride => hourFormat(ride.starttime) < 6); // 12 - 6 am. largest range because assume not many rides at this time
+            let overnight1_trips = d.filter(ride => hourFormat(ride.starttime) < 3); // 12-3 am.
+            let overnight2_trips = d.filter(ride => hourFormat(ride.starttime) >= 3 && hourFormat(ride.starttime) < 6); // 3-6 am
             let morn1_trips = d.filter(ride => hourFormat(ride.starttime) >= 6 && hourFormat(ride.starttime) < 9); // 6-9 am
             let morn2_trips = d.filter(ride => hourFormat(ride.starttime) >= 9 && hourFormat(ride.starttime) < 12); // 9-12 pm
             let aft1_trips = d.filter(ride => hourFormat(ride.starttime) >= 12 && hourFormat(ride.starttime) < 15); // 12-3 pm
@@ -118,7 +87,7 @@ class NightingaleChart {
             let night1_trips = d.filter(ride => hourFormat(ride.starttime) >= 18 && hourFormat(ride.starttime) < 21); // 6-9 pm
             let night2_trips = d.filter(ride => hourFormat(ride.starttime) >= 21 && hourFormat(ride.starttime) <= 24); // 9-12 am
 
-            let trip_data = [overnight_trips, morn1_trips, morn2_trips, aft1_trips, aft2_trips, night1_trips, night2_trips];
+            let trip_data = [overnight1_trips, overnight2_trips, morn1_trips, morn2_trips, aft1_trips, aft2_trips, night1_trips, night2_trips];
 
             for (let i = 0; i < trip_data.length; i++) {
                 let trips = trip_data[i];
@@ -144,64 +113,6 @@ class NightingaleChart {
     updateVis() {
         let vis = this;
 
-        // Update domain
-        vis.x.domain(vis.displayData.map(d => d.hour));
-        vis.y.domain([0, d3.max(vis.displayData.map(d => d[vis.variable]))]);
-
-        // update y axis label
-        if (vis.variable === "num_rides") {
-            vis.yLabel.text("# rides");
-        }
-        else {
-            vis.yLabel.text("average trip duration (min)");
-        }
-
-        // draw data
-        let bar = vis.svg.selectAll("rect.bar-chart_bar")
-            .data(vis.displayData)
-        //console.log("render bar chart hour", vis.displayData)
-
-        //console.log(bar) // why is first one empty?? so "overnight" is empty?
-
-        bar.enter().append("rect")
-            .attr("class", "bar bar-chart_bar")
-            .merge(bar)
-            .style("fill", "grey")
-            .transition()
-            .duration(800)
-            .attr("data-name", d => d.hour)
-            .attr("x", d => {
-                //console.log("x", vis.x(d.hour), d);
-                return vis.x(d.hour);
-            })
-            .attr("width", vis.x.bandwidth())
-            .attr("y", d => {
-                //console.log("y", vis.y(d[selectedCategory]), d);
-                return vis.y(d[vis.variable])
-            })
-            .attr("height", d => vis.height - (vis.y(d[vis.variable])));
-
-        // Update axes
-        vis.svg.select(".y-axis").transition().duration(800).call(vis.yAxis);
-        vis.svg.select(".x-axis").transition().duration(800).call(vis.xAxis);
 
     }
-
-    onSelectionChange(selectionStart, selectionEnd) {
-        let vis = this;
-
-        let dateParser = d3.timeParse("%Y-%m-%d");
-        let timeFormat = d3.timeFormat("%Y-%m-%d");
-
-        vis.filteredData = {};
-        Object.entries(vis.data).forEach(d => {
-            let date = timeFormat(dateParser(d[0]));
-            if (date >= timeFormat(selectionStart) && date <= timeFormat(selectionEnd)) {
-                vis.filteredData[date] = d[1];
-            }
-        });
-        //console.log(vis.filteredData)
-        vis.wrangleData();
-    }
-
 }
