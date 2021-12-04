@@ -178,7 +178,7 @@ prepareSlide = (_nextSlide) => {
 }
 // prepareSlide(1000);
 prepareSlide(1);
-
+const scrollLoadOffset = 200;
 document.addEventListener("DOMContentLoaded", function () {
     let lazySections = [].slice.call(document.querySelectorAll(sectionSelector)).map((el, index) => {
         return {
@@ -193,11 +193,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (active === false) {
             active = true;
 
-            setTimeout(function () {
+            window.setTimeout(function () {
                 lazySections.forEach(function (obj) {
                     let index = obj.index;
                     let section = obj.el;
-                    if ((section.getBoundingClientRect().top <= window.innerHeight && section.getBoundingClientRect().bottom >= 0) && getComputedStyle(section).display !== "none") {
+                    if ((section.getBoundingClientRect().top <= window.innerHeight + scrollLoadOffset && section.getBoundingClientRect().bottom >= 0 - scrollLoadOffset) && getComputedStyle(section).display !== "none") {
                         prepareSlide(index + 1);
                         console.log("preparing slide", index + 1, section)
 
