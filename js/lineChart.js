@@ -621,6 +621,7 @@ class LineChart {
             // let member_displayData = sub_displayData.concat(cus_displayData);
             // vis.y.domain([0, d3.max(member_displayData)]);
 
+            // write data lines as function? Then do the radio lines with them as callback?
             // draw data lines
             vis.dataLine_sub = d3.line()
                 .x(d => vis.x(d.date))
