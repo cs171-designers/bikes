@@ -60,11 +60,11 @@ class BlueBikeMapDashboard {
         vis.pinIcon = new vis.pinIconClass({iconUrl: 'img/red-pin-icon.jpg'})
 
         vis.quadMarker = L.marker([42.380287,-71.125107], {icon: vis.pinIcon})
-            .bindPopup(`Quad`)
+            .bindPopup(`Quad Bluebike Station`)
             .addTo(vis.map);
 
         vis.mdMarker = L.marker([42.36920617,-71.11710638], {icon: vis.pinIcon})
-            .bindPopup(`Mather/Dunster`)
+            .bindPopup(`Mather/Dunster Bluebike Station`)
             .addTo(vis.map);
 
 
@@ -177,8 +177,8 @@ class BlueBikeMapDashboard {
                 })
                 if (station[2] < 0) {
                     vis.circles[vis.circleCounter] = L.circle(station[1], vis.netScale(Math.abs(station[2])), {
-                        color: 'orange',
-                        fillColor: 'orange',
+                        color: 'red',
+                        fillColor: 'red',
                         fillOpacity: 0.3,
                         weight: 1
                     })
