@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
             index: index
         }
     });
-    console.log("lazy slides", lazySections);
+    // console.log("lazy slides", lazySections);
     let active = false;
 
     const lazyLoad = function () {
