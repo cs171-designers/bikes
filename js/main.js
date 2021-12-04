@@ -171,8 +171,6 @@ let slides = [
 
     }),
 ];
-slides.sort((a, b) => a.page - b.page);
-// slides = slides.slice(0,1);
 prepareSlide = (_nextSlide) => {
     const slideIndex = _nextSlide;
     slides.forEach((slide) => {
@@ -181,8 +179,6 @@ prepareSlide = (_nextSlide) => {
         }
     })
 }
-// prepareSlide(1000);
-// prepareSlide(1);
 const scrollLoadOffset = 200;
 document.addEventListener("DOMContentLoaded", function () {
     let lazySections = [].slice.call(document.querySelectorAll(sectionSelector)).map((el, index) => {

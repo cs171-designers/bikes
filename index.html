@@ -10,7 +10,6 @@
 	<!-- Load CSS libraries -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-	<!-- <link rel="stylesheet" href="css/jquery.pagepiling.css"> -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
@@ -26,44 +25,6 @@
 
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-
-	<!-- <script type="text/javascript" src="../jquery.pagepiling.min.js"></script> -->
-	<script type="text/javascript">
-		var prepareSlide = () => { }; // will be overriden
-		$(document).ready(function () {
-			/*
-			* Plugin intialization
-			*/
-			return;
-			$('#pagepiling').pagepiling({
-				direction: 'horizontal',
-				menu: '#menu',
-				anchors: ['page1', 'page2', 'page3', 'page4'],
-				sectionsColor: ['white', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7'],
-				navigation: {
-					'position': 'right',
-					'tooltips': ['Page 1', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 6', 'Page 7', 'Page 8', 'Page 9', 'Page 10', 'Page 11', 'Page 12', 'Page 13', 'Page 14', 'Page 15', 'Page 16']
-				},
-				afterRender: function () {
-					$('#pp-nav').addClass('custom');
-					prepareSlide(1);
-				},
-				onLeave: function (index, nextIndex, direction) {
-					//after leaving section 2
-					// console.log("onLeave", index, nextIndex, direction)
-				},
-				afterLoad: function (anchorLink, index) {
-					// console.log("afterload", anchorLink, index)
-					prepareSlide(index);
-					if (index > 1) {
-						$('#pp-nav').removeClass('custom');
-					} else {
-						$('#pp-nav').addClass('custom');
-					}
-				}
-			});
-		});
-	</script>
 </head>
 
 <body>
