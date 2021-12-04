@@ -2,23 +2,56 @@ let selectedCategory; // global variable holding form selection - num_Rides or a
 let generalLine, memberLine, genderLine, ageLine; // visuals for dashboard -- defined globally so that categoryChange function can be called
 let bikeMap;
 let stationDashboard;
+let nightingale;
 let barChartsMost;
 let barChartsLeast;
 let selectedDashboardView;
 let hourBar, hourBarDuration;
-
-function init() {
-    // console.log("instantiating Data");
-    let dataHandler = new DataHandler("load-status");
-
-    // load data
-    dataHandler.load().then(() => {
-
-        // $(document).ready(function() {
-        //     $('#pagepiling').pagepiling();
-        // });
-
-        // map
+let dataHandler = new DataHandler("load-status");
+// switch between num_rides and avg_trip_dur
+function categoryChange() {
+    selectedCategory = document.getElementById('categorySelector').value;
+    generalLine.updateVis();
+    memberLine.updateVis();
+    genderLine.updateVis();
+    ageLine.updateVis();
+    //hourBar.updateVis();
+}
+class Slide {
+    rendered = false;
+    constructor(page, renderFn) {
+        this.page = page;
+        this.renderFn = renderFn;
+    }
+    setAsRendered() {
+        document.querySelectorAll(".pp-section").forEach((section, index) => {
+            if ((index + 1) > this.page) {
+                return;
+            }
+            console.log("section", section, this.page, index);
+            const statuses = section.querySelectorAll(".load-status");
+            console.log("statuses", statuses, this.page, index);
+            statuses.forEach(stat => {
+                stat.style.display = 'none';
+            })
+        })
+    }
+    render() {
+        if (!this.rendered) {
+            this.rendered = true;
+            console.log("rendering slide", this.page)
+            dataHandler.load().then(() => {
+                this.renderFn();
+                this.setAsRendered();
+            });
+        }
+        console.log("slide rendered", this.page)
+    }
+}
+// CHANGE HERE IS SLIDES CHANGE
+const slides = [
+    new Slide(1, function () { }),
+    new Slide(3, function () {
         let bikeData = dataHandler.groupBikeID()
         bikeMap = new BlueBikeMap("bike-map", bikeData, dataHandler._stations, [42.360082, -71.058880])
 
@@ -27,31 +60,20 @@ function init() {
         selectedDashboardView = document.getElementById("map-dashboard-dropdown").value
 
         stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.374443, -71.116943])
-
+    }),
+    new Slide(4, function () {
         // barCharts
         let ridesData = dataHandler.groupStation();
         let stationData = dataHandler.getStationCoords();
         barChartsMost = new StationBarChart("trip-length-barchart-most", ridesData, stationData, true); // , variable)
         barChartsLeast = new StationBarChart("trip-length-barchart-least", ridesData, stationData, false);
-
-
-        // pieChart
-        let counts = dataHandler.getMultiLevelCounts();
-        console.log("multi counts", counts)
-        const pie_charts = {
-            "gender-age": "Gender Pie Chart (Hover for Age)",
-            "user-age": "User Pie Chart (Hover for Age)",
-            "age-user": "Age Pie Chart (Hover for User)",
-        };
-        Object.entries(pie_charts).forEach(([chart, title]) => {
-            let pieChart = new PieChart(chart + "-pie-chart", title, counts[chart]);
-        })
-
+    }),
+    new Slide(4, function () {
         // Data for Line Charts
         let dayParser = "%Y-%m-%d";
         let dayData = dataHandler.groupDate();
         // console.log(lineData);
-        
+
         let weekParser = "%Y-%U";
         let weekData = dataHandler.groupWeek();
         // console.log("aggregated", weekData);
@@ -64,6 +86,37 @@ function init() {
         // bar charts of distribution of rides start time
         hourBar = new DashBarChart("hour-bar-chart", lineData, "num_rides", dateParser);
         hourBarDuration = new DashBarChart("hour-bar-chart-duration", lineData, "avg_trip_dur", dateParser);
+
+        // Create Nightingale Chart
+        nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser);
+    }),
+    new Slide(7, function () {
+        // pieChart
+        let counts = dataHandler.getMultiLevelCounts();
+        console.log("multi counts", counts)
+        const pie_charts = {
+            "gender-age": ["Gender Pie Chart (Hover for Age)", d3.schemeSet1],
+            "user-age": ["User Pie Chart (Hover for Age)", d3.schemeDark2],
+            "age-user": ["Age Pie Chart (Hover for User)", d3.schemeSet1],
+        };
+        Object.entries(pie_charts).forEach(([chart, [title, colors]]) => {
+            let pieChart = new PieChart(chart + "-pie-chart", title, counts[chart], colors);
+        })
+    }),
+    new Slide(8, function () {
+        // Data for Line Charts
+        let dayParser = "%Y-%m-%d";
+        let dayData = dataHandler.groupDate();
+        // console.log(lineData);
+
+        let weekParser = "%Y-%U";
+        let weekData = dataHandler.groupWeek();
+        // console.log("aggregated", weekData);
+
+        // switch data between lineData and weekData?
+        const USE_WEEKS = true;
+        let dateParser = (USE_WEEKS) ? weekParser : dayParser;
+        let lineData = (USE_WEEKS) ? weekData : dayData;
 
         // Create Dashboard
 
@@ -104,16 +157,19 @@ function init() {
             generalLine.onUpdateLabels(rangeStart, rangeEnd);
         });
 
-    });
+    }),
+];
+slides.sort((a, b) => a.page - b.page);
+function renderSlide(slideIndex) {
+    slides.forEach((slide) => {
+        if (slide.page <= slideIndex) {
+            slide.render();
+        }
+    })
+}
+prepareSlide = (_nextSlide) => {
+    for (let i = 1; i <= _nextSlide; i++) {
+        renderSlide(i);
+    }
+}
 
-}
-// switch between num_rides and avg_trip_dur
-function categoryChange() {
-    selectedCategory = document.getElementById('categorySelector').value;
-    generalLine.updateVis();
-    memberLine.updateVis();
-    genderLine.updateVis();
-    ageLine.updateVis();
-    //hourBar.updateVis();
-}
-init();

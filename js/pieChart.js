@@ -6,9 +6,9 @@
 class PieChart {
 
     // constructor method to initialize Timeline object
-    constructor(parentElement, title, data) {
+    constructor(parentElement, title, data, circleColors = d3.schemeSet1) {
         this.parentElement = parentElement;
-        this.circleColors = d3.schemeSet1;
+        this.circleColors = circleColors;
         this.secondaryColors = d3.schemeSet3;
         // console.log("coloirs", this.circleColors, this.secondaryColors)
         this.title = title;
@@ -96,10 +96,12 @@ class PieChart {
         });
         vis.displayData = [];
         vis.data.forEach((parent, parent_i) => {
-            parent.components.forEach((item, i) => {
+            parent.components.forEach((item, i, arr) => {
                 item.parent = parent;
                 item.color = vis.circleColors[parent_i % vis.circleColors.length];
                 item.secondaryColor = vis.secondaryColors[i % vis.secondaryColors.length];
+                item.childIndex = i;
+                item.numberOfComponents = arr.length;
                 this.displayData.push(item);
             })
         });
@@ -151,6 +153,7 @@ class PieChart {
                 // console.log("item", d)
                 return d.data.color;
             })
+            .style("opacity", d => 0.3 + ((0.7 / d.data.numberOfComponents) * (d.data.numberOfComponents - d.data.childIndex)))
             .on('mouseover', function (event, d) {
                 // console.log("mouseover", d);
                 // console.log("mouseover", d.data, d.data.parent);
@@ -163,7 +166,7 @@ class PieChart {
                     // })
                     .attr('stroke-width', '1px')
                     .attr('stroke', 'black')
-                    .style("opacity", 1)
+                    .style("opacity", d => 0.3 + ((0.7 / d.data.numberOfComponents) * (d.data.numberOfComponents - d.data.childIndex)))
                 d3.select(this)
                     .attr('stroke-width', '2px')
                     .attr('stroke', 'black')
@@ -189,7 +192,7 @@ class PieChart {
                         return d.data.color;
                     })
                     .attr('stroke-width', '0px')
-                    .style("opacity", 1)
+                    .style("opacity", d => 0.3 + ((0.7 / d.data.numberOfComponents) * (d.data.numberOfComponents - d.data.childIndex)))
 
                 vis.tooltip
                     .style("opacity", 0)
