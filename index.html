@@ -25,6 +25,7 @@
 
 	<script type="text/javascript" src="../jquery.pagepiling.min.js"></script>
 	<script type="text/javascript">
+		var prepareSlide = () => { }; // will be overriden
 		$(document).ready(function () {
 			/*
 			* Plugin intialization
@@ -33,15 +34,22 @@
 				direction: 'horizontal',
 				menu: '#menu',
 				anchors: ['page1', 'page2', 'page3', 'page4'],
-				sectionsColor: ['white', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7','#e1ecf7','#e1ecf7'],
+				sectionsColor: ['white', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7', '#e1ecf7'],
 				navigation: {
 					'position': 'right',
-					'tooltips': ['Page 1', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 6', 'Page 7', 'Page 8', 'Page 9', 'Page 10', 'Page 11', 'Page 12', 'Page 13', 'Page 14','Page 15','Page 16']
+					'tooltips': ['Page 1', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 6', 'Page 7', 'Page 8', 'Page 9', 'Page 10', 'Page 11', 'Page 12', 'Page 13', 'Page 14', 'Page 15', 'Page 16']
 				},
 				afterRender: function () {
 					$('#pp-nav').addClass('custom');
+					prepareSlide(1);
+				},
+				onLeave: function (index, nextIndex, direction) {
+					//after leaving section 2
+					console.log("onLeave", index, nextIndex, direction)
 				},
 				afterLoad: function (anchorLink, index) {
+					console.log("afterload", anchorLink, index)
+					prepareSlide(index);
 					if (index > 1) {
 						$('#pp-nav').removeClass('custom');
 					} else {
@@ -79,7 +87,9 @@
 			<div class="row text-row">
 				<h5>Welcome to the Visualization!</h5>
 				<p>
-					Here is a study were we can explore data around Blue Bikes rides and demographics. <b>We have some insights as you explore but we welcome you to draw your own insights. Let your curiousity guide you! Ask yourself questions and interrogate the data! </b>
+					Here is a study were we can explore data around Blue Bikes rides and demographics. <b>We have some
+						insights as you explore but we welcome you to draw your own insights. Let your curiousity guide
+						you! Ask yourself questions and interrogate the data! </b>
 				</p>
 
 				<p>
@@ -90,7 +100,10 @@
 				</p>
 
 				<p>
-					Cambridge is a particularly bike-friendly city in terms ofterrain and climate. <b>Here we present 2018-2019 data centered on Harvard campuses. Explore where on campus, including both the undergraduate and graduate schools, are most frequently visited using BlueBikes and what the typical user profile is like.</b>
+					Cambridge is a particularly bike-friendly city in terms ofterrain and climate. <b>Here we present
+						2018-2019 data centered on Harvard campuses. Explore where on campus, including both the
+						undergraduate and graduate schools, are most frequently visited using BlueBikes and what the
+						typical user profile is like.</b>
 				</p>
 			</div>
 		</div>
@@ -111,10 +124,13 @@
 
 						</br>
 						</br>
-						Click <b>"next"</b> to move from one station along the trip to another. Click on the icons to view
+						Click <b>"next"</b> to move from one station along the trip to another. Click on the icons to
+						view
 						trip information. You can also select a different bike to follow!
 					</p>
-					<div id="bike-map"></div>
+					<div id="bike-map">
+						<p class="load-status">Loading...</p>
+					</div>
 					<input class="btn btn-primary" id="previous-button" type="button" value="Previous Stop">
 					<input class="btn btn-primary" id="next-button" type="button" value="Next Stop">
 					<input class="btn btn-primary" id="generator-button" type="button" value="Look at a different bike">
@@ -126,7 +142,8 @@
 					<p>
 						In this map, we explore what stations on Harvard's campus are most popular. Popularity is
 						based on total traffic or solely on departures from or arrivals to each station. The
-						difference between arrivals and departures can show us which stations are net positive, net negative, and net zero bikes.
+						difference between arrivals and departures can show us which stations are net positive, net
+						negative, and net zero bikes.
 						<br>
 						<br>
 						Take a look at some of the stations and see if you can make any interesting comparisons!
@@ -142,7 +159,9 @@
 						<option value="arrivalSums">Arrivals</option>
 						<option value="netBikes">Net Bikes</option>
 					</select>
-					<div id="station-dashboard"></div>
+					<div id="station-dashboard">
+						<p class="load-status">Loading...</p>
+					</div>
 				</div>
 			</div>
 
@@ -156,7 +175,8 @@
 						<br>
 						<br>
 						When making this dashboard we were interested to see if we could tell whether
-						Quad students or Mather/Dunster students made more Bluebike trips. Looking at the Garden St station
+						Quad students or Mather/Dunster students made more Bluebike trips. Looking at the Garden St
+						station
 						near the Quad and the DeWolfe St station near Mather/Dunster, Quad students and Mather/Dunster
 						students took roughly the same number of trips.
 					</p>
@@ -175,10 +195,14 @@
 			</div>
 			<div class="row justify-content-center ">
 				<div class="col-md-6">
-					<div id="trip-length-barchart-most"></div>
+					<div id="trip-length-barchart-most">
+						<p class="load-status">Loading...</p>
+					</div>
 				</div>
 				<div class="col-md-6">
-					<div id="trip-length-barchart-least"></div>
+					<div id="trip-length-barchart-least">
+						<p class="load-status">Loading...</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -186,20 +210,25 @@
 		<div class="container-fluid section pp-scrollable">
 			<div class="row text-row ">
 				<div class="col">
-					When do most rides occur? Below is a barchart showing the number of rides that start during different
+					When do most rides occur? Below is a barchart showing the number of rides that start during
+					different
 					times of the day.
 				</div>
 			</div>
 
 			<div class="row justify-content-center ">
 				<div class="col-md-6">
-					<div class="align-self-center" id="nightingale-chart"></div>
+					<div class="align-self-center" id="nightingale-chart">
+						<p class="load-status">Loading...</p>
+					</div>
 				</div>
 			</div>
 
 			<div class="row justify-content-center ">
 				<div class="col-md-6">
-					<div class="align-self-center" id="hour-bar-chart"></div>
+					<div class="align-self-center" id="hour-bar-chart">
+						<p class="load-status">Loading...</p>
+					</div>
 				</div>
 			</div>
 
@@ -211,7 +240,9 @@
 
 			<div class="row justify-content-center ">
 				<div class="col-md-6">
-					<div class="align-self-center" id="hour-bar-chart-duration"></div>
+					<div class="align-self-center" id="hour-bar-chart-duration">
+						<p class="load-status">Loading...</p>
+					</div>
 				</div>
 			</div>
 
@@ -228,11 +259,13 @@
 			<div class="row text-row ">
 				<div class="col">
 					<p>
-						Now that we've explored <i>where</i> BLUEbike users tend to go on Harvard's campus, let's explore
+						Now that we've explored <i>where</i> BLUEbike users tend to go on Harvard's campus, let's
+						explore
 						<i>who</i> is the typical campus BLUEbike user. Can you see which demographics you fit into?
 					</p>
 					<p>
-						Let's look at general summary data first: [[insert a form with user entering info and getting statistics?]]
+						Let's look at general summary data first: [[insert a form with user entering info and getting
+						statistics?]]
 					</p>
 
 				</div>
@@ -254,16 +287,22 @@
 			<div class="row ">
 				<div class="col-md-4">
 					<div>
-						<div id="gender-age-pie-chart"></div>
+						<div id="gender-age-pie-chart">
+							<p class="load-status">Loading...</p>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div>
-						<div id="user-age-pie-chart"></div>
+						<div id="user-age-pie-chart">
+							<p class="load-status">Loading...</p>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
-					<div id="age-user-pie-chart"></div>
+					<div id="age-user-pie-chart">
+						<p class="load-status">Loading...</p>
+					</div>
 				</div>
 			</div>
 			<div class="row text-row ">
@@ -328,7 +367,9 @@
 					<!-- main line chart -->
 					<div class="row justify-content-center mainContainer">
 						<div id="time"></div>
-						<div class="align-self-center" id="main-line-chart"> </div>
+						<div class="align-self-center" id="main-line-chart">
+							<p class="load-status">Loading...</p>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-6" id="mainInsight"></div>
@@ -338,7 +379,9 @@
 				<!-- linked views on right side -->
 				<div class="col-md-4">
 					<div class="row justify-content-center linkedContainer">
-						<div class="align-self-center border-top" id="member-line-chart"></div>
+						<div class="align-self-center border-top" id="member-line-chart">
+							<p class="load-status">Loading...</p>
+						</div>
 					</div>
 					<div class="row">
 						<div id="memberInsight"></div>
@@ -347,7 +390,9 @@
 
 				<div class="col-md-4">
 					<div class="row justify-content-center linkedContainer">
-						<div class="align-self-center border-top" id="gender-line-chart"></div>
+						<div class="align-self-center border-top" id="gender-line-chart">
+							<p class="load-status">Loading...</p>
+						</div>
 					</div>
 					<div class="row">
 						<div id="genderInsight"></div>
@@ -355,7 +400,9 @@
 				</div>
 				<div class="col-md-4">
 					<div class="row justify-content-center linkedContainer ">
-						<div class="align-self-center border-top" id="age-line-chart"></div>
+						<div class="align-self-center border-top" id="age-line-chart">
+							<p class="load-status">Loading...</p>
+						</div>
 					</div>
 					<div class="row">
 						<div id="ageInsight"></div>
@@ -372,8 +419,10 @@
 				<div class="col">
 					<h5>Conclusions</h5>
 					<p>
-						from this data, we see that the most BLUEbike rides on Harvard’s campus are completed by subscribers,
-						males, and adults 25+. Subscribers take on average 15 minute shorter rides. Females take slightly
+						from this data, we see that the most BLUEbike rides on Harvard’s campus are completed by
+						subscribers,
+						males, and adults 25+. Subscribers take on average 15 minute shorter rides. Females take
+						slightly
 						longer rides than males. Youth have a lot of variation in trip duration, though young adults and
 						adults tend to take trips that are about 15 minutes long.
 					</p>

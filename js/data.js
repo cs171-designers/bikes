@@ -19,7 +19,7 @@ CENTERS = {
         Longitude: -71.121885
     },
     "HMS": { // includes medical, dential, public health
-        Latitude: 42.336425, 
+        Latitude: 42.336425,
         Longitude: -71.103574
     }
 }
@@ -63,9 +63,9 @@ class DataHandler {
         // "2019/201904-bluebikes-tripdata.csv",
         // "2019/201905-bluebikes-tripdata.csv",
         // "2019/201906-bluebikes-tripdata.csv",
-        "2019/201907-bluebikes-tripdata.csv",
-        "2019/201908-bluebikes-tripdata.csv",
-        "2019/201909-bluebikes-tripdata.csv",
+        // "2019/201907-bluebikes-tripdata.csv",
+        // "2019/201908-bluebikes-tripdata.csv",
+        // "2019/201909-bluebikes-tripdata.csv",
         "2019/201910-bluebikes-tripdata.csv",
         "2019/201911-bluebikes-tripdata.csv",
         "2019/201912-bluebikes-tripdata.csv",
@@ -112,9 +112,8 @@ class DataHandler {
             end.end_rides++;
         })
     }
-    load() {
-        const FILTER_CENTERS = true;
-        return this.loadStations().then(() => {
+    load = () => {
+        let prom = this.loadStations().then(() => {
             return this.loadRides();
         }).then((res) => {
             this.updateStatusCompete();
@@ -125,7 +124,10 @@ class DataHandler {
         }).finally(() => {
             console.log("finished loading", this.status_label_id)
             this.updateStatusCompete();
+            this.loaded = true;
         });
+        this.load = () => prom;
+        return prom;
     }
     loadStations() {
         let dataHandler = this;
