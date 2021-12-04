@@ -163,6 +163,8 @@ class DataHandler {
     }
     loadRides() {
         let dataHandler = this;
+        let weekParser = "%Y-%U";
+        let weekFormat = d3.timeFormat(weekParser);
         // console.log("loading bikes")
         return Promise.all([...this.files.map(f => d3.csv(directory + f, d3.autoType).then(res => {
             this.ridesLoaded++;
@@ -180,21 +182,25 @@ class DataHandler {
                     if (d.starttime) {
                         // add age attribute to data
                         d.age = Number(d.starttime.slice(0, 4)) - d["birth year"];
+                        d.startDateString = d.starttime.slice(0, 10)
                         if (d.starttime.length > 20) {
                             d.starttime = dateParser(d.starttime.slice(0, 19)); //slice off the milliseconds... ?
                         }
                         else {
                             d.starttime = dateParser(d.starttime);
                         }
-
+                        d.startYearWeekString = weekFormat(d.starttime);
+                        
                     }
                     if (d.stoptime) {
+                        d.stopDateString = d.stoptime.slice(0, 10);
                         if (d.stoptime.length > 20) {
                             d.stoptime = dateParser(d.stoptime.slice(0, 19)); //slice off the milliseconds... ?
                         }
                         else {
                             d.stoptime = dateParser(d.stoptime);
                         }
+                        d.stopYearWeekString = weekFormat(d.starttime);
                     }
                 });
 
@@ -235,8 +241,7 @@ class DataHandler {
         let groupedDate = {};
 
         dataHandler._rides.forEach(d => {
-            let timeFormat = d3.timeFormat("%Y-%m-%d");
-            let date = timeFormat(d.starttime);
+            let date = d.startDateString;
 
             if (groupedDate[date]) {
                 groupedDate[date].push(d);
@@ -253,8 +258,7 @@ class DataHandler {
         let groupedWeek = {};
 
         dataHandler._rides.forEach(d => {
-            let weekFormat = d3.timeFormat("%Y-%U"); // Sunday-based week of the year as a decimal number [00, 53]
-            let week = weekFormat(d.starttime);
+            let week = d.startYearWeekString;
 
             if (groupedWeek[week]) {
                 groupedWeek[week].push(d);
