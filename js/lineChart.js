@@ -47,7 +47,8 @@ class LineChart {
             .scale(vis.y);
 
         vis.xAxis = d3.axisBottom()
-            .scale(vis.x);
+            .scale(vis.x)
+            .ticks(10);
 
         vis.svg.append("g")
             .attr("class", "y-axis axis");
@@ -541,7 +542,9 @@ class LineChart {
                 "who are very avid bikers, or because there are more male Bluebike users than females, or males just tend to" +
                 "ride more than females.</p>";
             document.getElementById("ageInsight").innerHTML =
-                "<p> INSIGHT</p>";
+                "<p>There are a similar number of rides completed by adults aged 18-28, 28-38, and 38+, though there are" +
+                "slightly more rides completed by adults aged 18-28.\n"+
+                "There are very few rides completed by youth <18 and users of unknown age.</p>";
         }
         else {
             vis.yLabel.text("average trip duration (min)")
@@ -554,22 +557,26 @@ class LineChart {
                 "on the charts below. Clicking out of the brush selection will reset the charts.\n</p>"
                 + "<p>It is important to note that, due to the structure of the data, rides are not associated with specific " +
                 "users. Therefore, our analysis is on the rides rather than on users. \n</p>";
+
             document.getElementById("memberInsight").innerHTML =
                 "<p>Although more rides are completed by subscribers than non-subscribers, these rides are actually shorter\n" +
                 "(by about 15 minutes) on average than rides by non-subscribing customers! This could be because\n" +
                 "subscribers are already paying for unlimited rides and feel that it is worth the money to\n" +
                 "indulge in shorter rides.\n</p>" +
                 "<p> Rides by subscribers tend to be around 30 minutes on average. Rides by non-subscribers are around 13 minutes on average.</p>";
+
             document.getElementById("genderInsight").innerHTML =
                 "<p>Following the same trend, users with unknown gender are likely non-subscribing customers where\n" +
                 "their demographic data is not entered. So, they also tend to take longer rides along the same\n" +
                 "trend as the customers line in the previous graph. However, we also see that rides by Male and Female\n" +
                 "users tend to take trips that are about the same duration, although trips by Females are slightly longer.\n</p>" +
                 "<p> Rides by Females are around 15 minutes on average, whereas rides by Males are around 13 minutes on average.</p>";
+
             document.getElementById("ageInsight").innerHTML =
-                "<p>When examining trip duration by age, we see that rides by adults aged 18-24 and adults aged >24 have \n" +
-                "similar average duration, around 15 minutes long.\n" +
-                "However, young riders under 18 have a much more variation in trip duration.\n</p>";
+                "<p>When examining trip duration by age, we see that rides by adults aged 18-28 and adults aged 38+ have \n" +
+                "similar average trip duration, around 15 minutes long.\n" +
+                "Rides by adults aged 28-38 are typically the longest, with an average duration of around 20 minutes." +
+                "Rides by young users <18 have a much more variation in trip duration.\n</p>";
         }
 
         // draw data lines
