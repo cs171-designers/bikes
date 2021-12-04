@@ -215,7 +215,7 @@ class LineChart {
                 .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
-                .style("fill", "deeppink")
+                .style("fill", "brown")
 
             vis.legend.append("text")
                 .text("Female")
@@ -242,14 +242,17 @@ class LineChart {
             vis.linePath_ya = vis.svg.append("path")
                 .attr("class", "line");
 
-            vis.linePath_adult = vis.svg.append("path")
+            vis.linePath_adult1 = vis.svg.append("path")
+                .attr("class", "line");
+
+            vis.linePath_adult2 = vis.svg.append("path")
                 .attr("class", "line");
 
             vis.linePath_unknown = vis.svg.append("path")
                 .attr("class", "line");
 
             // draw legend
-            vis.legend.attr("transform", "translate(0,0)"); // more age categories, need to move legend further left
+            vis.legend.attr("transform", "translate(-15,0)"); // more age categories, need to move legend further left
 
             vis.legend.append("rect")
                 .attr("x", 0)
@@ -264,39 +267,51 @@ class LineChart {
                 .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 80)
+                .attr("x", 60)
                 .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
-                .style("fill", "yellow")
+                .style("fill", "limegreen");
 
             vis.legend.append("text")
                 .text("Youth (<18)")
-                .attr("x", 80 + vis.legend_width + vis.legend_padding)
+                .attr("x", 60 + vis.legend_width + vis.legend_padding)
                 .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 160)
+                .attr("x", 140)
                 .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "orange")
 
             vis.legend.append("text")
-                .text("Adult (18-24)")
-                .attr("x", 160 + vis.legend_width + vis.legend_padding)
+                .text("Adult (18-28)")
+                .attr("x", 140 + vis.legend_width + vis.legend_padding)
                 .attr("y", -10 + 5);
 
             vis.legend.append("rect")
-                .attr("x", 260) //240)
+                .attr("x", 220)
+                .attr("y", -10)
+                .attr("width", vis.legend_width)
+                .attr("height", vis.legend_height)
+                .style("fill", "darkcyan")
+
+            vis.legend.append("text")
+                .text("Adult (28-38)")
+                .attr("x", 220 + vis.legend_width + vis.legend_padding)
+                .attr("y", -10 + 5);
+
+            vis.legend.append("rect")
+                .attr("x", 300)
                 .attr("y", -10)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "purple")
 
             vis.legend.append("text")
-                .text("Adult (>24)")
-                .attr("x", 260 + vis.legend_width + vis.legend_padding)
+                .text("Adult (38+)")
+                .attr("x", 300 + vis.legend_width + vis.legend_padding)
                 .attr("y", -10 + 5);
         }
 
@@ -325,8 +340,9 @@ class LineChart {
 
                 num_rides_age_youth: age(d[1])[0][0],
                 num_rides_age_young_adult: age(d[1])[1][0],
-                num_rides_age_adult: age(d[1])[2][0],
-                num_rides_age_missing: age(d[1])[3][0], // missing because birth year unknown for non-subscribers
+                num_rides_age_adult1: age(d[1])[2][0],
+                num_rides_age_adult2: age(d[1])[3][0],
+                num_rides_age_missing: age(d[1])[4][0], // missing because birth year unknown for non-subscribers
 
                 avg_trip_dur: average_trip(d[1]),
                 avg_trip_dur_user_subscriber: user(d[1])[0][1],
@@ -338,8 +354,9 @@ class LineChart {
 
                 avg_trip_dur_age_youth: age(d[1])[0][1],
                 avg_trip_dur_age_young_adult: age(d[1])[1][1],
-                avg_trip_dur_age_adult: age(d[1])[2][1],
-                avg_trip_dur_age_missing: age(d[1])[3][1]
+                avg_trip_dur_age_adult1: age(d[1])[2][1],
+                avg_trip_dur_age_adult2: age(d[1])[3][1],
+                avg_trip_dur_age_missing: age(d[1])[4][1]
             }
         });
         vis.displayData = vis.displayData.map(res => res);
@@ -410,18 +427,21 @@ class LineChart {
             return [gen_unknown, gen_m, gen_f];
         }
         function age(d) {
+            // categories -- <18, 18-28, 28-38, 38+
             let age_youth = [];
             let age_ya = [];
-            let age_adult = [];
+            let age_adult1 = [];
+            let age_adult2 = [];
             let age_unknown = [];
 
             let filtered_trips = [];
             let youth_trips = d.filter(ride => ride.age < 18);
-            let ya_trips = d.filter(ride => ride.age >= 18 && ride.age < 25);
-            let adult_trips = d.filter(ride => ride.age >= 25);
+            let ya_trips = d.filter(ride => ride.age >= 18 && ride.age < 28);
+            let adult1_trips = d.filter(ride => ride.age >= 28 && ride.age < 38);
+            let adult2_trips = d.filter(ride => ride.age >= 38);
             let unknown_trips = d.filter(ride => ride.age != 0 && !ride.age);
 
-            filtered_trips.push(youth_trips, ya_trips, adult_trips, unknown_trips);
+            filtered_trips.push(youth_trips, ya_trips, adult1_trips, adult2_trips, unknown_trips);
 
             for (let i = 0; i < filtered_trips.length; i++) {
                 let trips = filtered_trips[i];
@@ -440,15 +460,19 @@ class LineChart {
                     age_ya.push(avg_trip_dur);
                 }
                 else if (i === 2) {
-                    age_adult.push(rides);
-                    age_adult.push(avg_trip_dur);
+                    age_adult1.push(rides);
+                    age_adult1.push(avg_trip_dur);
+                }
+                else if (i === 3) {
+                    age_adult2.push(rides);
+                    age_adult2.push(avg_trip_dur);
                 }
                 else {
                     age_unknown.push(rides);
                     age_unknown.push(avg_trip_dur);
                 }
             }
-            return [age_youth, age_ya, age_adult, age_unknown];
+            return [age_youth, age_ya, age_adult1, age_adult2, age_unknown];
         }
 
         // ensure sorted by day
@@ -498,17 +522,38 @@ class LineChart {
                 .attr("y", -vis.margin.left + 10);
 
             document.getElementById("mainInsight").innerHTML =
-                "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter.</p>";
+                "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter months.</p>"
+            + "<p>In the charts below, you can dive further into the demographics of Bluebike users to see how bike " +
+                "usage varies across categories. You can brush on the chart to the left to zoom in on selected time frames " +
+                "on the charts below. Clicking out of the brush selection will reset the charts.\n</p>"
+            + "<p>It is important to note that, due to the structure of the data, rides are not associated with specific " +
+            "users. Therefore, our analysis is on the rides rather than on users. \n</p>";
             document.getElementById("memberInsight").innerHTML =
+                "<p>More rides are consistently completed by subscribers than non-subscribers. The difference in " +
+                "rides between membership types is usually at least 5,000 rides, but ridership is very low across both " +
+                "membership types in January. This trend makes sense because subscribers pay a flat rate for unlimited " +
+                "45-minute rides, so it would be more cost effective for subscribers to ride more. However, January of " +
+                "each year is not only very cold but also a holiday where people are less likely to go out, whether by " +
+                "bike or not. </p>";
+            document.getElementById("genderInsight").innerHTML =
+                "<p>Most rides are completed by Male users, then Female users, and finally by users of unknown gender." +
+                "Because rides are not associated with specific users, this trend could be because of particular male users" +
+                "who are very avid bikers, or because there are more male Bluebike users than females, or males just tend to" +
+                "ride more than females.</p>";
+            document.getElementById("ageInsight").innerHTML =
                 "<p> INSIGHT</p>";
-            document.getElementById("genderInsight").innerHTML = "<p> INSIGHT</p>";
-            document.getElementById("ageInsight").innerHTML = "<p> INSIGHT</p>";
         }
         else {
             vis.yLabel.text("average trip duration (min)")
                 .attr("y", -vis.margin.left + 30);
 
-            document.getElementById("mainInsight").innerHTML = "<p> INSIGHT</p>";
+            document.getElementById("mainInsight").innerHTML =
+                "<p>From this graph, we see that the average trip duration is around 15 minutes. \n</p>"
+                + "<p>In the charts below, you can dive further into the demographics of Bluebike users to see how bike " +
+                "usage varies across categories. You can brush on the chart to the left to zoom in on selected time frames " +
+                "on the charts below. Clicking out of the brush selection will reset the charts.\n</p>"
+                + "<p>It is important to note that, due to the structure of the data, rides are not associated with specific " +
+                "users. Therefore, our analysis is on the rides rather than on users. \n</p>";
             document.getElementById("memberInsight").innerHTML =
                 "<p>Although more rides are completed by subscribers than non-subscribers, these rides are actually shorter\n" +
                 "(by about 15 minutes) on average than rides by non-subscribing customers! This could be because\n" +
@@ -625,7 +670,7 @@ class LineChart {
                 .style("opacity", 0)
                 .attr("d", vis.dataLine_f)
                 .style("opacity", 1)
-                .style("stroke", "deeppink");
+                .style("stroke", "brown");
 
             vis.dataLine_m = d3.line()
                 .x(d => vis.x(d.date))
@@ -660,7 +705,7 @@ class LineChart {
                 .style("opacity", 0)
                 .attr("d", vis.dataLine_youth) //pass in data for line generation
                 .style("opacity", 1)
-                .style("stroke", "white");
+                .style("stroke", "limegreen");
 
             vis.dataLine_ya = d3.line()
                 .x(d => vis.x(d.date))
@@ -673,16 +718,27 @@ class LineChart {
                 .style("opacity", 1)
                 .style("stroke", "orange");
 
-            vis.dataLine_adult = d3.line()
+            vis.dataLine_adult1 = d3.line()
                 .x(d => vis.x(d.date))
-                .y(d => vis.y(d[selectedCategory + "_age_adult"]));
+                .y(d => vis.y(d[selectedCategory + "_age_adult1"]));
 
-            vis.linePath_adult
+            vis.linePath_adult1
                 .data([vis.displayData])
                 .style("opacity", 0)
-                .attr("d", vis.dataLine_adult) //pass in data for line generation
+                .attr("d", vis.dataLine_adult1) //pass in data for line generation
                 .style("opacity", 1)
                 .style("stroke", "purple");
+
+            vis.dataLine_adult2 = d3.line()
+                .x(d => vis.x(d.date))
+                .y(d => vis.y(d[selectedCategory + "_age_adult2"]));
+
+            vis.linePath_adult2
+                .data([vis.displayData])
+                .style("opacity", 0)
+                .attr("d", vis.dataLine_adult2) //pass in data for line generation
+                .style("opacity", 1)
+                .style("stroke", "darkcyan");
 
             vis.dataLine_unknown = d3.line()
                 .x(d => vis.x(d.date))
