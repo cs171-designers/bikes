@@ -493,6 +493,7 @@ class LineChart {
             return d.date;
         }));
 
+      // update y domain
         if (selectedCategory === "num_rides"){
             vis.y.domain([0, d3.max(vis.displayData, function (d) {
                 return d[selectedCategory];
