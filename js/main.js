@@ -155,16 +155,13 @@ const slides = [
     }),
 ];
 slides.sort((a, b) => a.page - b.page);
-function renderSlide(slideIndex) {
+const renderOffset = +1;
+prepareSlide = (_nextSlide) => {
+    const slideIndex = _nextSlide + renderOffset;
     slides.forEach((slide) => {
         if (slide.page <= slideIndex) {
             slide.render();
         }
     })
-}
-prepareSlide = (_nextSlide) => {
-    for (let i = 1; i <= _nextSlide; i++) {
-        renderSlide(i);
-    }
 }
 
