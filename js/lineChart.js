@@ -526,11 +526,7 @@ class LineChart {
 
             document.getElementById("mainInsight").innerHTML =
                 "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter months.</p>";
-            document.getElementById("memberInsight").innerHTML =
-                "<p>More rides are consistently completed by subscribers than non-subscribers. The difference in " +
-                "rides between membership types is usually at least 5,000 rides, but ridership is very low across both " +
-                "membership types in January, around the holiday. This trend makes sense because subscribers pay a flat rate for unlimited " +
-                "45-minute rides, so it would be more cost-effective for subscribers to ride more. </p>";
+            // move memberInsight later so integrate form
             document.getElementById("genderInsight").innerHTML =
                 "<p>Most rides are completed by Male users, then Female users, and finally by users of unknown gender. " +
                 "Because rides are not associated with specific users, this trend could be because of particular male users " +
@@ -548,12 +544,7 @@ class LineChart {
             document.getElementById("mainInsight").innerHTML =
                 "<p>From this graph, we see that the average trip duration is around 15 minutes.</p>";
 
-            document.getElementById("memberInsight").innerHTML =
-                "<p>Although more rides are completed by subscribers than non-subscribers, these rides are actually shorter\n" +
-                "(by about 15 minutes) on average than rides by non-subscribing customers! This could be because\n" +
-                "subscribers are already paying for unlimited rides and feel that it is worth the money to\n" +
-                "indulge in shorter rides.\n</p>" +
-                "<p> Rides by subscribers tend to be around 30 minutes on average. Rides by non-subscribers are around 13 minutes on average.</p>";
+            // put memberInsight html later so that it will show up after form selection
 
             document.getElementById("genderInsight").innerHTML =
                 "<p>Following the same trend, users with unknown gender are likely non-subscribing customers where\n" +
@@ -596,32 +587,74 @@ class LineChart {
         }
 
         if (vis.variable === "member") {
-            // add chart title labels
-            vis.svg.select(".lineTitle").text("By User Type")
 
-            // draw data lines
-            vis.dataLine_sub = d3.line()
-                .x(d => vis.x(d.date))
-                .y(d => vis.y(d[selectedCategory + "_user_subscriber"]));
-            console.log(selectedCategory + "_user_subscriber")
+            if (selectedCategory === "num_rides"){
+                drawMemberChart();
+            }
+            else{
+                // clear the previous chart
+                document.getElementById("member-line-chart").innerHTML = "";
+                document.getElementById("memberInsight").innerHTML = "";
+                // add radio form
+                document.getElementById("radioForm").innerHTML =
+                    "<div class=\"form-check form-check-inline\">\n" +
+                    "  <input class=\"form-check-input\" type=\"radio\"  id=\"inlineRadio1\" value=\"subscriber\" onchange=\"drawMemberChart(this, selectedCategory)\">\n" +
+                    "  <label class=\"form-check-label\" for=\"inlineRadio1\">Subscriber</label>\n" +
+                    "</div>\n" +
+                    "<div class=\"form-check form-check-inline\">\n" +
+                    "  <input class=\"form-check-input\" type=\"radio\" id=\"inlineRadio2\" value=\"option2\">\n" +
+                    "  <label class=\"form-check-label\" for=\"inlineRadio2\">2</label>\n" +
+                    "</div>";
+            }
 
-            vis.linePath_sub
-                .data([vis.displayData])
-                .style("opacity", 0)
-                .attr("d", vis.dataLine_sub) //pass in data for line generation
-                .style("opacity", 1)
-                .style("stroke", "red");
+            function drawMemberChart(src, selectedCategory){
+                // if(src.value === "subscriber"){
+                //
+                // }
+                // add chart title labels
+                vis.svg.select(".lineTitle").text("By User Type")
 
-            vis.dataLine_cus = d3.line()
-                .x(d => vis.x(d.date))
-                .y(d => vis.y(d[selectedCategory + "_user_customer"]));
+                // draw data lines
+                vis.dataLine_sub = d3.line()
+                    .x(d => vis.x(d.date))
+                    .y(d => vis.y(d[selectedCategory + "_user_subscriber"]));
+                console.log(selectedCategory + "_user_subscriber")
 
-            vis.linePath_cus
-                .data([vis.displayData])
-                .style("opacity", 0)
-                .attr("d", vis.dataLine_cus)
-                .style("opacity", 1)
-                .style("stroke", "blue");
+                vis.linePath_sub
+                    .data([vis.displayData])
+                    .style("opacity", 0)
+                    .attr("d", vis.dataLine_sub) //pass in data for line generation
+                    .style("opacity", 1)
+                    .style("stroke", "red");
+
+                vis.dataLine_cus = d3.line()
+                    .x(d => vis.x(d.date))
+                    .y(d => vis.y(d[selectedCategory + "_user_customer"]));
+
+                vis.linePath_cus
+                    .data([vis.displayData])
+                    .style("opacity", 0)
+                    .attr("d", vis.dataLine_cus)
+                    .style("opacity", 1)
+                    .style("stroke", "blue");
+
+                if(selectedCategory==="num_rides"){
+                    document.getElementById("memberInsight").innerHTML =
+                        "<p>More rides are consistently completed by subscribers than non-subscribers. The difference in " +
+                        "rides between membership types is usually at least 5,000 rides, but ridership is very low across both " +
+                        "membership types in January, around the holiday. This trend makes sense because subscribers pay a flat rate for unlimited " +
+                        "45-minute rides, so it would be more cost-effective for subscribers to ride more. </p>";
+                }
+                else{
+                    document.getElementById("memberInsight").innerHTML =
+                        "<p>Although more rides are completed by subscribers than non-subscribers, these rides are actually shorter\n" +
+                        "(by about 15 minutes) on average than rides by non-subscribing customers! This could be because\n" +
+                        "subscribers are already paying for unlimited rides and feel that it is worth the money to\n" +
+                        "indulge in shorter rides.\n</p>" +
+                        "<p> Rides by subscribers tend to be around 30 minutes on average. Rides by non-subscribers are around 13 minutes on average.</p>";
+                }
+            }
+
         }
 
         if (vis.variable === "gender") {
