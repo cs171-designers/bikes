@@ -521,7 +521,7 @@ class LineChart {
 
         // update y axis label AND include insights on dashboard
         if (selectedCategory === "num_rides") {
-            vis.yLabel.text("# rides")
+            vis.yLabel.text("Number of rides")
                 .attr("y", -vis.margin.left + 10);
 
             // document.getElementById("mainInsight").innerHTML =
