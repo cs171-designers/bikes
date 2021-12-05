@@ -1,7 +1,7 @@
 #hour-bar-chart,
 #hour-bar-chart-duration,
 #nightingale-chart {
-    height: 40vh;
+    height: 60vh;
     width: 100%;
 }
 .container-fluid {
@@ -231,4 +231,14 @@ select, select.form-select {
 }
 .margin-top--large {
     margin-top: 1.5rem;;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+.tiny-cricle {
+    width: 2.5%;
 }
