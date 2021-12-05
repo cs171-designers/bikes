@@ -224,8 +224,8 @@ document.addEventListener("DOMContentLoaded", function () {
     lazyLoad();
 });
 
-function myFunction() {
-    var x = document.getElementById("myDIV");
+function myFunction(divname) {
+    var x = document.getElementById(divname);
     if (x.style.display === "none") {
         x.style.display = "block";
     } else if (x.style.display === "block") {

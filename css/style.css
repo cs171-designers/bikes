@@ -248,11 +248,15 @@ select, select.form-select {
 #myDIV {
     display: none
 }
+#myDIV2 {
+    display: none
+}
 figcaption {
     text-align: left;
     font-size: smaller;
 }
 
-rect:hover {
-    color: yellow;
-}
+/*mybar:hover {*/
+/*    background-color: yellow;*/
+/*    color: yellow;*/
+/*}*/

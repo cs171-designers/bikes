@@ -47,6 +47,7 @@
 				<div class="col">
 					<p class="page-status subtitle">Status: <span id="load-status">Loading...</span></p>
 					<h1>Meet Bluebikes!</h1>
+					<h4>Bluebikes on Harvard's campus, and you.</h4>
 				</div>
 			</div>
 		</div>
@@ -246,7 +247,7 @@
 						Check out the red pins (<img src="img/red-pin-icon.jpg" alt="Red pin" class = 'tiny-cricle'>) on the map to see.
 
 
-						<button onclick="myFunction()" class="btn btn-primary btn-full">Reveal answer</button>
+						<button onclick="myFunction('myDIV')" class="btn btn-primary btn-full">Reveal answer</button>
 
 					<p id="myDIV">
 					Looking at the Garden St
@@ -324,11 +325,14 @@
 		<div class="container section pp-scrollable">
 			<div class="row text-row ">
 				<div class="col">
-					<h5> We know the geographical habits of Bluebikes users.</h5>
+					<h5> We've seen <i>where</i> users bike.</h5>
+					<h5 style="text-indent: 45%"> But <i>when</i> do they do it?</h5>
 					<p>
-						When do most rides occur? Below is a barchart showing the number of rides that start during
-						different
-						times of the day.
+						How does usage vary in the course of a day, and when do most rides occur? In addition, how long do rides tend to be?
+
+<!--						Below is a barchart showing the number of rides that start during-->
+<!--						different-->
+<!--						times of the day.-->
 					</p>
 				</div>
 			</div>
@@ -340,6 +344,25 @@
 					<div class="align-self-center" id="nightingale-chart">
 						<p class="load-status">Scroll to Load</p>
 					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container section pp-scrollable">
+			<div class="row text-row ">
+				<div class="col">
+					<p>
+						Rides from 3pm-6pm are the most common, but the longest trips occur from 12pm to 3pm
+					</p>
+
+					<button onclick="myFunction('myDIV2')" class="btn btn-primary btn-full">Reveal answer</button>
+
+					<p id="myDIV2">
+						Looking at the Garden St
+						station
+						near the Quad and the DeWolfe St station near Mather/Dunster, Quad students and Mather/Dunster
+						students took roughly the same number of trips.
+					</p>
 				</div>
 			</div>
 		</div>
@@ -530,7 +553,7 @@
 						subscribers,
 						males, and adults 25+. Subscribers take on average 15 minute shorter rides. Females take
 						slightly
-						longer rides than males. Youth have a lot of variation in trip duration, though young adults and
+						longer rides than males. Youth have diverse uses of Bluebikes, with a lot of variation in trip duration, though young adults and
 						adults tend to take trips that are about 15 minutes long.
 					</p>
 
@@ -547,6 +570,8 @@
 					<p>
 						LIST VARIABLES HERE!!!!
 						ALSO PUT AUTHORS AND BIOS
+
+						seasonal ebbs and flows
 					</p>
 				</div>
 			</div>
