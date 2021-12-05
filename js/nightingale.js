@@ -34,7 +34,7 @@ class NightingaleChart {
             .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")");
 
 
-        // Scales and axes
+        // Scales and labels
         vis.colorScale = d3.scaleLinear()
             .range(["red", "blue"])
 
@@ -49,15 +49,15 @@ class NightingaleChart {
             .domain([0, 7])
             .range([Math.PI/4, 2*Math.PI])
 
-
         // format ticks to convey hour categories. Categories do not update
-        let tickStrings = ["12-3 am", "3-6 am", "6-9 am", "9-12 pm", "12-3 pm", "3-6 pm", "6-9 pm", "9-12 am"];
+        vis.tickStrings = ["12-3 am", "3-6 am", "6-9 am", "9-12 pm", "12-3 pm", "3-6 pm", "6-9 pm", "9-12 am"];
 
         // add chart title placeholder
         vis.svg.append("text")
-            .attr("x", -vis.margin.left + vis.width / 2)
+            .attr("x", vis.width / 2)
             .attr("y", 0)
-            .attr("class", "lineTitle");
+            .attr("class", "lineTitle")
+            .text("Nightingale Chart");
 
         // (Filter, aggregate, modify data)
         vis.wrangleData();
@@ -160,6 +160,19 @@ class NightingaleChart {
             })
             .attr("stroke", "black")
             .style("stroke-width", "1px")
+
+        let arcLabels = vis.nightingaleChartGroup.selectAll(".arcLabel")
+            .data(vis.displayData)
+
+        arcLabels.enter().append("g")
+            .append("text")
+            .attr("class", "arcLabel")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 10)
+            .attr("text-anchor", "middle")
+            .attr("x", 0)
+            .attr("y", 0)
+            .text(d => vis.tickStrings[d.index])
 
     }
 }
