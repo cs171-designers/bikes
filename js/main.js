@@ -99,11 +99,7 @@ let slides = [
         const USE_WEEKS = true;
         let dateParser = (USE_WEEKS) ? weekParser : dayParser;
         let lineData = (USE_WEEKS) ? dataHandler.groupWeek() : dataHandler.groupDate();
-
-        // bar charts of distribution of rides start time
-        // hourBar = new DashBarChart("hour-bar-chart", lineData, "num_rides", dateParser);
-        // hourBarDuration = new DashBarChart("hour-bar-chart-duration", lineData, "avg_trip_dur", dateParser);
-
+        
         // Create Nightingale Chart
         nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser);
     }),
