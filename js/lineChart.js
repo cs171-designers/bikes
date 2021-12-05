@@ -524,8 +524,8 @@ class LineChart {
             vis.yLabel.text("# rides")
                 .attr("y", -vis.margin.left + 10);
 
-            document.getElementById("mainInsight").innerHTML =
-                "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter months.</p>";
+            // document.getElementById("mainInsight").innerHTML =
+            //     "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter months.</p>";
             document.getElementById("memberInsight").innerHTML =
                 "<p>More rides are consistently completed by subscribers than non-subscribers. The difference in " +
                 "rides between membership types is usually at least 5,000 rides, but ridership is very low across both " +
@@ -545,8 +545,8 @@ class LineChart {
             vis.yLabel.text("average trip duration (min)")
                 .attr("y", -vis.margin.left + 30);
 
-            document.getElementById("mainInsight").innerHTML =
-                "<p>From this graph, we see that the average trip duration is around 15 minutes.</p>";
+            // document.getElementById("mainInsight").innerHTML =
+            //     "<p>From this graph, we see that the average trip duration is around 15 minutes.</p>";
 
             document.getElementById("memberInsight").innerHTML =
                 "<p>Although more rides are completed by subscribers than non-subscribers, these rides are actually shorter\n" +
@@ -571,10 +571,6 @@ class LineChart {
 
         // draw data lines
         if (vis.variable === "overview") {
-            // update y axis
-            // vis.y.domain([0, d3.max(vis.displayData, function (d) {
-            //     return d[selectedCategory];
-            // })]);
 
             if(vis.eventHandler != null){
                 // call brush component
@@ -603,13 +599,6 @@ class LineChart {
             // add chart title labels
             vis.svg.select(".lineTitle").text("By User Type")
 
-            // update y axis
-            // let sub_displayData = vis.displayData.map(d => d[selectedCategory + "_user_subscriber"]);
-            // let cus_displayData = vis.displayData.map(d => d[selectedCategory + "_user_customer"]);
-            // let member_displayData = sub_displayData.concat(cus_displayData);
-            // vis.y.domain([0, d3.max(member_displayData)]);
-
-            // write data lines as function? Then do the radio lines with them as callback?
             // draw data lines
             vis.dataLine_sub = d3.line()
                 .x(d => vis.x(d.date))
@@ -633,19 +622,11 @@ class LineChart {
                 .attr("d", vis.dataLine_cus)
                 .style("opacity", 1)
                 .style("stroke", "blue");
-
         }
 
         if (vis.variable === "gender") {
             // add chart title labels
             vis.svg.select(".lineTitle").text("By User Gender")
-
-            // update y axis
-            // let unknown_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_unknown"]);
-            // let male_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_male"]);
-            // let female_displayData = vis.displayData.map(d => d[selectedCategory + "_gen_female"]);
-            // let gen_displayData = unknown_displayData.concat(male_displayData).concat(female_displayData);
-            // vis.y.domain([0, d3.max(gen_displayData)]);
 
             // draw data lines
             vis.dataLine_un = d3.line()
@@ -685,14 +666,6 @@ class LineChart {
         if (vis.variable === "age") {
             // add chart title labels
             vis.svg.select(".lineTitle").text("By User Age")
-
-            // update y axis
-            // let youth_displayData = vis.displayData.map(d => d[selectedCategory + "_age_youth"]);
-            // let ya_displayData = vis.displayData.map(d => d[selectedCategory + "_age_young_adult"]);
-            // let adult_displayData = vis.displayData.map(d => d[selectedCategory + "_age_adult"]);
-            // let unknown_displayData = vis.displayData.map(d => d[selectedCategory + "_age_missing"]);
-            // let age_displayData = youth_displayData.concat(ya_displayData).concat(adult_displayData).concat(unknown_displayData);
-            // vis.y.domain([0, d3.max(age_displayData)]);
 
             vis.dataLine_youth = d3.line()
                 .x(d => vis.x(d.date))

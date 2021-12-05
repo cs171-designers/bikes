@@ -7,8 +7,8 @@ let nightingale;
 let barChartsMost;
 let barChartsLeast;
 let selectedDashboardView;
-let hourBar, hourBarDuration;
 let dataHandler = new DataHandler("load-status");
+
 // switch between num_rides and avg_trip_dur
 function categoryChange() {
     selectedCategory = document.getElementById('categorySelector').value;
@@ -16,7 +16,6 @@ function categoryChange() {
     memberLine.updateVis();
     genderLine.updateVis();
     ageLine.updateVis();
-    //hourBar.updateVis();
 }
 class Slide {
     rendered = false;
