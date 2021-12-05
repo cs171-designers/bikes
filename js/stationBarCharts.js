@@ -17,7 +17,7 @@ class StationBarChart {
         let vis = this;
 
         // margin conventions
-        vis.margin = { top: 10, right: 50, bottom: 250, left: 180 };
+        vis.margin = { top: 30, right: 50, bottom: 250, left: 60 }; // left margin 180
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.top - vis.margin.bottom;
 
@@ -28,7 +28,10 @@ class StationBarChart {
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-
+        // tooltip
+        vis.tooltip = d3.select("body").append('div')
+            .attr('class', "tooltip")
+            .attr('id', 'barTooltip');
 
         // Scales and axes
         vis.x = d3.scaleBand()
@@ -47,10 +50,10 @@ class StationBarChart {
             .attr("class", "axis-label")
             .attr("transform", "rotate(-90)")
             .attr("x", -vis.height / 2)
-            .attr("y", -40)
+            .attr("y", -50)
             .style("text-anchor", "middle");
 
-        vis.yLabel.text("# rides");
+        vis.yLabel.text("Number of rides");
 
         vis.svg.append("g")
             .attr("class", "y-axis axis");
@@ -62,17 +65,15 @@ class StationBarChart {
         // add chart title placeholder
         vis.svg.append("text")
             .attr("x",-vis.margin.left + vis.width/2)
-            .attr("y",0)
+            .attr("y",-15)
             .attr("class","lineTitle");
 
-        // y-axis label
-        vis.yLabel = vis.svg.append("text")
-            .attr("class", "axis-label")
-            .attr("transform", "rotate(-90)")
-            .attr("x", -vis.height/2)
-            .attr("y", -vis.margin.left + 10)
-            .style("text-anchor", "middle");
-
+        if(vis.sortByMost == true){
+            vis.svg.select(".lineTitle").text("Most Popular Stations");
+        }
+        else{
+            vis.svg.select(".lineTitle").text("Least Popular Stations");
+        }
 
         // (Filter, aggregate, modify data)
         vis.wrangleData();
@@ -83,9 +84,6 @@ class StationBarChart {
         // console.log("LARA RIDES DATA", vis.ridesData)
         let sorted = []
         let rideLengths = {}
-
-
-
 
         vis.ridesData.forEach(function (d) {
             let numTrips = d.length;
@@ -106,7 +104,6 @@ class StationBarChart {
                 numTrips: numTrips,
                 lat: vis.stationData[stationID][0]['Latitude'],
                     long: vis.stationData[stationID][0]['Longitude']})
-
 
             }
 
@@ -131,6 +128,7 @@ class StationBarChart {
         //     // vis.stationData[d]
         // });
         // console.log(sorted)
+
         vis.sortedByMost = sorted.sort((a,b)=> b.numTrips - a.numTrips);
 
         if (vis.sortByMost) {
@@ -147,10 +145,6 @@ class StationBarChart {
         // console.log(vis.topFiveStations)
 
 
-        // vis.topFiveStations.forEach(function(station) {
-        //
-        // })
-
         vis.updateVis();
 
     }
@@ -165,33 +159,43 @@ class StationBarChart {
             .attr("transform", "translate(0," + vis.height + ")")
             .call(vis.xAxis)
             .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-30)")
+            .attr("transform", "translate(-10,0) rotate(-30)")
             .style("text-anchor", "end");
 
-        vis.y.domain([0, d3.max(vis.sortedByMost, function (d) {
+        vis.y.domain([0, d3.max(vis.topFiveStations, function (d) {
             return d['numTrips']})]);
 
         vis.svg.append("g")
             .call(vis.yAxis)
-        //console.log("y scale domain", vis.y.domain())
-        //console.log("y scale range", vis.y.range())
-
-        //console.log("x scale domain", vis.x.domain())
-        //console.log("height", vis.height)
-
-
 
         vis.svg.selectAll("mybar")
             .data(vis.topFiveStations)
             .enter()
             .append("rect")
-            .style("fill", "grey")
             .attr("x", function(d) { return vis.x(d.name); })
             .attr("width", vis.x.bandwidth())
-            .attr("fill", "#69b3a2")
+            .style("fill", "cadetblue")
             // no bar at the beginning thus:
             .attr("height", function(d) {return vis.height - vis.y(0); }) // always equal to 0
             .attr("y", function(d) { return vis.y(0); })
+            .on('mouseover', function(event, d){
+                vis.tooltip
+                    .style("opacity", 1)
+                    .style("left", event.pageX + 20 + "px")
+                    .style("top", event.pageY + "px")
+                    .html(`
+                         <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
+                             <h3>${d.name}</h3>
+                             <h4>${d.numTrips} Rides</h4>      
+                         </div>`);
+            })
+            .on('mouseout', function(event, d){
+                vis.tooltip
+                    .style("opacity", 0)
+                    .style("left", 0)
+                    .style("top", 0)
+                    .html(``);
+            });
 
         // Animation
         vis.svg.selectAll("rect")
@@ -203,10 +207,6 @@ class StationBarChart {
                 //console.log(height)
                 return height})
             .delay(function(d,i){return(i*100)}) //console.log(i) ;
-
-
-
-
 
     }
 
