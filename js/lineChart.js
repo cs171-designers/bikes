@@ -524,8 +524,8 @@ class LineChart {
             vis.yLabel.text("# rides")
                 .attr("y", -vis.margin.left + 10);
 
-            document.getElementById("mainInsight").innerHTML =
-                "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter months.</p>";
+            // document.getElementById("mainInsight").innerHTML =
+            //     "<p> As you can see, ridership tends to increase in the summer months and decrease in the winter months.</p>";
             document.getElementById("memberInsight").innerHTML =
                 "<p>More rides are consistently completed by subscribers than non-subscribers. The difference in " +
                 "rides between membership types is usually at least 5,000 rides, but ridership is very low across both " +
@@ -545,8 +545,8 @@ class LineChart {
             vis.yLabel.text("average trip duration (min)")
                 .attr("y", -vis.margin.left + 30);
 
-            document.getElementById("mainInsight").innerHTML =
-                "<p>From this graph, we see that the average trip duration is around 15 minutes.</p>";
+            // document.getElementById("mainInsight").innerHTML =
+            //     "<p>From this graph, we see that the average trip duration is around 15 minutes.</p>";
 
             document.getElementById("memberInsight").innerHTML =
                 "<p>Although more rides are completed by subscribers than non-subscribers, these rides are actually shorter\n" +
