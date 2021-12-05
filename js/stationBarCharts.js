@@ -174,11 +174,14 @@ class StationBarChart {
             .append("rect")
             .attr("x", function(d) { return vis.x(d.name); })
             .attr("width", vis.x.bandwidth())
-            .style("fill", "cadetblue")
             // no bar at the beginning thus:
             .attr("height", function(d) {return vis.height - vis.y(0); }) // always equal to 0
             .attr("y", function(d) { return vis.y(0); })
+            .style("fill", "rgb(61,66,168)")
             .on('mouseover', function(event, d){
+                d3.select(this)
+                    .style('fill', 'rgb(200,216,235)'); // change color on hover
+
                 vis.tooltip
                     .style("opacity", 1)
                     .style("left", event.pageX + 20 + "px")
@@ -190,6 +193,9 @@ class StationBarChart {
                          </div>`);
             })
             .on('mouseout', function(event, d){
+                d3.select(this)
+                    .style("fill", "rgb(61,66,168)");
+
                 vis.tooltip
                     .style("opacity", 0)
                     .style("left", 0)
