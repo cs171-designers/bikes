@@ -31,15 +31,33 @@ class NightingaleChart {
         vis.nightingaleChartGroup = vis.svg
             .append('g')
             .attr('class', 'nightingale-chart')
-            .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")");
+            .attr("transform", "translate(" + vis.width / 2 + "," + (10 + vis.height / 2) + ")");
 
+        // Append tooltip
+        vis.tooltip = d3.select("body").append('div')
+            .attr('class', "tooltip")
+            .attr('id', 'nightTooltip')
 
         // Scales and labels
         vis.colorScale = d3.scaleLinear()
             .range(["#deeff5", "#00008B"])
 
+        vis.legendScale = d3.scaleLinear()
+            .domain([0, 100])
+            .range(["#deeff5", "#00008B"])
+
+        vis.legendAxisScale = d3.scaleLinear()
+            .range([100, 0])
+
+        vis.nightingaleChartGroup.append("g")
+            .attr("class", "legend-axis")
+            .attr("transform", `translate(${30 + vis.margin.right + vis.height / 2}, -50)`)
+
+        vis.legendAxis = d3.axisRight(vis.legendAxisScale)
+            .ticks(3)
+
         vis.radiusScale = d3.scaleLinear()
-            .range([0, d3.min([vis.width/2, vis.height/2]) - vis.margin.top])
+            .range([0, d3.min([vis.width/2, vis.height/2]) - 3 * vis.margin.top])
 
         vis.startAngleScale = d3.scaleLinear()
             .domain([0, 7]) // number of bins
@@ -48,6 +66,13 @@ class NightingaleChart {
         vis.endAngleScale = d3.scaleLinear()
             .domain([0, 7])
             .range([Math.PI/4, 2*Math.PI])
+
+        vis.svg.append("text")
+            .attr("x", vis.width/2)
+            .attr("y", 5)
+            .style("font-size", "15px")
+            .style("text-anchor", "middle")
+            .text("Rides and Average Trip Durations by Time of Day")
 
         // format ticks to convey hour categories. Categories do not update
         vis.tickStrings = ["12am - 3am", "3am - 6am", "6am - 9am", "9am - 12pm", "12pm - 3pm", "3pm - 6pm", "6pm - 9pm", "9pm - 12am"];
@@ -125,7 +150,8 @@ class NightingaleChart {
         // Finish creating domains using wrangled data
         vis.maxRadVal = d3.max(numRidesArray)
         vis.radiusScale.domain([0, vis.maxRadVal])
-        vis.colorScale.domain([0, avgTripDurArray.length])
+        vis.colorScale.domain([d3.min(avgTripDurArray), d3.max(avgTripDurArray)])
+        vis.legendAxisScale.domain([d3.min(avgTripDurArray), d3.max(avgTripDurArray)])
 
 
         vis.updateVis();
@@ -206,10 +232,29 @@ class NightingaleChart {
                 .endAngle(d => vis.endAngleScale(d.index))
             )
             .attr("fill", function (d) {
-                return vis.colorScale(d.index)
+                return vis.colorScale(d.avg_trip_dur)
             })
             .attr("stroke", "black")
             .style("stroke-width", "1px")
+            .on('mouseover', function (event, d) {
+                vis.tooltip
+                    .style("opacity", 1)
+                    .style("left", event.pageX + 20 + "px")
+                    .style("top", event.pageY + "px")
+                    .html(`
+                         <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
+                             <h3>${vis.tickStrings[d.index]}</h3>
+                             <h4>Total Rides: ${d3.format(",")(d.num_rides)} rides</h4>
+                             <h4>Average Trip Duration: ${d.avg_trip_dur.toFixed(2)} minutes</h4>      
+                         </div>`);
+            })
+            .on('mouseout', function (event, d) {
+                vis.tooltip
+                    .style("opacity", 0)
+                    .style("left", 0)
+                    .style("top", 0)
+                    .html(``);
+            });
 
 
         let arcLabels = vis.nightingaleChartGroup.selectAll(".arcLabel")
@@ -223,8 +268,30 @@ class NightingaleChart {
             .append("textPath")
             .attr("startOffset","50%")
             .style("text-anchor","middle")
+            .style("font-size", "12px")
             .attr("xlink:href", function(d,i) {return "#timeArc_"+i;})
             .text(d => vis.tickStrings[d.index])
 
+        let legendBars = vis.nightingaleChartGroup.selectAll(".legendBar")
+            .data(d3.range(100))
+
+        legendBars.enter().append("rect")
+            .attr("class", "legendBar")
+            .attr("width", 10)
+            .attr("height", 1)
+            .attr("fill", d => vis.legendScale(d))
+            .attr("x", 3 * vis.margin.right + vis.height / 2)
+            .attr("y", d => 50 - d)
+
+        let legendTitle = vis.nightingaleChartGroup.append("text")
+            .attr("class", "legend-title")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("transform", `rotate(90) translate(0, ${-(60 + vis.margin.right + vis.height / 2)})`)
+            .style("text-anchor", "middle")
+            .style("font-size", "10px")
+            .text("Average Trip Duration in Minutes")
+
+        let legendAxis = vis.svg.select(".legend-axis").call(vis.legendAxis);
     }
 }
