@@ -252,3 +252,7 @@ figcaption {
     text-align: left;
     font-size: smaller;
 }
+
+rect:hover {
+    color: yellow;
+}
