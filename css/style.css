@@ -245,3 +245,7 @@ select, select.form-select {
 #myDIV {
     display: none
 }
+figcaption {
+    text-align: left;
+    font-size: smaller;
+}
