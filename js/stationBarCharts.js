@@ -17,7 +17,7 @@ class StationBarChart {
         let vis = this;
 
         // margin conventions
-        vis.margin = { top: 30, right: 50, bottom: 250, left: 60 }; // left margin 180
+        vis.margin = { top: 30, right: 50, bottom: 250, left: 100 }; // left margin 180
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.top - vis.margin.bottom;
 

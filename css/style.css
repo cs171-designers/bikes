@@ -51,8 +51,11 @@
     stroke: #000;
     stroke-width: 1.5px;
 }
+.lineTitle{
+    fonst-size: 15px;
+}
 .legend text {
-    font-size: 10px;
+    font-size: 11px;
 }
 /* #time-period-min,
 #time-period-max {

@@ -126,7 +126,7 @@ class PieChart {
         // update legend -- vis.data not defined color until after vis.wrangle
         for(let i=0; i < vis.data.length; i++){
             vis.legend.append("rect")
-                .attr("x", 0)
+                .attr("x", -10)
                 .attr("y", i*vis.legend_padding_height)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
@@ -134,7 +134,7 @@ class PieChart {
 
             vis.legend.append("text")
                 .text(vis.data[i].label)
-                .attr("x", vis.legend_width + vis.legend_padding_label)
+                .attr("x", vis.legend_width + vis.legend_padding_label - 10)
                 .attr("y", i*vis.legend_padding_height + 5); // add 5, half of font size -- centered with rect
         }
 
