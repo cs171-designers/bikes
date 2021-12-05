@@ -10,7 +10,8 @@
 }
 .mainContainer {
     height: 40vh;
-    margin: 0;
+    margin-left: 20%;
+    margin-right: 20%;
 }
 #mainInsight {
     /* margin-top: 5vh; */
