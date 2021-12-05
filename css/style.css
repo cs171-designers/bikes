@@ -242,6 +242,13 @@ select, select.form-select {
     margin-right: auto;
     width: 70%;
 }
+
+.centersmall {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+}
 .tiny-cricle {
     width: 2.5%;
 }
@@ -260,3 +267,16 @@ figcaption {
 /*    background-color: yellow;*/
 /*    color: yellow;*/
 /*}*/
+
+.hide {
+    display: none;
+}
+
+.night:hover + .hide {
+    display: block;
+    /*color: red;*/
+}
+
+.night {
+    color: #4989EF;
+}
