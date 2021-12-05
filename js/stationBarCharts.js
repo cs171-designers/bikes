@@ -180,6 +180,8 @@ class StationBarChart {
             .style("fill", "rgb(61,66,168)")
             .on('mouseover', function(event, d){
                 d3.select(this)
+                    .attr('stroke-width', '1px')
+                    .attr('stroke', 'black')
                     .style('fill', 'rgb(200,216,235)'); // change color on hover
 
                 vis.tooltip
@@ -194,6 +196,7 @@ class StationBarChart {
             })
             .on('mouseout', function(event, d){
                 d3.select(this)
+                    .attr('stroke-width', '0px')
                     .style("fill", "rgb(61,66,168)");
 
                 vis.tooltip
