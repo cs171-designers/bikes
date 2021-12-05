@@ -245,3 +245,10 @@ select, select.form-select {
 .tiny-cricle {
     width: 2.5%;
 }
+#myDIV {
+    display: none
+}
+figcaption {
+    text-align: left;
+    font-size: smaller;
+}
