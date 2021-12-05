@@ -15,7 +15,7 @@ class LineChart {
     initVis() {
         let vis = this;
 
-        vis.margin = { top: 30, right: 10, bottom: 20, left: 60 };
+        vis.margin = { top: 30, right: 10, bottom: 40, left: 60 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
@@ -725,7 +725,10 @@ class LineChart {
 
         // Update axes
         vis.svg.select(".y-axis").call(vis.yAxis);
-        vis.svg.select(".x-axis").call(vis.xAxis);
+        vis.svg.select(".x-axis").call(vis.xAxis)
+            .selectAll("text")
+            .attr("transform", "rotate(-20)")
+            .style("text-anchor", "end");
 
     }
 

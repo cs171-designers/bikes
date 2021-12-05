@@ -82,6 +82,8 @@ let slides = [
         selectedDashboardView = document.getElementById("map-dashboard-dropdown").value
 
         stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.374443, -71.116943])
+
+        //console.log()
     }),
     new Slide("trip-bar", function () {
         // barCharts
@@ -91,15 +93,15 @@ let slides = [
         barChartsLeast = new StationBarChart("trip-length-barchart-least", ridesData, stationData, false);
     }),
     new Slide("nightingale-chart", function () {
-        // Data for Line Charts
+        // Data
         let dayParser = "%Y-%m-%d";
         let weekParser = "%Y-%U";
 
-        // switch data between lineData and weekData?
+        // switch data between grouped by week or day
         const USE_WEEKS = true;
         let dateParser = (USE_WEEKS) ? weekParser : dayParser;
         let lineData = (USE_WEEKS) ? dataHandler.groupWeek() : dataHandler.groupDate();
-        
+
         // Create Nightingale Chart
         nightingale = new NightingaleChart("nightingale-chart", lineData, "num_rides", dateParser);
     }),
