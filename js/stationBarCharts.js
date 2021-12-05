@@ -28,6 +28,11 @@ class StationBarChart {
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
+        // tooltip
+        vis.tooltip = d3.select("body").append('div')
+            .attr('class', "tooltip")
+            .attr('id', 'barTooltip');
+
         // Scales and axes
         vis.x = d3.scaleBand()
             .range([0, vis.width]);
@@ -154,7 +159,7 @@ class StationBarChart {
             .attr("transform", "translate(0," + vis.height + ")")
             .call(vis.xAxis)
             .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-30)")
+            .attr("transform", "translate(-10,0) rotate(-30)")
             .style("text-anchor", "end");
 
         vis.y.domain([0, d3.max(vis.topFiveStations, function (d) {
@@ -167,13 +172,30 @@ class StationBarChart {
             .data(vis.topFiveStations)
             .enter()
             .append("rect")
-            .style("fill", "grey")
             .attr("x", function(d) { return vis.x(d.name); })
             .attr("width", vis.x.bandwidth())
             .style("fill", "cadetblue")
             // no bar at the beginning thus:
             .attr("height", function(d) {return vis.height - vis.y(0); }) // always equal to 0
             .attr("y", function(d) { return vis.y(0); })
+            .on('mouseover', function(event, d){
+                vis.tooltip
+                    .style("opacity", 1)
+                    .style("left", event.pageX + 20 + "px")
+                    .style("top", event.pageY + "px")
+                    .html(`
+                         <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
+                             <h3>${d.name}</h3>
+                             <h4>${d.numTrips} Rides</h4>      
+                         </div>`);
+            })
+            .on('mouseout', function(event, d){
+                vis.tooltip
+                    .style("opacity", 0)
+                    .style("left", 0)
+                    .style("top", 0)
+                    .html(``);
+            });
 
         // Animation
         vis.svg.selectAll("rect")
