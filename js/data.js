@@ -431,32 +431,35 @@ class DataHandler {
     getMultiLevelCounts() {
         return {
             "gender-age": Object.entries(this.count_filters.gen).filter(([key]) => key !== "All").map(([g_key, g_val]) => {
+                let filtered = g_val(this._rides);
                 return {
                     label: g_key,
-                    value: g_val(this._rides).length,
+                    value: filtered.length,
                     components: Object.entries(this.count_filters.age).filter(([key]) => key !== "All").map(([key, filter]) => ({
                         label: g_key + ": " + key,
-                        value: filter(g_val(this._rides)).length
+                        value: filter(filtered).length
                     }))
                 }
             }),
             "user-age": Object.entries(this.count_filters.user).filter(([key]) => key !== "All").map(([g_key, g_val]) => {
+                let filtered = g_val(this._rides);
                 return {
                     label: g_key,
-                    value: g_val(this._rides).length,
+                    value: filtered.length,
                     components: Object.entries(this.count_filters.age).filter(([key]) => key !== "All").map(([key, filter]) => ({
                         label: g_key + ": " + key,
-                        value: filter(g_val(this._rides)).length
+                        value: filter(filtered).length
                     }))
                 }
             }),
             "age-user": Object.entries(this.count_filters.age).filter(([key]) => key !== "All").map(([g_key, g_val]) => {
+                let filtered = g_val(this._rides);
                 return {
                     label: g_key,
-                    value: g_val(this._rides).length,
+                    value: filtered.length,
                     components: Object.entries(this.count_filters.user).filter(([key]) => key !== "All").map(([key, filter]) => ({
                         label: g_key + ": " + key,
-                        value: filter(g_val(this._rides)).length
+                        value: filter(filtered).length
                     }))
                 }
             }),
