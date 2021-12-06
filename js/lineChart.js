@@ -327,36 +327,39 @@ class LineChart {
         let dateParser = d3.timeParse(vis.dateParser);
 
         vis.displayData = Object.entries(vis.filteredData).map(d => {
+            let user_data = user(d[1]);
+            let gender_data = gender(d[1]);
+            let age_data = age(d[1]);
             return {
                 date: dateParser(d[0]),
 
                 num_rides: d[1].length,
-                num_rides_user_subscriber: user(d[1])[0][0],
-                num_rides_user_customer: user(d[1])[1][0],
+                num_rides_user_subscriber: user_data[0][0],
+                num_rides_user_customer: user_data[1][0],
 
-                num_rides_gen_unknown: gender(d[1])[0][0],
-                num_rides_gen_male: gender(d[1])[1][0],
-                num_rides_gen_female: gender(d[1])[2][0],
+                num_rides_gen_unknown: gender_data[0][0],
+                num_rides_gen_male: gender_data[1][0],
+                num_rides_gen_female: gender_data[2][0],
 
-                num_rides_age_youth: age(d[1])[0][0],
-                num_rides_age_young_adult: age(d[1])[1][0],
-                num_rides_age_adult1: age(d[1])[2][0],
-                num_rides_age_adult2: age(d[1])[3][0],
-                num_rides_age_missing: age(d[1])[4][0], // missing because birth year unknown for non-subscribers
+                num_rides_age_youth: age_data[0][0],
+                num_rides_age_young_adult: age_data[1][0],
+                num_rides_age_adult1: age_data[2][0],
+                num_rides_age_adult2: age_data[3][0],
+                num_rides_age_missing: age_data[4][0], // missing because birth year unknown for non-subscribers
 
                 avg_trip_dur: average_trip(d[1]),
-                avg_trip_dur_user_subscriber: user(d[1])[0][1],
-                avg_trip_dur_user_customer: user(d[1])[1][1],
+                avg_trip_dur_user_subscriber: user_data[0][1],
+                avg_trip_dur_user_customer: user_data[1][1],
 
-                avg_trip_dur_gen_unknown: gender(d[1])[0][1],
-                avg_trip_dur_gen_male: gender(d[1])[1][1],
-                avg_trip_dur_gen_female: gender(d[1])[2][1],
+                avg_trip_dur_gen_unknown: gender_data[0][1],
+                avg_trip_dur_gen_male: gender_data[1][1],
+                avg_trip_dur_gen_female: gender_data[2][1],
 
-                avg_trip_dur_age_youth: age(d[1])[0][1],
-                avg_trip_dur_age_young_adult: age(d[1])[1][1],
-                avg_trip_dur_age_adult1: age(d[1])[2][1],
-                avg_trip_dur_age_adult2: age(d[1])[3][1],
-                avg_trip_dur_age_missing: age(d[1])[4][1]
+                avg_trip_dur_age_youth: age_data[0][1],
+                avg_trip_dur_age_young_adult: age_data[1][1],
+                avg_trip_dur_age_adult1: age_data[2][1],
+                avg_trip_dur_age_adult2: age_data[3][1],
+                avg_trip_dur_age_missing: age_data[4][1]
             }
         });
         vis.displayData = vis.displayData.map(res => res);
