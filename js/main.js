@@ -81,9 +81,11 @@ let slides = [
         let departureData = dataHandler.groupStationDepartures()
         selectedDashboardView = document.getElementById("map-dashboard-dropdown").value
 
-        stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.374443, -71.116943])
+        //stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, dataHandler._stations, [42.374443, -71.116943])
+        filter_stations = dataHandler._stations.filter(d => d.Public == true);
+        stationDashboard = new BlueBikeMapDashboard("station-dashboard", arrivalData, departureData, filter_stations, [42.374443, -71.116943])
 
-        //console.log()
+        //console.log("filtered stations", filter_stations)
     }),
     new Slide("trip-bar", function () {
         // barCharts
