@@ -90,11 +90,7 @@ class NightingaleChart {
         let hour = ["overnight1", "overnight2", "morn1", "morn2", "aft1", "aft2", "night1", "night2"];
 
         let dataHolder = [];
-        var startTime = performance.now()
         let trip_data = categorize(data);
-        var endTime = performance.now()
-
-        console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
         for (let i = 0; i < hour.length; i++) {
             dataHolder.push({
                 index: i,
@@ -110,43 +106,17 @@ class NightingaleChart {
             // let hourFormat = d3.timeFormat("%H"); // computed once when data is loaded
 
             // // filtered data by start hour categories
-            const bucket_size = 3;
-            // let trip_data = (new Array(24 / bucket_size)).fill(0).map(i => []);
-            // d.forEach((ride) => {
-            //     let bucket = Math.floor(ride.startHourString / bucket_size);
-            //     if (ride.startHourString === 24) bucket = 0;
-            //     trip_data[bucket].push(ride);
-            // });
-            // console.log("data", trip_data);
-
-            // define arrays to hold returned data
-            // let num_rides = [];
-            // let avg_trip_duration = [];
+            const bucket_size = 24 / hour.length;
             let num_rides = (new Array(24 / bucket_size)).fill(0);
             let total_trip_duration = (new Array(24 / bucket_size)).fill(0);
 
             d.forEach((ride) => {
-                let bucket = Math.floor(ride.startHourString / bucket_size);
-                if (ride.startHourString === 24) bucket = 0;
+                let bucket = Math.floor((ride.startHourString % 24) / bucket_size);
                 num_rides[bucket] += 1;
                 total_trip_duration[bucket] += ride.tripduration;
             });
 
-            // for (let i = 0; i < trip_data.length; i++) {
-            //     let trips = trip_data[i];
-            //     let rides = trips.length;
-
-            //     let total_dur = 0;
-            //     trips.forEach(ride => total_dur += ride.tripduration);
-            //     let avg_trip_dur = 0;
-            //     if (rides != 0) {
-            //         avg_trip_dur = total_dur / rides / 60;
-            //     }
-            //     num_rides.push(rides);
-            //     avg_trip_duration.push(avg_trip_dur);
-            // }
             let avg_trip_duration = total_trip_duration.map((val,i) => val / num_rides[i] / 60);
-            console.log("data", [num_rides, avg_trip_duration]);
             return [num_rides, avg_trip_duration];
         }
         // console.log("BAR displayData", vis.displayData);
