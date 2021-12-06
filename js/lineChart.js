@@ -565,7 +565,7 @@ class LineChart {
             document.getElementById("ageInsight").innerHTML =
                 "<p>When examining trip duration by age, we see that rides by adults aged 18-28 and adults aged 38+ have \n" +
                 "similar average trip duration, around 15 minutes long.\n" +
-                "Rides by adults aged 28-38 are typically the longest, with an average duration of around 20 minutes." +
+                "Rides by adults aged 28-38 are typically the longest, with an average duration of around 20 minutes. " +
                 "Rides by young users <18 have a much more variation in trip duration.\n</p>";
         }
 
