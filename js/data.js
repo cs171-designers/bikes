@@ -174,6 +174,7 @@ class DataHandler {
                 // add age attribute to data
                 d.age = Number(d.starttime.slice(0, 4)) - d["birth year"];
                 d.startDateString = d.starttime.slice(0, 10)
+                d.startHourString = parseInt(d.starttime.slice(11,13),10);
                 if (d.starttime.length > 20) {
                     d.starttime = dateParser(d.starttime.slice(0, 19)); //slice off the milliseconds... ?
                 }
@@ -181,7 +182,6 @@ class DataHandler {
                     d.starttime = dateParser(d.starttime);
                 }
                 d.startYearWeekString = weekFormat(d.starttime);
-
             }
             if (d.stoptime) {
                 d.stopDateString = d.stoptime.slice(0, 10);

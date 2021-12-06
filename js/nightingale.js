@@ -83,7 +83,7 @@ class NightingaleChart {
     wrangleData() {
         let vis = this;
 
-        let hourFormat = d3.timeFormat("%H");
+        // let hourFormat = d3.timeFormat("%H");
         // for bar chart, need total count for each category. do not need date information
 
         let data = Object.values(vis.filteredData).flat();
@@ -104,23 +104,33 @@ class NightingaleChart {
         console.log("display data bar hours", vis.displayData)
 
         function categorize(d) {
-            let hourFormat = d3.timeFormat("%H");
+            // let hourFormat = d3.timeFormat("%H"); // computed once when data is loaded
 
             // define arrays to hold returned data
             let num_rides = [];
             let avg_trip_duration = [];
 
-            // filtered data by start hour categories
-            let overnight1_trips = d.filter(ride => hourFormat(ride.starttime) < 3); // 12-3 am.
-            let overnight2_trips = d.filter(ride => hourFormat(ride.starttime) >= 3 && hourFormat(ride.starttime) < 6); // 3-6 am
-            let morn1_trips = d.filter(ride => hourFormat(ride.starttime) >= 6 && hourFormat(ride.starttime) < 9); // 6-9 am
-            let morn2_trips = d.filter(ride => hourFormat(ride.starttime) >= 9 && hourFormat(ride.starttime) < 12); // 9-12 pm
-            let aft1_trips = d.filter(ride => hourFormat(ride.starttime) >= 12 && hourFormat(ride.starttime) < 15); // 12-3 pm
-            let aft2_trips = d.filter(ride => hourFormat(ride.starttime) >= 15 && hourFormat(ride.starttime) < 18); // 3-6 pm
-            let night1_trips = d.filter(ride => hourFormat(ride.starttime) >= 18 && hourFormat(ride.starttime) < 21); // 6-9 pm
-            let night2_trips = d.filter(ride => hourFormat(ride.starttime) >= 21 && hourFormat(ride.starttime) <= 24); // 9-12 am
+            // // filtered data by start hour categories
+            // let overnight1_trips = d.filter(ride => ride.startHourString < 3); // 12-3 am.
+            // let overnight2_trips = d.filter(ride => ride.startHourString >= 3 && ride.startHourString < 6); // 3-6 am
+            // let morn1_trips = d.filter(ride => ride.startHourString >= 6 && ride.startHourString < 9); // 6-9 am
+            // let morn2_trips = d.filter(ride => ride.startHourString >= 9 && ride.startHourString < 12); // 9-12 pm
+            // let aft1_trips = d.filter(ride => ride.startHourString >= 12 && ride.startHourString < 15); // 12-3 pm
+            // let aft2_trips = d.filter(ride => ride.startHourString >= 15 && ride.startHourString < 18); // 3-6 pm
+            // let night1_trips = d.filter(ride => ride.startHourString >= 18 && ride.startHourString < 21); // 6-9 pm
+            // let night2_trips = d.filter(ride => ride.startHourString >= 21 && ride.startHourString <= 24); // 9-12 am
 
-            let trip_data = [overnight1_trips, overnight2_trips, morn1_trips, morn2_trips, aft1_trips, aft2_trips, night1_trips, night2_trips];
+            // let trip_data2 = [overnight1_trips, overnight2_trips, morn1_trips, morn2_trips, aft1_trips, aft2_trips, night1_trips, night2_trips];
+
+            const bucket_size = 3;
+            let trip_data = (new Array(24 / bucket_size)).fill(0).map(i => []);
+            d.forEach((ride) => {
+                let bucket = Math.floor(ride.startHourString / bucket_size);
+                if ((!bucket && bucket !== 0) || !(bucket in trip_data))console.log("night for each", bucket, ride, trip_data)
+                if (ride.startHourString === 24) bucket = 0;
+                trip_data[bucket].push(ride);
+            });
+            console.log("data", trip_data);
 
             for (let i = 0; i < trip_data.length; i++) {
                 let trips = trip_data[i];

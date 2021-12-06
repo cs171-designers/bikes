@@ -51,6 +51,7 @@ class Slide {
     }
     render() {
         if (!this.rendered) {
+            console.log("rendering", this.page);
             this.rendered = true;
             this.setAsLoading();
             // console.log("rendering slide", this.page)
@@ -60,6 +61,8 @@ class Slide {
                     this.setAsRendered();
                 });
             }, 20);
+        } else {
+            console.log("not rerendering", this.page);
         }
         // console.log("slide rendered", this.page)
     }
