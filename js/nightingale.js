@@ -90,13 +90,13 @@ class NightingaleChart {
         let hour = ["overnight1", "overnight2", "morn1", "morn2", "aft1", "aft2", "night1", "night2"];
 
         let dataHolder = [];
-
+        let trip_data = categorize(data);
         for (let i = 0; i < hour.length; i++) {
             dataHolder.push({
                 index: i,
                 hour: hour[i],
-                num_rides: categorize(data)[0][i],
-                avg_trip_dur: categorize(data)[1][i]
+                num_rides: trip_data[0][i],
+                avg_trip_dur: trip_data[1][i]
             })
         }
         vis.displayData = dataHolder;
@@ -104,10 +104,6 @@ class NightingaleChart {
 
         function categorize(d) {
             // let hourFormat = d3.timeFormat("%H"); // computed once when data is loaded
-
-            // define arrays to hold returned data
-            let num_rides = [];
-            let avg_trip_duration = [];
 
             // // filtered data by start hour categories
             const bucket_size = 3;
@@ -119,6 +115,10 @@ class NightingaleChart {
                 trip_data[bucket].push(ride);
             });
             console.log("data", trip_data);
+
+            // define arrays to hold returned data
+            let num_rides = [];
+            let avg_trip_duration = [];
 
             for (let i = 0; i < trip_data.length; i++) {
                 let trips = trip_data[i];
