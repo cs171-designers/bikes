@@ -173,7 +173,7 @@ p {
     margin-top: 1rem;
     margin-bottom: 0.5rem;
 }
-body, button, a, input, select, option, svg text {
+body, button, a, input, select, option, svg text, li{
     font-family: "Inter", sans-serif;
 }
 svg text {
@@ -281,3 +281,4 @@ figcaption {
     color: #4989EF;
     cursor: pointer;
 }
+
