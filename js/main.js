@@ -232,4 +232,7 @@ function myFunction(divname) {
     else {
         x.style.display = "block";
     }
+    if (divname === 'myDIV2') {
+        document.getElementById('middle').scrollIntoView();
+    }
 }
