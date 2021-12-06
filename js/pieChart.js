@@ -105,16 +105,7 @@ class PieChart {
                 this.displayData.push(item);
             })
         });
-        // console.log("data", this.data, this.displayData)
-
-        // // generate random data
-        // for (let i = 0; i < 4; i++) {
-        //     let random = Math.floor(Math.random() * 100)
-        //     vis.displayData.push({
-        //         value: random,
-        //         color: vis.circleColors[i]
-        //     })
-        // }
+        
         vis.updateVis()
 
     }
