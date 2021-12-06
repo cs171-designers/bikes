@@ -57,18 +57,18 @@ class NightingaleChart {
             .ticks(3)
 
         vis.radiusScale = d3.scaleLinear()
-            .range([0, d3.min([vis.width/2, vis.height/2]) - 3 * vis.margin.top])
+            .range([0, d3.min([vis.width / 2, vis.height / 2]) - 3 * vis.margin.top])
 
         vis.startAngleScale = d3.scaleLinear()
             .domain([0, 7]) // number of bins
-            .range([0, 7*Math.PI/4])
+            .range([0, 7 * Math.PI / 4])
 
         vis.endAngleScale = d3.scaleLinear()
             .domain([0, 7])
-            .range([Math.PI/4, 2*Math.PI])
+            .range([Math.PI / 4, 2 * Math.PI])
 
         vis.svg.append("text")
-            .attr("x", vis.width/2)
+            .attr("x", vis.width / 2)
             .attr("y", 5)
             .style("font-size", "15px")
             .style("text-anchor", "middle")
@@ -90,7 +90,11 @@ class NightingaleChart {
         let hour = ["overnight1", "overnight2", "morn1", "morn2", "aft1", "aft2", "night1", "night2"];
 
         let dataHolder = [];
+        var startTime = performance.now()
         let trip_data = categorize(data);
+        var endTime = performance.now()
+
+        console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
         for (let i = 0; i < hour.length; i++) {
             dataHolder.push({
                 index: i,
@@ -107,32 +111,42 @@ class NightingaleChart {
 
             // // filtered data by start hour categories
             const bucket_size = 3;
-            let trip_data = (new Array(24 / bucket_size)).fill(0).map(i => []);
-            d.forEach((ride) => {
-                let bucket = Math.floor(ride.startHourString / bucket_size);
-                if ((!bucket && bucket !== 0) || !(bucket in trip_data))console.log("night for each", bucket, ride, trip_data)
-                if (ride.startHourString === 24) bucket = 0;
-                trip_data[bucket].push(ride);
-            });
-            console.log("data", trip_data);
+            // let trip_data = (new Array(24 / bucket_size)).fill(0).map(i => []);
+            // d.forEach((ride) => {
+            //     let bucket = Math.floor(ride.startHourString / bucket_size);
+            //     if (ride.startHourString === 24) bucket = 0;
+            //     trip_data[bucket].push(ride);
+            // });
+            // console.log("data", trip_data);
 
             // define arrays to hold returned data
-            let num_rides = [];
-            let avg_trip_duration = [];
+            // let num_rides = [];
+            // let avg_trip_duration = [];
+            let num_rides = (new Array(24 / bucket_size)).fill(0);
+            let total_trip_duration = (new Array(24 / bucket_size)).fill(0);
 
-            for (let i = 0; i < trip_data.length; i++) {
-                let trips = trip_data[i];
-                let rides = trips.length;
+            d.forEach((ride) => {
+                let bucket = Math.floor(ride.startHourString / bucket_size);
+                if (ride.startHourString === 24) bucket = 0;
+                num_rides[bucket] += 1;
+                total_trip_duration[bucket] += ride.tripduration;
+            });
 
-                let total_dur = 0;
-                trips.forEach(ride => total_dur += ride.tripduration);
-                let avg_trip_dur = 0;
-                if (rides != 0) {
-                    avg_trip_dur = total_dur / rides / 60;
-                }
-                num_rides.push(rides);
-                avg_trip_duration.push(avg_trip_dur);
-            }
+            // for (let i = 0; i < trip_data.length; i++) {
+            //     let trips = trip_data[i];
+            //     let rides = trips.length;
+
+            //     let total_dur = 0;
+            //     trips.forEach(ride => total_dur += ride.tripduration);
+            //     let avg_trip_dur = 0;
+            //     if (rides != 0) {
+            //         avg_trip_dur = total_dur / rides / 60;
+            //     }
+            //     num_rides.push(rides);
+            //     avg_trip_duration.push(avg_trip_dur);
+            // }
+            let avg_trip_duration = total_trip_duration.map((val,i) => val / num_rides[i] / 60);
+            console.log("data", [num_rides, avg_trip_duration]);
             return [num_rides, avg_trip_duration];
         }
         // console.log("BAR displayData", vis.displayData);
@@ -141,7 +155,7 @@ class NightingaleChart {
         let numRidesArray = []
         let avgTripDurArray = []
         vis.displayData.forEach(bin => {
-            numRidesArray.push(Math.sqrt(8*bin.num_rides/Math.PI));
+            numRidesArray.push(Math.sqrt(8 * bin.num_rides / Math.PI));
             avgTripDurArray.push(bin.avg_trip_dur);
         })
 
@@ -174,7 +188,7 @@ class NightingaleChart {
             .attr("fill", "white")
             .attr("stroke", "black")
             .attr("stroke-width", "1px")
-            .each(function(d,i) {
+            .each(function (d, i) {
                 // This section made with the help of this blog post by Nadleh Bremer
                 // https://www.visualcinnamon.com/2015/09/placing-text-on-arcs/
                 //A regular expression that captures all in between the start of a string
@@ -183,16 +197,16 @@ class NightingaleChart {
 
                 //The [1] gives back the expression between the () (thus not the L as well)
                 //which is exactly the arc statement
-                let newArc = firstArcSection.exec(d3.select(this).attr("d") )[1];
+                let newArc = firstArcSection.exec(d3.select(this).attr("d"))[1];
                 //Replace all the comma's so that IE can handle it -_-
                 //The g after the / is a modifier that "find all matches rather than
                 //stopping after the first match"
-                newArc = newArc.replace(/,/g , " ");
+                newArc = newArc.replace(/,/g, " ");
 
 
                 //If the end angle lies beyond a quarter of a circle (90 degrees or pi/2)
                 //flip the end and start position
-                if (vis.endAngleScale(d.index) > 90 * Math.PI/180 && vis.endAngleScale(d.index) <= 3 * Math.PI/2) {
+                if (vis.endAngleScale(d.index) > 90 * Math.PI / 180 && vis.endAngleScale(d.index) <= 3 * Math.PI / 2) {
                     //Everything between the capital M and first capital A
                     let startLoc = /M(.*?)A/;
                     //Everything between the capital A and 0 0 1
@@ -201,9 +215,9 @@ class NightingaleChart {
                     let endLoc = /0 0 1 (.*?)$/;
                     //Flip the direction of the arc by switching the start and end point
                     //and using a 0 (instead of 1) sweep flag
-                    let newStart = endLoc.exec( newArc )[1];
-                    let newEnd = startLoc.exec( newArc )[1];
-                    let middleSec = middleLoc.exec( newArc )[1];
+                    let newStart = endLoc.exec(newArc)[1];
+                    let newEnd = startLoc.exec(newArc)[1];
+                    let middleSec = middleLoc.exec(newArc)[1];
 
                     //Build up the new arc notation, set the sweep-flag to 0
                     newArc = "M" + newStart + "A" + middleSec + "0 0 0 " + newEnd;
@@ -212,7 +226,7 @@ class NightingaleChart {
                 //Create a new invisible arc that the text can flow along
                 vis.nightingaleChartGroup.append("path")
                     .attr("class", "hiddenDonutArcs")
-                    .attr("id", "timeArc_"+i)
+                    .attr("id", "timeArc_" + i)
                     .attr("d", newArc)
                     .style("fill", "none");
             });
@@ -225,7 +239,7 @@ class NightingaleChart {
             .attr("class", "nightArc")
             .attr("d", d3.arc()
                 .innerRadius(0)
-                .outerRadius(d => vis.radiusScale(Math.sqrt(8*d.num_rides/Math.PI)))
+                .outerRadius(d => vis.radiusScale(Math.sqrt(8 * d.num_rides / Math.PI)))
                 .startAngle(d => vis.startAngleScale(d.index))
                 .endAngle(d => vis.endAngleScale(d.index))
             )
@@ -260,14 +274,14 @@ class NightingaleChart {
 
         arcLabels.enter().append("text")
             .attr("class", "arcLabel")
-            .attr("dy", function(d,i) {
-                return (vis.endAngleScale(d.index) > 90 * Math.PI/180 && vis.endAngleScale(d.index) <= 3 * Math.PI/2 ? 18 : -11);
+            .attr("dy", function (d, i) {
+                return (vis.endAngleScale(d.index) > 90 * Math.PI / 180 && vis.endAngleScale(d.index) <= 3 * Math.PI / 2 ? 18 : -11);
             })
             .append("textPath")
-            .attr("startOffset","50%")
-            .style("text-anchor","middle")
+            .attr("startOffset", "50%")
+            .style("text-anchor", "middle")
             .style("font-size", "12px")
-            .attr("xlink:href", function(d,i) {return "#timeArc_"+i;})
+            .attr("xlink:href", function (d, i) { return "#timeArc_" + i; })
             .text(d => vis.tickStrings[d.index])
 
         let legendBars = vis.nightingaleChartGroup.selectAll(".legendBar")
