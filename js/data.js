@@ -225,7 +225,8 @@ class DataHandler {
         let dataHandler = this;
         let stationCoords = {};
 
-        dataHandler._stations.forEach(d => {
+        //dataHandler._stations.forEach(d => {
+        dataHandler._stations.filter(d => d.Public == true).forEach(d => {
             let station = d["Id"];
 
             if (stationCoords[station]) {
