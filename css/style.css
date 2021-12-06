@@ -242,10 +242,20 @@ select, select.form-select {
     margin-right: auto;
     width: 70%;
 }
+
+.centersmall {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+}
 .tiny-cricle {
     width: 2.5%;
 }
 #myDIV {
+    display: none
+}
+#myDIV2 {
     display: none
 }
 figcaption {
@@ -253,6 +263,21 @@ figcaption {
     font-size: smaller;
 }
 
-rect:hover {
-    color: yellow;
+/*mybar:hover {*/
+/*    background-color: yellow;*/
+/*    color: yellow;*/
+/*}*/
+
+.hide {
+    display: none;
+}
+
+.night:hover + .hide {
+    display: block;
+    /*color: red;*/
+}
+
+.night {
+    color: #4989EF;
+    cursor: pointer;
 }

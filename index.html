@@ -47,6 +47,7 @@
 				<div class="col">
 					<p class="page-status subtitle">Status: <span id="load-status">Loading...</span></p>
 					<h1>Meet Bluebikes!</h1>
+					<h4>Bluebikes on Harvard's campus, and you.</h4>
 				</div>
 			</div>
 		</div>
@@ -228,7 +229,7 @@
 					</h5>
 					<p>
 
-						The Bluebikes station in <b>Central Square</b> ("Central Square at Mass Ave / Essex St") is the most popular station by far,
+						There are few egregious imbalances of departures and arrivals, which means the flow and placement of bikes is relatively well-designed. The Bluebikes station in <b>Central Square</b> ("Central Square at Mass Ave / Essex St") is the most popular station by far,
 						with a conspicuously large radius for both Departures, Arrivals, and Total Departures and Arrivals.
 
 <!--						<br>-->
@@ -245,8 +246,8 @@
 <!--						<br>-->
 						Check out the red pins (<img src="img/red-pin-icon.jpg" alt="Red pin" class = 'tiny-cricle'>) on the map to see.
 
-
-						<button onclick="myFunction()" class="btn btn-primary btn-full">Reveal answer</button>
+<br>
+						<button onclick="myFunction('myDIV')" class="btn btn-primary btn-full">Reveal answer</button>
 
 					<p id="myDIV">
 					Looking at the Garden St
@@ -324,11 +325,14 @@
 		<div class="container section pp-scrollable">
 			<div class="row text-row ">
 				<div class="col">
-					<h5> We know the geographical habits of Bluebikes users.</h5>
+					<h5> We've seen <i>where</i> users bike.</h5>
+					<h5 style="text-indent: 45%"> But <i>when</i> do they do it?</h5>
 					<p>
-						When do most rides occur? Below is a barchart showing the number of rides that start during
-						different
-						times of the day.
+						How does usage vary in the course of a day, and when do most rides occur? In addition, how long do rides tend to be?
+
+<!--						Below is a barchart showing the number of rides that start during-->
+<!--						different-->
+<!--						times of the day.-->
 					</p>
 				</div>
 			</div>
@@ -344,81 +348,54 @@
 			</div>
 		</div>
 
-		<!-- Transition to demographic stats -->
 		<div class="container section pp-scrollable">
-			<div class="row text-row">
-				<div class="col">
-					<h5>Transition into our interest in membership stats</h5>
-				</div>
-			</div>
-
-			<div class="row text-row">
-				<div class="col">
-					<p>
-						Now that we've explored <i>where</i> Bluebikes users tend to go on Harvard's campus, let's
-						explore
-						<i>who</i> is the typical campus Bluebikes user. Can you see which demographics you fit into?
-					</p>
-				</div>
-			</div>
-		</div>
-
-
-		<!--	pie charts-->
-		<div class="container section pp-scrollable">
-
 			<div class="row text-row ">
 				<div class="col">
 					<p>
-						These pie charts further break down the demographics into more detailed age groups.
-					</p>
-				</div>
-			</div>
+						Rides from 3pm-6pm are the most common, but the longest trips occur from 12pm to 3pm.
 
-		</div>
+						<br>
+						<br>
+						As you may expect, not a lot of rides happen in the nighttime hours, from midnight to 6am.
 
-		<div class="container section">
-			<div class="row text-row">
-				<div class="col">
-					<p>
-						From these pie charts, we see that most Bluebikes users are Males, then Females. Users with
-						unspecified
-						gender are likely customers who were not registered members, so their demographic information is
-						unavailable.
+<!--						However, there is a nonzero amount of nighttime riders out there enjoying the empty streets.-->
 					</p>
-					<p>
-						We might notice that there is more male rides than female rides. However, it is important to
-						note that these are the number of rides and not the number of users (because users are
-						anonymized). This invites questions of whether this is due to a difference in the number of
-						users by sex or the number of average rides per user by sex.
-					</p>
-					<p>
-						Looking at the age chart, there are a couple insights. First we see that the number of rides for
-						ages 28-38 is close to or greater than the number of rides for ages 18-28. This is interesting
-						because we are looking at rides centered around the Harvard campus.
-					</p>
-					<p>
-						We can infer that there is probably a low percentage of undergraduate users. These stations are
-						centered around Harvard which combined have an undergraduate population of almost 10
-						thousand. If we divide the number of rides by 10k, and consider the time frame we see that the
-						number of rides is quite low.
-					</p>
+					<p class="night"><i>However, there is a nonzero amount of nighttime riders out there enjoying the empty streets.</i></p>
+					<img class="hide centersmall" src="img/nightbike.jpg" alt="Nighttime biker" >
+					<br>
+					<p>These rides tend to be short and sweet, compared to mid-afternoon rides. </p>
+<!--					<div >I am shown when someone hovers over the div above.</div>-->
+
+					<button onclick="myFunction('myDIV2')" class="btn btn-primary btn-full">In what season do most rides occur?</button>
+
+
 				</div>
 			</div>
 		</div>
+
+		<!-- Transition to demographic stats -->
+<!--		<div class="container section pp-scrollable">-->
+<!--			<div class="row text-row">-->
+<!--				<div class="col">-->
+<!--					<h5>Transition into our interest in membership stats</h5>-->
+<!--				</div>-->
+<!--			</div>-->
 
 		<div class="container section pp-scrollable">
 			<div class="row text-row">
 				<div class="col">
-					<h5> Explore Breakdown by User Demographics </h5>
-					<p>
+					<h5 id="middle"> Explore Breakdown by User Demographics </h5>
+					<p id="myDIV2">
+						As is expected, there are more rides in the summer months than in the dead of winter.
+					</p>
+					<p >
 						In the charts below, you can dive further into the demographics of Bluebikes users to see how bike
 						usage varies across categories. You can brush on the chart to the left to zoom in on selected time frames
 						on the charts below. Clicking out of the brush selection will reset the charts.
 					</p>
 					<p>
-						It is important to note that, due to the structure of the data, rides are not associated with specific
-						users. Therefore, our analysis is on the rides rather than on users.
+						It is important to note that, due to privacy constrictions on the data structures, rides are not associated with specific
+						users. Therefore, our analysis is based on rides rather than on users.
 					</p>
 					<p>
 						Click below to switch between analyzing the number of rides or the average trip duration.
@@ -515,6 +492,61 @@
 			</div>
 		</div>
 
+			<div class="row text-row">
+				<div class="col">
+					<p>
+						Now that we've explored <i>where</i> Bluebikes users tend to go on Harvard's campus, let's
+						explore
+						<i>who</i> is the typical campus Bluebikes user. Can you see which demographics you fit into?
+					</p>
+				</div>
+			</div>
+		</div>
+
+
+		<!--	pie charts-->
+		<div class="container section pp-scrollable">
+
+			<div class="row text-row ">
+				<div class="col">
+					<p>
+						These pie charts further break down the demographics into more detailed age groups.
+					</p>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="container section">
+			<div class="row text-row">
+				<div class="col">
+					<p>
+						From these pie charts, we see that most Bluebikes users are Males, then Females. Users with
+						unspecified
+						gender are likely customers who were not registered members, so their demographic information is
+						unavailable.
+					</p>
+					<p>
+						We might notice that there is more male rides than female rides. However, it is important to
+						note that these are the number of rides and not the number of users (because users are
+						anonymized). This invites questions of whether this is due to a difference in the number of
+						users by sex or the number of average rides per user by sex.
+					</p>
+					<p>
+						Looking at the age chart, there are a couple insights. First we see that the number of rides for
+						ages 28-38 is close to or greater than the number of rides for ages 18-28. This is interesting
+						because we are looking at rides centered around the Harvard campus.
+					</p>
+					<p>
+						We can infer that there is probably a low percentage of undergraduate users. These stations are
+						centered around Harvard which combined have an undergraduate population of almost 10
+						thousand. If we divide the number of rides by 10k, and consider the time frame we see that the
+						number of rides is quite low.
+					</p>
+				</div>
+			</div>
+		</div>
+
 		<!--	conclusions -->
 		<div class="container section pp-scrollable">
 
@@ -530,7 +562,7 @@
 						subscribers,
 						males, and adults 25+. Subscribers take on average 15 minute shorter rides. Females take
 						slightly
-						longer rides than males. Youth have a lot of variation in trip duration, though young adults and
+						longer rides than males. Youth have diverse uses of Bluebikes, with a lot of variation in trip duration, though young adults and
 						adults tend to take trips that are about 15 minutes long.
 					</p>
 
@@ -547,6 +579,26 @@
 					<p>
 						LIST VARIABLES HERE!!!!
 						ALSO PUT AUTHORS AND BIOS
+
+						seasonal ebbs and flows
+
+						How bluebikes might fit into your schedule and life
+						how you might change bluebikes to suit your needs better
+
+						Throughout the years, city bike systems have inspired much discourse.
+
+						Features in the New York Times include <a href = "https://www.nytimes.com/2013/10/25/opinion/those-blue-new-york-bikes-to-love-and-to-hate.html">Those Bright Bluebikes, to Love and to Hate</a>  and Color Me Blue, which are both filled with vitriol and equal passion for the bikes.
+
+						We were particularly motivated by the fact that we, our friends, and our families use the Bluebikes system. One group member’s mother is a big Bluebikes fan, who owns an inordinate amount of Bluebikes merchandise. With an eye on our own climate anxieties, we look forward to understanding how alternative transportation systems are used and can be used -- though we recognize that this may be a lofty goal.
+
+						At a more granular level, as students who all live in the Radcliffe Quadrangle and regularly commute to Allston (for CS171), we are particularly interested in how Harvard is making the SEC more accessible. Harvard has placed non-SEAS courses, and core courses, in the SEC as an attempt to “destigmatize” this section of campus. ​​Engineering a Unified Campus and SEAS Students Adjust to Allston Commute are news articles from this semester that detail rising concerns about transportation methods.
+
+						In regard to visualizations, Bluebikes actually showcases a number of visualizations. Here is one showcase:
+						https://storymaps.arcgis.com/stories/0f5fc6ed107d4c0491d24051eed77ff9
+
+						Data: The repository of Bluebikes usage data can be found here:
+						https://s3.amazonaws.com/hubway-data/index.html
+
 					</p>
 				</div>
 			</div>
