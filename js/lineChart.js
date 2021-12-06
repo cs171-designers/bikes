@@ -164,7 +164,7 @@ class LineChart {
             // draw legend
             vis.legend.append("rect")
                 .attr("x", 0)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "red");
@@ -172,11 +172,11 @@ class LineChart {
             vis.legend.append("text")
                 .text("Subscriber")
                 .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5); // add 5, half of font size -- centered with rect
+                .attr("y", -8 + 5); // add 5, half of font size -- centered with rect
 
             vis.legend.append("rect")
                 .attr("x", 80)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "blue")
@@ -184,7 +184,7 @@ class LineChart {
             vis.legend.append("text")
                 .text("Non-subscriber")
                 .attr("x", 80 + vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5);
+                .attr("y", -8 + 5);
         }
 
         if (vis.variable === "gender") {
@@ -200,7 +200,7 @@ class LineChart {
             // draw legend
             vis.legend.append("rect")
                 .attr("x", 0)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "grey")
@@ -208,11 +208,11 @@ class LineChart {
             vis.legend.append("text")
                 .text("Unknown")
                 .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5);
+                .attr("y", -8 + 5);
 
             vis.legend.append("rect")
                 .attr("x", 80)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "brown")
@@ -220,11 +220,11 @@ class LineChart {
             vis.legend.append("text")
                 .text("Female")
                 .attr("x", 80 + vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5);
+                .attr("y", -8 + 5);
 
             vis.legend.append("rect")
                 .attr("x", 160)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "green")
@@ -232,7 +232,7 @@ class LineChart {
             vis.legend.append("text")
                 .text("Male")
                 .attr("x", 160 + vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5);
+                .attr("y", -8 + 5);
         }
 
         if (vis.variable === "age") {
@@ -252,11 +252,11 @@ class LineChart {
                 .attr("class", "line");
 
             // draw legend
-            vis.legend.attr("transform", "translate(-10,0)"); // more age categories, need to move legend further left
+            vis.legend.attr("transform", "translate(-40,0)"); // more age categories, need to move legend further left
 
             vis.legend.append("rect")
                 .attr("x", 0)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "grey")
@@ -264,11 +264,11 @@ class LineChart {
             vis.legend.append("text")
                 .text("Unknown")
                 .attr("x", vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5);
+                .attr("y", -8 + 5);
 
             vis.legend.append("rect")
                 .attr("x", 60)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "limegreen");
@@ -276,11 +276,11 @@ class LineChart {
             vis.legend.append("text")
                 .text("Youth (<18)")
                 .attr("x", 60 + vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5);
+                .attr("y", -8 + 5);
 
             vis.legend.append("rect")
                 .attr("x", 135)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "orange")
@@ -288,11 +288,11 @@ class LineChart {
             vis.legend.append("text")
                 .text("Adult (18-28)")
                 .attr("x", 135 + vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5);
+                .attr("y", -8 + 5);
 
             vis.legend.append("rect")
                 .attr("x", 215)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "darkcyan")
@@ -300,11 +300,11 @@ class LineChart {
             vis.legend.append("text")
                 .text("Adult (28-38)")
                 .attr("x", 215 + vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5);
+                .attr("y", -8 + 5);
 
             vis.legend.append("rect")
                 .attr("x", 295)
-                .attr("y", -10)
+                .attr("y", -8)
                 .attr("width", vis.legend_width)
                 .attr("height", vis.legend_height)
                 .style("fill", "purple")
@@ -312,7 +312,7 @@ class LineChart {
             vis.legend.append("text")
                 .text("Adult (38+)")
                 .attr("x", 295 + vis.legend_width + vis.legend_padding)
-                .attr("y", -10 + 5);
+                .attr("y", -8 + 5);
         }
 
         // (Filter, aggregate, modify data)
