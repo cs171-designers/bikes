@@ -533,8 +533,8 @@ class LineChart {
                 "45-minute rides, so it would be more cost-effective for subscribers to ride more. </p>";
             document.getElementById("genderInsight").innerHTML =
                 "<p>Most rides are completed by Male users, then Female users, and finally by users of unknown gender. " +
-                "Because rides are not associated with specific users, this trend could be because of particular male users " +
-                "who are very avid bikers, or because there are more male Bluebike users than females, or males just tend to " +
+                "Because rides are not associated with specific users, this trend could be because of a few reasons: 1) the existence of particular male users " +
+                "who are very avid bikers, 2) there are more male Bluebike users than females, and/or 3) males tend to " +
                 "ride more than females.</p>";
             document.getElementById("ageInsight").innerHTML =
                 "<p>There are a similar number of rides completed by adults aged 18-28, 28-38, and 38+, though there are " +
